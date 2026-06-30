@@ -1,0 +1,160 @@
+/* Ech0 说说分享 popover */
+.ech0-share-popover {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 8px;
+  width: 220px;
+  padding: 14px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  z-index: 100;
+  /* 默认隐藏态（无 is-open） */
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: none;
+}
+.ech0-share-popover.is-open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+/* 动态向下展开：按钮顶部空间不足时，popover 改为从按钮下方弹出（避开主页栏/breadcrumb） */
+.ech0-share-popover.is-below {
+  top: 100%;
+  bottom: auto;
+  margin-bottom: 0;
+  margin-top: 8px;
+  transform: translateY(-4px);
+}
+.ech0-share-popover.is-below.is-open {
+  transform: translateY(0);
+}
+
+.ech0-share-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #999;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* QR 码：强制白底黑码（微信扫描要求），暗色模式下容器也保持白底 */
+.ech0-share-qr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 8px;
+  background: #ffffff;
+  border-radius: 8px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+.ech0-share-qr canvas,
+.ech0-share-qr-img {
+  display: block;
+  width: 160px !important;
+  height: 160px !important;
+}
+.ech0-share-qr-error {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #e53935;
+}
+
+.ech0-share-url {
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+  margin-bottom: 8px;
+  word-break: break-all;
+  line-height: 1.4;
+  font-family: 'Consolas', monospace;
+}
+
+.ech0-share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  color: #333;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.ech0-share-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #111;
+}
+.ech0-share-btn.is-done {
+  color: #2e7d32;
+  border-color: rgba(46, 125, 50, 0.3);
+  background: rgba(46, 125, 50, 0.06);
+}
+
+.ech0-share-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 8px 0;
+}
+
+/* 暗色模式：popover 背景深灰、文字浅色，但 QR 容器强制保持白底（QR 必须白底黑码） */
+[data-theme="dark"] .ech0-share-popover {
+  background: #2a2a2e;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+[data-theme="dark"] .ech0-share-title {
+  color: rgba(255, 255, 255, 0.5);
+}
+[data-theme="dark"] .ech0-share-qr {
+  /* 关键：暗色模式下 QR 容器仍是白色背景，否则微信扫不出 */
+  background: #ffffff;
+}
+[data-theme="dark"] .ech0-share-qr-error {
+  color: #ff6b6b;
+}
+[data-theme="dark"] .ech0-share-url {
+  color: rgba(255, 255, 255, 0.55);
+}
+[data-theme="dark"] .ech0-share-btn {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+}
+[data-theme="dark"] .ech0-share-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+[data-theme="dark"] .ech0-share-btn.is-done {
+  color: #81c784;
+  border-color: rgba(129, 199, 132, 0.35);
+  background: rgba(129, 199, 132, 0.1);
+}
+[data-theme="dark"] .ech0-share-divider {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 移动端：popover 不要超出卡片右边 */
+@media (max-width: 768px) {
+  .ech0-share-popover {
+    right: -4px;
+    width: 200px;
+  }
+}
