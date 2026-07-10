@@ -1,7 +1,7 @@
 // Ech0 说说嵌入 - JS masonry + APlayer/MetingJS + Bilibili iframe + 灯箱 + 头像 + 点赞/评论/分享
 // 后续 K8s 部署后把 ECH0_CONFIG.base 改成线上域名
 const ECH0_CONFIG = {
-  base: 'https://nightfall7.top:8443/ech0',
+  base: 'https://api.nightfall7.top/ech0',
   avatar: 'https://github.com/NightNight-30.png',
   nickname: 'NightFall',
   pageSize: 30
