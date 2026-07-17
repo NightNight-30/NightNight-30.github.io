@@ -133,3 +133,30 @@ body .navbar-blur::after {
 .tag-plugin.swiper .swiper-slide img {
   cursor: pointer !important;
 }
+
+/* === welcome widget markdown 美化：stellar 默认 14px/1.2 行距 + 无 blockquote 竖线，侧边栏偏挤 === */
+/* 1) 字号 14→13px（侧边栏小卡片更合适） 2) 行距 1.2→1.7 拉开 3) blockquote 加回左竖线 + 浅蓝青渐变背景 */
+.widget-wrapper.markdown .widget-body {
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+}
+.widget-wrapper.markdown .widget-body p {
+  margin: 6px 0 !important;
+  line-height: 1.7 !important;
+}
+.widget-wrapper.markdown blockquote {
+  border-left: 3px solid var(--c-theme, hsl(192 98% 55%)) !important;
+  padding: 4px 0 4px 12px !important;
+  margin: 8px 0 !important;
+  color: var(--text-p2, rgba(0, 0, 0, 0.7)) !important;
+  background: linear-gradient(90deg, hsla(192, 98%, 55%, 0.06), transparent) !important;
+  border-radius: 0 4px 4px 0;
+}
+.widget-wrapper.markdown blockquote p {
+  margin: 6px 0 !important;
+  line-height: 1.7 !important;
+}
+[data-theme="dark"] .widget-wrapper.markdown blockquote {
+  color: rgba(255, 255, 255, 0.75) !important;
+  background: linear-gradient(90deg, hsla(192, 98%, 55%, 0.12), transparent) !important;
+}
