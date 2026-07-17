@@ -134,52 +134,63 @@ body .navbar-blur::after {
   cursor: pointer !important;
 }
 
-/* === welcome widget 便签外形 === */
-/* 把 stellar 默认卡片改成便利贴：浅黄渐变底 + 右下偏移纸张阴影 + 顶部胶带 + 小圆角 */
+/* === welcome widget 仿真便签 === */
+/* 米黄半透明底 + 多层背景做纸张纤维/暗斑褶皱 + 右下偏移阴影 + 微旋转 -2.5° + 顶部胶带 */
 .widget-wrapper.markdown {
-  background: linear-gradient(135deg, #fff9c4 0%, #ffe89a 100%) !important;
-  border: none !important;
+  background:
+    /* 暗斑：模拟纸张褶皱处的局部阴影 */
+    radial-gradient(ellipse 80px 30px at 30% 20%, rgba(120, 90, 40, 0.06), transparent),
+    radial-gradient(ellipse 60px 20px at 70% 60%, rgba(120, 90, 40, 0.08), transparent),
+    radial-gradient(ellipse 100px 40px at 50% 95%, rgba(120, 90, 40, 0.05), transparent),
+    /* 纤维纹理：细密横线，模拟纸张纤维 */
+    repeating-linear-gradient(0deg, transparent 0 4px, rgba(120, 90, 40, 0.022) 4px 5px),
+    /* 主底色：米白偏黄半透明渐变，和背景图融合 */
+    linear-gradient(135deg, rgba(255, 250, 230, 0.94) 0%, rgba(248, 238, 210, 0.92) 100%) !important;
+  background-color: rgba(255, 250, 230, 0.94) !important;
+  border: 1px solid rgba(180, 150, 90, 0.18) !important;
   border-radius: 2px !important;
   box-shadow:
     0 1px 0 rgba(0, 0, 0, 0.04),
-    2px 3px 6px rgba(0, 0, 0, 0.12),
-    4px 6px 12px rgba(0, 0, 0, 0.08) !important;
+    2px 3px 6px rgba(0, 0, 0, 0.14),
+    4px 6px 14px rgba(0, 0, 0, 0.10),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5) !important; /* 内白边，纸张高光 */
   position: relative !important;
   overflow: visible !important;
-  margin-top: 14px !important; /* 给顶部胶带留空间 */
+  margin: 18px 8px 20px 8px !important; /* 旋转后给周围留空间避免溢出遮挡 */
+  transform: rotate(-2.5deg) !important;
+  transform-origin: center center !important;
 }
-/* 顶部胶带装饰：半透明白色 + 微旋转 */
+/* 顶部胶带：稍长 + 微旋转 + 米色渐变 */
 .widget-wrapper.markdown::before {
   content: '';
   position: absolute;
-  top: -7px;
+  top: -8px;
   left: 50%;
-  transform: translateX(-50%) rotate(-2deg);
-  width: 72px;
-  height: 14px;
-  background: rgba(255, 255, 255, 0.55);
-  border-left: 1px dashed rgba(0, 0, 0, 0.08);
-  border-right: 1px dashed rgba(0, 0, 0, 0.08);
+  transform: translateX(-50%) rotate(-3deg);
+  width: 86px;
+  height: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(245, 240, 220, 0.4));
+  border-left: 1px dashed rgba(120, 90, 40, 0.12);
+  border-right: 1px dashed rgba(120, 90, 40, 0.12);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
   z-index: 2;
 }
-/* 标题"食用指南"：加粗 + 深色 */
+/* 标题"食用指南"：加粗 + 暖棕色 */
 .widget-wrapper.markdown .widget-header .name {
   font-weight: 600 !important;
-  color: rgba(0, 0, 0, 0.85) !important;
+  color: rgba(80, 60, 20, 0.9) !important;
   font-size: 14px !important;
 }
-/* 正文：颜色加深，字号 13px（侧边栏偏大） */
+/* 正文：暖深色 + 字号 13px */
 .widget-wrapper.markdown .widget-body {
   font-size: 13px !important;
   line-height: 1.75 !important;
-  color: rgba(0, 0, 0, 0.78) !important;
+  color: rgba(60, 45, 15, 0.85) !important;
 }
 .widget-wrapper.markdown .widget-body p {
   margin: 8px 0 !important;
   line-height: 1.75 !important;
 }
-/* 列表项紧凑 */
 .widget-wrapper.markdown .widget-body ul {
   margin: 6px 0 !important;
   padding-left: 20px !important;
@@ -188,25 +199,34 @@ body .navbar-blur::after {
   margin: 4px 0 !important;
   line-height: 1.7 !important;
 }
-/* 结尾加粗句：颜色更深，视觉强调 */
 .widget-wrapper.markdown .widget-body strong {
-  color: rgba(0, 0, 0, 0.92) !important;
+  color: rgba(50, 35, 10, 0.95) !important;
 }
-/* 暗色模式：便签改成深棕色版（像旧纸/烤黄） */
+/* 暗色模式：便签改成深棕色版（像烤黄的旧纸） */
 [data-theme="dark"] .widget-wrapper.markdown {
-  background: linear-gradient(135deg, #4a3f1f 0%, #3d3519 100%) !important;
+  background:
+    radial-gradient(ellipse 80px 30px at 30% 20%, rgba(0, 0, 0, 0.18), transparent),
+    radial-gradient(ellipse 60px 20px at 70% 60%, rgba(0, 0, 0, 0.22), transparent),
+    radial-gradient(ellipse 100px 40px at 50% 95%, rgba(0, 0, 0, 0.15), transparent),
+    repeating-linear-gradient(0deg, transparent 0 4px, rgba(0, 0, 0, 0.04) 4px 5px),
+    linear-gradient(135deg, rgba(75, 60, 30, 0.94) 0%, rgba(60, 48, 22, 0.92) 100%) !important;
+  background-color: rgba(75, 60, 30, 0.94) !important;
+  border: 1px solid rgba(200, 170, 100, 0.18) !important;
   box-shadow:
     0 1px 0 rgba(0, 0, 0, 0.3),
-    2px 3px 6px rgba(0, 0, 0, 0.4),
-    4px 6px 12px rgba(0, 0, 0, 0.3) !important;
+    2px 3px 6px rgba(0, 0, 0, 0.45),
+    4px 6px 14px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 235, 180, 0.1) !important;
 }
 [data-theme="dark"] .widget-wrapper.markdown::before {
-  background: rgba(255, 255, 255, 0.12);
-  border-left-color: rgba(255, 255, 255, 0.06);
-  border-right-color: rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(255, 235, 180, 0.15), rgba(200, 180, 140, 0.08));
+  border-left-color: rgba(255, 235, 180, 0.1);
+  border-right-color: rgba(255, 235, 180, 0.1);
 }
 [data-theme="dark"] .widget-wrapper.markdown .widget-header .name,
-[data-theme="dark"] .widget-wrapper.markdown .widget-body,
-[data-theme="dark"] .widget-wrapper.markdown strong {
+[data-theme="dark"] .widget-wrapper.markdown .widget-body {
   color: rgba(255, 245, 200, 0.92) !important;
+}
+[data-theme="dark"] .widget-wrapper.markdown .widget-body strong {
+  color: rgba(255, 250, 220, 0.98) !important;
 }
