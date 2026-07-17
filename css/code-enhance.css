@@ -134,29 +134,79 @@ body .navbar-blur::after {
   cursor: pointer !important;
 }
 
-/* === welcome widget markdown 美化：stellar 默认 14px/1.2 行距 + 无 blockquote 竖线，侧边栏偏挤 === */
-/* 1) 字号 14→13px（侧边栏小卡片更合适） 2) 行距 1.2→1.7 拉开 3) blockquote 加回左竖线 + 浅蓝青渐变背景 */
+/* === welcome widget 便签外形 === */
+/* 把 stellar 默认卡片改成便利贴：浅黄渐变底 + 右下偏移纸张阴影 + 顶部胶带 + 小圆角 */
+.widget-wrapper.markdown {
+  background: linear-gradient(135deg, #fff9c4 0%, #ffe89a 100%) !important;
+  border: none !important;
+  border-radius: 2px !important;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.04),
+    2px 3px 6px rgba(0, 0, 0, 0.12),
+    4px 6px 12px rgba(0, 0, 0, 0.08) !important;
+  position: relative !important;
+  overflow: visible !important;
+  margin-top: 14px !important; /* 给顶部胶带留空间 */
+}
+/* 顶部胶带装饰：半透明白色 + 微旋转 */
+.widget-wrapper.markdown::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 72px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.55);
+  border-left: 1px dashed rgba(0, 0, 0, 0.08);
+  border-right: 1px dashed rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  z-index: 2;
+}
+/* 标题"食用指南"：加粗 + 深色 */
+.widget-wrapper.markdown .widget-header .name {
+  font-weight: 600 !important;
+  color: rgba(0, 0, 0, 0.85) !important;
+  font-size: 14px !important;
+}
+/* 正文：颜色加深，字号 13px（侧边栏偏大） */
 .widget-wrapper.markdown .widget-body {
   font-size: 13px !important;
-  line-height: 1.7 !important;
+  line-height: 1.75 !important;
+  color: rgba(0, 0, 0, 0.78) !important;
 }
 .widget-wrapper.markdown .widget-body p {
-  margin: 6px 0 !important;
-  line-height: 1.7 !important;
-}
-.widget-wrapper.markdown blockquote {
-  border-left: 3px solid var(--c-theme, hsl(192 98% 55%)) !important;
-  padding: 4px 0 4px 12px !important;
   margin: 8px 0 !important;
-  color: var(--text-p2, rgba(0, 0, 0, 0.7)) !important;
-  background: linear-gradient(90deg, hsla(192, 98%, 55%, 0.06), transparent) !important;
-  border-radius: 0 4px 4px 0;
+  line-height: 1.75 !important;
 }
-.widget-wrapper.markdown blockquote p {
+/* 列表项紧凑 */
+.widget-wrapper.markdown .widget-body ul {
   margin: 6px 0 !important;
+  padding-left: 20px !important;
+}
+.widget-wrapper.markdown .widget-body li {
+  margin: 4px 0 !important;
   line-height: 1.7 !important;
 }
-[data-theme="dark"] .widget-wrapper.markdown blockquote {
-  color: rgba(255, 255, 255, 0.75) !important;
-  background: linear-gradient(90deg, hsla(192, 98%, 55%, 0.12), transparent) !important;
+/* 结尾加粗句：颜色更深，视觉强调 */
+.widget-wrapper.markdown .widget-body strong {
+  color: rgba(0, 0, 0, 0.92) !important;
+}
+/* 暗色模式：便签改成深棕色版（像旧纸/烤黄） */
+[data-theme="dark"] .widget-wrapper.markdown {
+  background: linear-gradient(135deg, #4a3f1f 0%, #3d3519 100%) !important;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.3),
+    2px 3px 6px rgba(0, 0, 0, 0.4),
+    4px 6px 12px rgba(0, 0, 0, 0.3) !important;
+}
+[data-theme="dark"] .widget-wrapper.markdown::before {
+  background: rgba(255, 255, 255, 0.12);
+  border-left-color: rgba(255, 255, 255, 0.06);
+  border-right-color: rgba(255, 255, 255, 0.06);
+}
+[data-theme="dark"] .widget-wrapper.markdown .widget-header .name,
+[data-theme="dark"] .widget-wrapper.markdown .widget-body,
+[data-theme="dark"] .widget-wrapper.markdown strong {
+  color: rgba(255, 245, 200, 0.92) !important;
 }
