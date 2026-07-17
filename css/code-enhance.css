@@ -1,6 +1,10 @@
 /* 代码块增强：3D 阴影 + copy 按钮图标化
    覆盖 stellar 的 highlight/copycode 默认样式，不改动主题源码 */
 
+/* 引入霞鹜文楷（LXGW WenKai）—— 开源钢笔楷书，仅给 welcome 便签用，
+   其 unicode-range 分包加载，只下载便签里实际用到的字符范围 */
+@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont/lxgwwenkai-regular.css');
+
 /* === 文章卡片 / 专栏卡片改成跟 Ech0 说说一样的渐变毛玻璃 === */
 /* stellar 默认 .post-card 是 rgba(255,255,255,0.5) 白底，在彩色背景图上太突兀。
    借用 ech0-talks.css 的紫粉渐变（indigo→purple→pink 135deg）+ blur 16px，视觉跟说说统一 */
@@ -175,17 +179,19 @@ body .navbar-blur::after {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
   z-index: 2;
 }
-/* 标题"食用指南"：加粗 + 暖棕色 */
+/* 标题"食用指南"：加粗 + 暖棕色 + 钢笔体 */
 .widget-wrapper.markdown .widget-header .name {
   font-weight: 600 !important;
   color: rgba(80, 60, 20, 0.9) !important;
-  font-size: 14px !important;
+  font-size: 15px !important;
+  font-family: 'LXGW WenKai', 'system-ui', sans-serif !important;
 }
-/* 正文：暖深色 + 字号 13px */
+/* 正文：暖深色 + 字号 13px + 钢笔体 */
 .widget-wrapper.markdown .widget-body {
-  font-size: 13px !important;
-  line-height: 1.75 !important;
+  font-size: 14px !important;
+  line-height: 1.85 !important;
   color: rgba(60, 45, 15, 0.85) !important;
+  font-family: 'LXGW WenKai', 'system-ui', sans-serif !important;
 }
 .widget-wrapper.markdown .widget-body p {
   margin: 8px 0 !important;
