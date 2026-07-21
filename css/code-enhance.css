@@ -1,10 +1,6 @@
 /* 代码块增强：3D 阴影 + copy 按钮图标化
    覆盖 stellar 的 highlight/copycode 默认样式，不改动主题源码 */
 
-/* 引入霞鹜文楷（LXGW WenKai）—— 开源钢笔楷书，仅给 welcome 便签用，
-   其 unicode-range 分包加载，只下载便签里实际用到的字符范围 */
-@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont/lxgwwenkai-regular.css');
-
 /* === 文章卡片 / 专栏卡片改成跟 Ech0 说说一样的渐变毛玻璃 === */
 /* stellar 默认 .post-card 是 rgba(255,255,255,0.5) 白底，在彩色背景图上太突兀。
    借用 ech0-talks.css 的紫粉渐变（indigo→purple→pink 135deg）+ blur 16px，视觉跟说说统一 */
@@ -138,64 +134,41 @@ body .navbar-blur::after {
   cursor: pointer !important;
 }
 
-/* === welcome widget 仿真便签 === */
-/* 米黄半透明底 + 多层背景做纸张纤维/暗斑褶皱 + 右下偏移阴影 + 微旋转 -2.5° + 顶部胶带 */
+/* === welcome widget：透明卡片，与侧边栏整体融合 ===
+   之前做的"仿真便签"（米黄底+旋转+胶带+钢笔体）在冷色调主题里格格不入，
+   改回透明卡片，让 leftbar 背景图透出来，跟 recent widget 风格一致。
+   文字色用主题变量 var(--text-p1/p3)，暗色模式自动跟随，无需额外覆盖 */
 .widget-wrapper.markdown {
-  background:
-    /* 暗斑：模拟纸张褶皱处的局部阴影 */
-    radial-gradient(ellipse 80px 30px at 30% 20%, rgba(120, 90, 40, 0.06), transparent),
-    radial-gradient(ellipse 60px 20px at 70% 60%, rgba(120, 90, 40, 0.08), transparent),
-    radial-gradient(ellipse 100px 40px at 50% 95%, rgba(120, 90, 40, 0.05), transparent),
-    /* 纤维纹理：细密横线，模拟纸张纤维 */
-    repeating-linear-gradient(0deg, transparent 0 4px, rgba(120, 90, 40, 0.022) 4px 5px),
-    /* 主底色：米白偏黄半透明渐变，和背景图融合 */
-    linear-gradient(135deg, rgba(255, 250, 230, 0.94) 0%, rgba(248, 238, 210, 0.92) 100%) !important;
-  background-color: rgba(255, 250, 230, 0.94) !important;
-  border: 1px solid rgba(180, 150, 90, 0.18) !important;
-  border-radius: 2px !important;
-  box-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.04),
-    2px 3px 6px rgba(0, 0, 0, 0.14),
-    4px 6px 14px rgba(0, 0, 0, 0.10),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5) !important; /* 内白边，纸张高光 */
-  position: relative !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  margin: 18px 8px 20px 8px !important;
+  padding: 0 0 32px !important;
   overflow: visible !important;
-  margin: 18px 8px 20px 8px !important; /* 旋转后给周围留空间避免溢出遮挡 */
-  transform: rotate(-2.5deg) !important;
-  transform-origin: center center !important;
 }
-/* 顶部胶带：稍长 + 微旋转 + 米色渐变 */
 .widget-wrapper.markdown::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-3deg);
-  width: 86px;
-  height: 16px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(245, 240, 220, 0.4));
-  border-left: 1px dashed rgba(120, 90, 40, 0.12);
-  border-right: 1px dashed rgba(120, 90, 40, 0.12);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-  z-index: 2;
+  content: none !important; /* 去掉顶部胶带 */
 }
-/* 标题"食用指南"：加粗 + 暖棕色 + 钢笔体 */
 .widget-wrapper.markdown .widget-header .name {
   font-weight: 600 !important;
-  color: rgba(80, 60, 20, 0.9) !important;
+  color: var(--text-p3, inherit) !important;
   font-size: 15px !important;
-  font-family: 'LXGW WenKai', 'system-ui', sans-serif !important;
+  font-family: inherit !important;
 }
-/* 正文：暖深色 + 字号 13px + 钢笔体 */
 .widget-wrapper.markdown .widget-body {
+  background: none !important;
   font-size: 14px !important;
-  line-height: 1.85 !important;
-  color: rgba(60, 45, 15, 0.85) !important;
-  font-family: 'LXGW WenKai', 'system-ui', sans-serif !important;
+  line-height: 1.7 !important;
+  color: var(--text-p1, inherit) !important;
+  font-family: inherit !important;
+  padding: 4px 16px !important;
+  border-radius: 0 !important;
 }
 .widget-wrapper.markdown .widget-body p {
   margin: 8px 0 !important;
-  line-height: 1.75 !important;
+  line-height: 1.7 !important;
 }
 .widget-wrapper.markdown .widget-body ul {
   margin: 6px 0 !important;
@@ -206,36 +179,9 @@ body .navbar-blur::after {
   line-height: 1.7 !important;
 }
 .widget-wrapper.markdown .widget-body strong {
-  color: rgba(50, 35, 10, 0.95) !important;
+  color: var(--text-p1, inherit) !important;
 }
-/* 暗色模式：便签改成深棕色版（像烤黄的旧纸） */
-[data-theme="dark"] .widget-wrapper.markdown {
-  background:
-    radial-gradient(ellipse 80px 30px at 30% 20%, rgba(0, 0, 0, 0.18), transparent),
-    radial-gradient(ellipse 60px 20px at 70% 60%, rgba(0, 0, 0, 0.22), transparent),
-    radial-gradient(ellipse 100px 40px at 50% 95%, rgba(0, 0, 0, 0.15), transparent),
-    repeating-linear-gradient(0deg, transparent 0 4px, rgba(0, 0, 0, 0.04) 4px 5px),
-    linear-gradient(135deg, rgba(75, 60, 30, 0.94) 0%, rgba(60, 48, 22, 0.92) 100%) !important;
-  background-color: rgba(75, 60, 30, 0.94) !important;
-  border: 1px solid rgba(200, 170, 100, 0.18) !important;
-  box-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.3),
-    2px 3px 6px rgba(0, 0, 0, 0.45),
-    4px 6px 14px rgba(0, 0, 0, 0.35),
-    inset 0 0 0 1px rgba(255, 235, 180, 0.1) !important;
-}
-[data-theme="dark"] .widget-wrapper.markdown::before {
-  background: linear-gradient(180deg, rgba(255, 235, 180, 0.15), rgba(200, 180, 140, 0.08));
-  border-left-color: rgba(255, 235, 180, 0.1);
-  border-right-color: rgba(255, 235, 180, 0.1);
-}
-[data-theme="dark"] .widget-wrapper.markdown .widget-header .name,
-[data-theme="dark"] .widget-wrapper.markdown .widget-body {
-  color: rgba(255, 245, 200, 0.92) !important;
-}
-[data-theme="dark"] .widget-wrapper.markdown .widget-body strong {
-  color: rgba(255, 250, 220, 0.98) !important;
-}
+
 
 /* === footer 排版：每行图标+文字垂直居中对齐，备案号成对横排 === */
 /* stellar footer.content 渲染后包在 .footer-content 里，这里定制几行信息视觉 */
