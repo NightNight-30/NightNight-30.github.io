@@ -346,14 +346,6 @@ body .navbar-blur::after {
   padding: 0 !important;
 }
 
-/* 右栏 .widgets 整体下移 242px，与左栏 widget 水平对齐
-   左栏 leftbar-container 上方有 logo + nav-area + search（约 224+18=242px），
-   右栏没有这些，所以右栏 .widgets 直接从顶部开始 → 比左栏高 242px
-   这里用 margin-top 补齐，让两栏的 welcome / recent_talks 与左栏 recent 对齐 */
-.l_right .widgets {
-  margin-top: 242px;
-}
-
 /* 暗色模式：同样去掉便签暗色版 */
 [data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-talks),
 [data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-talks) .widget-header .name,
