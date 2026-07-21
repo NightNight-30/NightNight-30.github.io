@@ -347,7 +347,7 @@ body .navbar-blur::after {
 /* 容器加了 tag-plugin timeline 类后，stellar 自带的左侧竖线 + 圆点 + hover 变色生效。
    这里做几处侧边栏专属调整：去掉 body 卡片框、缩小间距、保持 hover 只变圆点不变文字色 */
 .sidebar-talks-container .timenode + .timenode {
-  margin-top: 0.5rem; /* stellar 默认 1rem 太疏 */
+  margin-top: 0.5rem !important; /* stellar 默认 1rem 太疏，且 specificity 更高，需 !important */
 }
 .sidebar-talks-container .body {
   background: none !important;
