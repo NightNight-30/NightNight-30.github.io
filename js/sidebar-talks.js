@@ -42,17 +42,24 @@
   }
 
   function renderItem(item) {
-    const content = truncate(item.content, 60);
+    const content = truncate(item.content, 80);
     const time = formatTime(item.created_at);
     const id = escapeHtml(item.id);
+    // 复用 stellar 的 .tag-plugin.timeline .timenode 结构，
+    // 让 stellar 自带的 CSS（左侧竖线 + header 圆点 + hover 变色）直接生效
     return `
-      <a class="sidebar-talk" href="/shuoshuo/#talk-${id}">
-        <div class="sidebar-talk-meta">
-          <img class="sidebar-talk-avatar" src="${AVATAR}" alt="${escapeHtml(NICKNAME)}" onerror="this.style.display='none'">
-          <span class="sidebar-talk-time">${time}</span>
+      <div class="timenode">
+        <div class="header">
+          <a class="user-info">
+            <img src="${AVATAR}" alt="${escapeHtml(NICKNAME)}" onerror="this.style.display='none'">
+            <span>${escapeHtml(NICKNAME)}</span>
+          </a>
+          <span>${time}</span>
         </div>
-        <div class="sidebar-talk-content">${escapeHtml(content)}</div>
-      </a>
+        <a class="body" href="/shuoshuo/#talk-${id}">
+          <p>${escapeHtml(content)}</p>
+        </a>
+      </div>
     `;
   }
 
@@ -74,7 +81,8 @@
         el.innerHTML = '还没有说说，<a href="/shuoshuo/">去发一条</a>';
         return;
       }
-      el.className = 'sidebar-talks-list';
+      // 用 stellar 的 .tag-plugin.timeline 类，让 timenode 的竖线+圆点样式生效
+      el.className = 'tag-plugin timeline sidebar-talks-container';
       el.innerHTML = items.map(renderItem).join('');
     } catch (err) {
       el.className = 'sidebar-talks-error';

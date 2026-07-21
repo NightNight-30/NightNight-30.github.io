@@ -343,55 +343,23 @@ body .navbar-blur::after {
   color: inherit !important;
 }
 
-/* === 近期说说卡片列表 === */
-.sidebar-talks-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.sidebar-talk {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(127, 127, 127, 0.06);
-  border: 1px solid rgba(127, 127, 127, 0.10);
-  transition: background 0.2s, border-color 0.2s, transform 0.2s;
-}
-.sidebar-talk:hover {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.10), rgba(168, 85, 247, 0.08), rgba(236, 72, 153, 0.10));
-  border-color: rgba(99, 102, 241, 0.24);
-  transform: translateY(-1px);
-}
-.sidebar-talk-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-.sidebar-talk-avatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-.sidebar-talk-time {
-  font-size: 12px;
-  color: var(--text-a60, #888);
-  font-variant-numeric: tabular-nums;
-}
-.sidebar-talk-content {
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--text-a85, #555);
-  word-break: break-word;
-  overflow-wrap: anywhere;
+/* === 近期说说：复用 stellar 的 .tag-plugin.timeline .timenode 样式 === */
+/* 容器加了 tag-plugin timeline 类后，stellar 自带的左侧竖线 + 圆点 + hover 变色生效。
+   这里只做几处侧边栏专属的小调整：限制 body 高度防溢出、点 user-info 可跳主页 */
+.sidebar-talks-container .body {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+}
+.sidebar-talks-container .body p {
+  margin: 0;
+}
+.sidebar-talks-container .timenode .header .user-info {
+  text-decoration: none;
+  cursor: pointer;
 }
 .sidebar-talks-loading, .sidebar-talks-empty, .sidebar-talks-error {
   font-size: 13px;
