@@ -294,6 +294,208 @@ body .navbar-blur::after {
   opacity: 0.92;
 }
 
+/* === footer sitemap 排版增强：每条链接前面加小图标，让两列不再空旷 ===
+   原本只有纯文字链接，看着空；给每条按 href 配一个 iconify 小图标，
+   链接改成 flex 行布局，hover 加底色，整组卡片化，视觉密度上去 */
+.sitemap {
+  margin: 12px 0 16px !important;
+}
+.sitemap-group {
+  break-inside: avoid;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--bg-a60, rgba(0,0,0,0.03));
+  border: 1px solid var(--bg-a60, rgba(0,0,0,0.05));
+}
+.sitemap-group > .fs15 {
+  font-size: 13px !important;
+  font-weight: 700;
+  color: var(--text-p3, #888);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sitemap-group > .fs15::before {
+  content: '';
+  width: 4px;
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, hsl(192 98% 55%), hsl(165 95% 56%));
+}
+.sitemap-group a {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  color: var(--text-p1, inherit) !important;
+  text-decoration: none !important;
+  font-size: 14px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.sitemap-group a::before {
+  content: '';
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.65;
+  /* 默认图标（未匹配到 href 时）*/
+  background-image: url('https://api.iconify.design/solar:arrow-right-up-linear.svg?color=%23888');
+}
+.sitemap-group a:hover {
+  background: var(--bg-a100, rgba(0,0,0,0.06));
+  color: var(--text-link, hsl(207 90% 54%)) !important;
+}
+.sitemap-group a:hover::before {
+  opacity: 1;
+}
+/* 按路径匹配专属图标，让每条链接视觉有差异 */
+.sitemap-group a[href="/"]::before             { background-image: url('https://api.iconify.design/solar:document-add-outline.svg?color=%231e90ff'); }
+.sitemap-group a[href="/tags/"]::before         { background-image: url('https://api.iconify.design/solar:hashtag-square-outline.svg?color=%23e91e63'); }
+.sitemap-group a[href="/archives/"]::before     { background-image: url('https://api.iconify.design/solar:archive-minimalistic-outline.svg?color=%239c27b0'); }
+.sitemap-group a[href="/life/"]::before        { background-image: url('https://api.iconify.design/solar:camera-outline.svg?color=%23ffc107'); }
+.sitemap-group a[href="/friends/"]::before     { background-image: url('https://api.iconify.design/solar:users-group-rounded-outline.svg?color=%236366f1'); }
+.sitemap-group a[href="/shuoshuo/"]::before     { background-image: url('https://api.iconify.design/solar:balloon-outline.svg?color=%2300bfa5'); }
+.sitemap-group a[href="/about/"]::before       { background-image: url('https://api.iconify.design/solar:user-circle-outline.svg?color=%236d28d9'); }
+[data-theme="dark"] .sitemap-group {
+  background: var(--bg-a60, rgba(255,255,255,0.04));
+  border-color: var(--bg-a60, rgba(255,255,255,0.06));
+}
+[data-theme="dark"] .sitemap-group a::before {
+  opacity: 0.8;
+}
+[data-theme="dark"] .sitemap-group a:hover::before {
+  opacity: 1;
+}
+
+/* === 主页右栏：日历 widget ===
+   日历容器沿用 markdown widget 的透明卡片风格（与近期说说一致），
+   只在内部排版网格 + 今天高亮 + 年剩余倒计时 */
+.sidebar-calendar-container,
+.sidebar-calendar-loading,
+.sidebar-calendar-empty,
+.sidebar-calendar-error {
+  padding: 4px 4px 0 !important;
+}
+.cal-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cal-title {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-p3, #555);
+  padding: 4px 0 2px;
+  letter-spacing: 0.5px;
+}
+.cal-cells {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+.cal-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  font-size: 12px;
+  border-radius: 5px;
+  color: var(--text-p1, #444);
+  font-variant-numeric: tabular-nums;
+}
+.cal-head {
+  color: var(--text-p3, #888);
+  font-weight: 600;
+  font-size: 11px;
+  opacity: 0.7;
+}
+.cal-empty {
+  visibility: hidden;
+}
+.cal-day {
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.cal-day:hover {
+  background: var(--bg-a100, rgba(0,0,0,0.05));
+  cursor: default;
+}
+.cal-today {
+  background: linear-gradient(135deg, hsl(192 98% 55%), hsl(207 90% 54%));
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(33, 150, 243, 0.35);
+}
+.cal-today:hover {
+  background: linear-gradient(135deg, hsl(192 98% 55%), hsl(207 90% 54%)) !important;
+}
+/* 年剩余倒计时块 */
+.cal-countdown {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--bg-a60, rgba(0,0,0,0.03));
+  border: 1px solid var(--bg-a60, rgba(0,0,0,0.05));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cal-countdown-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-p3, #777);
+}
+.cal-countdown-ico {
+  width: 14px;
+  height: 14px;
+  opacity: 0.85;
+}
+.cal-countdown-numbers {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+}
+.cal-num {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.cal-num-val {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: hsl(192 98% 55%);
+  line-height: 1;
+}
+.cal-num-unit {
+  font-size: 11px;
+  color: var(--text-p3, #888);
+}
+.cal-sep {
+  color: var(--text-p3, #aaa);
+  font-size: 14px;
+  opacity: 0.6;
+}
+[data-theme="dark"] .cal-countdown {
+  background: var(--bg-a60, rgba(255,255,255,0.04));
+  border-color: var(--bg-a60, rgba(255,255,255,0.06));
+}
+[data-theme="dark"] .cal-num-val {
+  color: hsl(192 98% 65%);
+}
+
 /* === 近期说说 widget（主页右栏）：去掉 welcome 便签样式 === */
 /* .widget-wrapper.markdown 的便签样式（米黄底/旋转/胶带）只给 welcome 用，
    含 #sidebar-talks 的 markdown widget 改回普通卡片样式 */
@@ -341,6 +543,42 @@ body .navbar-blur::after {
 [data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-talks),
 [data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-talks) .widget-header .name,
 [data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-talks) .widget-body {
+  background: none !important;
+  color: inherit !important;
+}
+
+/* === 日历 widget（主页右栏）：去掉 welcome 便签样式，跟近期说说一样的透明卡片 === */
+.widget-wrapper.markdown:has(#sidebar-calendar) {
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 0 16px !important;
+  transform: none !important;
+  overflow: visible !important;
+  font-family: inherit !important;
+}
+.widget-wrapper.markdown:has(#sidebar-calendar)::before {
+  display: none !important;
+}
+.widget-wrapper.markdown:has(#sidebar-calendar) .widget-header .name {
+  font-weight: 600 !important;
+  color: var(--text-p3, inherit) !important;
+  font-size: 15px !important;
+  font-family: inherit !important;
+}
+.widget-wrapper.markdown:has(#sidebar-calendar) .widget-body {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: inherit !important;
+  font-family: inherit !important;
+  padding: 0 !important;
+}
+[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar),
+[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar) .widget-header .name,
+[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar) .widget-body {
   background: none !important;
   color: inherit !important;
 }
