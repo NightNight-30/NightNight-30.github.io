@@ -236,3 +236,65 @@ body .navbar-blur::after {
 [data-theme="dark"] .widget-wrapper.markdown .widget-body strong {
   color: rgba(255, 250, 220, 0.98) !important;
 }
+
+/* === footer 排版：每行图标+文字垂直居中对齐，备案号成对横排 === */
+/* stellar footer.content 渲染后包在 .footer-content 里，这里定制几行信息视觉 */
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0;
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0.92;
+}
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.footer-ico {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  opacity: 0.85;
+}
+.footer-ico.beian-police {
+  width: 16px;
+  height: 16px;
+}
+.footer-beian {
+  gap: 4px;
+}
+.footer-beian .beian-sep {
+  opacity: 0.4;
+  margin: 0 4px;
+}
+.footer-info a {
+  text-decoration: none;
+  border-bottom: 1px dashed currentColor;
+  opacity: 0.88;
+  transition: opacity 0.2s;
+}
+.footer-info a:hover {
+  opacity: 1;
+}
+#uptime-counter {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+  color: var(--text-a85, #888);
+  margin-left: 2px;
+}
+/* 暗色模式下 footer 链接和图标稍微提亮，配 stellar footer 的深色背景 */
+[data-theme="dark"] .footer-info {
+  opacity: 0.88;
+}
+[data-theme="dark"] .footer-ico {
+  opacity: 0.75;
+}
+[data-theme="dark"] .footer-info a {
+  opacity: 0.92;
+}
