@@ -345,21 +345,42 @@ body .navbar-blur::after {
 
 /* === 近期说说：复用 stellar 的 .tag-plugin.timeline .timenode 样式 === */
 /* 容器加了 tag-plugin timeline 类后，stellar 自带的左侧竖线 + 圆点 + hover 变色生效。
-   这里只做几处侧边栏专属的小调整：限制 body 高度防溢出、点 user-info 可跳主页 */
+   这里做几处侧边栏专属调整：去掉 body 卡片框、缩小间距、保持 hover 只变圆点不变文字色 */
+.sidebar-talks-container .timenode + .timenode {
+  margin-top: 0.5rem; /* stellar 默认 1rem 太疏 */
+}
 .sidebar-talks-container .body {
+  background: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 0 0 4px !important; /* 左侧留 4px 缩进，避免压到竖线 */
+  margin-top: 2px !important; /* stellar 默认 4px，缩小让 header 和 body 贴近 */
+  color: var(--text-a85, #555) !important; /* 跟之前 sidebar-talk-content 颜色一致 */
+  font-size: 13px;
+  line-height: 1.55;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-decoration: none;
   cursor: pointer;
+  transition: none; /* body 不做任何过渡，hover 只让圆点变 */
 }
 .sidebar-talks-container .body p {
   margin: 0;
+  color: inherit;
 }
-.sidebar-talks-container .timenode .header .user-info {
-  text-decoration: none;
-  cursor: pointer;
+.sidebar-talks-container .body:hover,
+.sidebar-talks-container .timenode:hover .body {
+  color: var(--text-a85, #555) !important; /* hover 时文字色保持不变 */
+  background: none !important;
+}
+/* body 文字色继承，链接也保持普通文字色（ stellar 默认 link 色） */
+.sidebar-talks-container .body,
+.sidebar-talks-container .body p,
+.sidebar-talks-container .body:hover,
+.sidebar-talks-container .body:hover p {
+  color: var(--text-a85, #555) !important;
 }
 .sidebar-talks-loading, .sidebar-talks-empty, .sidebar-talks-error {
   font-size: 13px;
