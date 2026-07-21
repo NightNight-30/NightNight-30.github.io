@@ -95,4 +95,22 @@
   } else {
     load();
   }
+
+  // 把「近期说说」widget-header 做成可点击按钮：单击跳转到 /shuoshuo/
+  // CSS 已加上 cursor:pointer + hover 底色，这里只挂导航
+  function bindHeaderClick() {
+    const header = document.querySelector('.widget-wrapper.markdown:has(#sidebar-talks) .widget-header');
+    if (!header || header.dataset.bound === '1') return;
+    header.dataset.bound = '1';
+    header.addEventListener('click', (e) => {
+      // 避免点 header 内的子链接（如未来的 a 标签）也触发跳转
+      if (e.target.closest('a[href]')) return;
+      location.href = '/shuoshuo/';
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindHeaderClick);
+  } else {
+    bindHeaderClick();
+  }
 })();

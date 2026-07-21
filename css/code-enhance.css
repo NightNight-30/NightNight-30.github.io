@@ -313,7 +313,7 @@ body .navbar-blur::after {
   border-radius: 0 !important;
   box-shadow: none !important;
   margin: 0 !important;
-  padding: 0 !important;
+  padding: 0 0 32px !important; /* 底部 32px，对齐左侧 widget 间距 */
   transform: none !important;
   overflow: visible !important;
   font-family: inherit !important;
@@ -326,6 +326,17 @@ body .navbar-blur::after {
   color: var(--text-p3, inherit) !important;
   font-size: 15px !important;
   font-family: inherit !important;
+}
+/* header 做成按钮样式（仿 .widget-wrapper.post-list .item 的 6px 16px + 8px 圆角 + hover 变底色）
+   默认无底色（未选中），hover 时显示 bg-a100 底色，点击跳 /shuoshuo/ */
+.widget-wrapper.markdown:has(#sidebar-talks) .widget-header {
+  padding: 6px 16px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: background 0.2s ease !important;
+}
+.widget-wrapper.markdown:has(#sidebar-talks) .widget-header:hover {
+  background: var(--bg-a100, rgba(0,0,0,0.04)) !important;
 }
 .widget-wrapper.markdown:has(#sidebar-talks) .widget-body {
   font-size: 14px !important;
@@ -353,7 +364,7 @@ body .navbar-blur::after {
   background: none !important;
   box-shadow: none !important;
   border-radius: 0 !important;
-  padding: 0 0 0 4px !important; /* 左侧留 4px 缩进，避免压到竖线 */
+  padding: 0 16px 0 4px !important; /* 左 4px 避让竖线，右 16px 对齐左侧 widget 文字到边框间距 */
   margin-top: 2px !important; /* stellar 默认 4px，缩小让 header 和 body 贴近 */
   color: var(--text-a85, #555) !important; /* 跟之前 sidebar-talk-content 颜色一致 */
   font-size: 13px;
