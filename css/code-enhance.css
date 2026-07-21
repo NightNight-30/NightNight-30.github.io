@@ -302,3 +302,103 @@ body .navbar-blur::after {
 [data-theme="dark"] .footer-info a {
   opacity: 0.92;
 }
+
+/* === 近期说说 widget（主页右栏）：去掉 welcome 便签样式 === */
+/* .widget-wrapper.markdown 的便签样式（米黄底/旋转/胶带）只给 welcome 用，
+   含 #sidebar-talks 的 markdown widget 改回普通卡片样式 */
+.widget-wrapper.markdown:has(#sidebar-talks) {
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  overflow: visible !important;
+  font-family: inherit !important;
+}
+.widget-wrapper.markdown:has(#sidebar-talks)::before {
+  display: none !important;
+}
+.widget-wrapper.markdown:has(#sidebar-talks) .widget-header .name {
+  font-weight: 600 !important;
+  color: var(--text-p3, inherit) !important;
+  font-size: 15px !important;
+  font-family: inherit !important;
+}
+.widget-wrapper.markdown:has(#sidebar-talks) .widget-body {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: inherit !important;
+  font-family: inherit !important;
+  padding: 0 !important;
+}
+
+/* 暗色模式：同样去掉便签暗色版 */
+[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-talks),
+[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-talks) .widget-header .name,
+[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-talks) .widget-body {
+  background: none !important;
+  color: inherit !important;
+}
+
+/* === 近期说说卡片列表 === */
+.sidebar-talks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sidebar-talk {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(127, 127, 127, 0.06);
+  border: 1px solid rgba(127, 127, 127, 0.10);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.sidebar-talk:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.10), rgba(168, 85, 247, 0.08), rgba(236, 72, 153, 0.10));
+  border-color: rgba(99, 102, 241, 0.24);
+  transform: translateY(-1px);
+}
+.sidebar-talk-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.sidebar-talk-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.sidebar-talk-time {
+  font-size: 12px;
+  color: var(--text-a60, #888);
+  font-variant-numeric: tabular-nums;
+}
+.sidebar-talk-content {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-a85, #555);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.sidebar-talks-loading, .sidebar-talks-empty, .sidebar-talks-error {
+  font-size: 13px;
+  color: var(--text-a60, #888);
+  padding: 8px 4px;
+  line-height: 1.6;
+}
+.sidebar-talks-empty a, .sidebar-talks-error a {
+  color: var(--text-p3, inherit);
+}
