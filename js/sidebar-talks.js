@@ -15,9 +15,10 @@
     })[c]);
   }
 
-  function formatTime(iso) {
-    if (!iso) return '';
-    const d = new Date(iso);
+  function formatTime(ts) {
+    if (!ts) return '';
+    // ech0 API 返回 Unix 秒，new Date(number) 按 ms 解析所以要 *1000
+    const d = new Date(typeof ts === 'number' ? ts * 1000 : ts);
     if (isNaN(d.getTime())) return '';
     const now = new Date();
     const diff = (now - d) / 1000;
