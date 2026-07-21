@@ -1,6 +1,10 @@
 /* 代码块增强：3D 阴影 + copy 按钮图标化
    覆盖 stellar 的 highlight/copycode 默认样式，不改动主题源码 */
 
+/* 引入霞鹜文楷（LXGW WenKai）—— 开源钢笔楷书，仅给 welcome 便签用，
+   其 unicode-range 分包加载，只下载便签里实际用到的字符范围 */
+@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont/lxgwwenkai-regular.css');
+
 /* === 文章卡片 / 专栏卡片改成跟 Ech0 说说一样的渐变毛玻璃 === */
 /* stellar 默认 .post-card 是 rgba(255,255,255,0.5) 白底，在彩色背景图上太突兀。
    借用 ech0-talks.css 的紫粉渐变（indigo→purple→pink 135deg）+ blur 16px，视觉跟说说统一 */
@@ -134,41 +138,60 @@ body .navbar-blur::after {
   cursor: pointer !important;
 }
 
-/* === welcome widget：透明卡片，与侧边栏整体融合 ===
-   之前做的"仿真便签"（米黄底+旋转+胶带+钢笔体）在冷色调主题里格格不入，
-   改回透明卡片，让 leftbar 背景图透出来，跟 recent widget 风格一致。
-   文字色用主题变量 var(--text-p1/p3)，暗色模式自动跟随，无需额外覆盖 */
+/* === welcome widget：仿真便签（透明底）===
+   保留便签形式（细边框+纸张阴影+轻微旋转+顶部胶带+钢笔体+棕墨色），
+   但把米黄纸底改成透明，让 leftbar 背景图透出来，融入整体冷色调。
+   暗色模式下只调整文字色为暖米黄，背景始终透明 */
 .widget-wrapper.markdown {
   background: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  transform: none !important;
+  background-color: transparent !important;
+  border: 1px solid rgba(180, 150, 90, 0.22) !important;
+  border-radius: 2px !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04), 2px 3px 6px rgba(0,0,0,0.14), 4px 6px 14px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(255,255,255,0.5) !important;
+  transform: rotate(-2.5deg) !important;
   margin: 18px 8px 20px 8px !important;
-  padding: 0 0 32px !important;
+  padding: 0 0 24px !important;
   overflow: visible !important;
+  position: relative !important;
 }
+/* 顶部胶带：半透明白色 + 虚线边模拟胶带齿纹，倾斜挂在便签上沿 */
 .widget-wrapper.markdown::before {
-  content: none !important; /* 去掉顶部胶带 */
+  content: '' !important;
+  position: absolute !important;
+  top: -8px !important;
+  left: 50% !important;
+  transform: translateX(-50%) rotate(-3deg) !important;
+  width: 86px !important;
+  height: 16px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(245,240,220,0.4)) !important;
+  border-left: 1px dashed rgba(180, 150, 90, 0.35) !important;
+  border-right: 1px dashed rgba(180, 150, 90, 0.35) !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+.widget-wrapper.markdown > * {
+  position: relative;
+  z-index: 0;
 }
 .widget-wrapper.markdown .widget-header .name {
   font-weight: 600 !important;
-  color: var(--text-p3, inherit) !important;
+  color: rgba(80, 60, 20, 0.9) !important;
   font-size: 15px !important;
-  font-family: inherit !important;
+  font-family: 'LXGW WenKai', 'system-ui', sans-serif !important;
 }
 .widget-wrapper.markdown .widget-body {
   background: none !important;
   font-size: 14px !important;
-  line-height: 1.7 !important;
-  color: var(--text-p1, inherit) !important;
-  font-family: inherit !important;
+  line-height: 1.75 !important;
+  color: rgba(60, 45, 15, 0.85) !important;
+  font-family: 'LXGW WenKai', 'system-ui', sans-serif !important;
   padding: 4px 16px !important;
   border-radius: 0 !important;
 }
 .widget-wrapper.markdown .widget-body p {
   margin: 8px 0 !important;
-  line-height: 1.7 !important;
+  line-height: 1.75 !important;
 }
 .widget-wrapper.markdown .widget-body ul {
   margin: 6px 0 !important;
@@ -176,10 +199,32 @@ body .navbar-blur::after {
 }
 .widget-wrapper.markdown .widget-body li {
   margin: 4px 0 !important;
-  line-height: 1.7 !important;
+  line-height: 1.75 !important;
 }
 .widget-wrapper.markdown .widget-body strong {
-  color: var(--text-p1, inherit) !important;
+  color: rgba(50, 35, 10, 0.95) !important;
+  font-weight: 700 !important;
+}
+/* 暗色模式：背景依然透明，文字色从棕墨→米黄，边框/胶带色微调以贴合深色背景 */
+[data-theme="dark"] .widget-wrapper.markdown {
+  background: none !important;
+  background-color: transparent !important;
+  border-color: rgba(200, 170, 100, 0.22) !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.20), 2px 3px 6px rgba(0,0,0,0.30), 4px 6px 14px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.08) !important;
+}
+[data-theme="dark"] .widget-wrapper.markdown::before {
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(245,240,220,0.06)) !important;
+  border-left-color: rgba(200, 170, 100, 0.35) !important;
+  border-right-color: rgba(200, 170, 100, 0.35) !important;
+}
+[data-theme="dark"] .widget-wrapper.markdown .widget-header .name {
+  color: rgba(255, 245, 200, 0.92) !important;
+}
+[data-theme="dark"] .widget-wrapper.markdown .widget-body {
+  color: rgba(245, 235, 200, 0.88) !important;
+}
+[data-theme="dark"] .widget-wrapper.markdown .widget-body strong {
+  color: rgba(255, 250, 220, 0.98) !important;
 }
 
 
