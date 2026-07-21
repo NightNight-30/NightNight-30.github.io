@@ -228,6 +228,46 @@ body .navbar-blur::after {
 }
 
 
+/* === 左侧栏博客名后：白天/夜间模式切换按钮（与头像对称）===
+   头像在 logo-wrap 左侧 48×48 圆 + margin-right:1rem；
+   这里把 toggle 放 logo-wrap 右侧，48×48 圆 + margin-left:1rem，
+   尺寸/形状/留白镜像头像，视觉上左右平衡 */
+.l_left .header .logo-wrap .theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 48px;
+  margin-left: 1rem;
+  background: var(--bg-a60, rgba(0,0,0,0.04));
+  border: 1px solid var(--bg-a100, rgba(0,0,0,0.06));
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease, transform 0.3s ease, box-shadow 0.2s ease;
+}
+.l_left .header .logo-wrap .theme-toggle:hover {
+  background: var(--bg-a100, rgba(0,0,0,0.08));
+  transform: rotate(20deg);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.l_left .header .logo-wrap .theme-toggle:active {
+  transform: rotate(20deg) scale(0.95);
+}
+.l_left .header .logo-wrap .theme-toggle img {
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+[data-theme="dark"] .l_left .header .logo-wrap .theme-toggle {
+  background: var(--bg-a60, rgba(255,255,255,0.05));
+  border-color: var(--bg-a100, rgba(255,255,255,0.08));
+}
+[data-theme="dark"] .l_left .header .logo-wrap .theme-toggle:hover {
+  background: var(--bg-a100, rgba(255,255,255,0.10));
+}
+
 /* === footer 排版：每行图标+文字垂直居中对齐，备案号成对横排 === */
 /* stellar footer.content 渲染后包在 .footer-content 里，这里定制几行信息视觉 */
 .footer-info {
