@@ -266,6 +266,10 @@ body .navbar-blur::after {
   width: 16px;
   height: 16px;
 }
+.footer-ico.beian-moe {
+  width: 18px;
+  height: 18px;
+}
 .footer-beian {
   gap: 4px;
 }
