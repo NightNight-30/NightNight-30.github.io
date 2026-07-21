@@ -100,12 +100,11 @@
     if (d.months > 0) parts.push(`<span class="cal-num-val">${d.months}</span><span class="cal-num-unit">个月</span>`);
     if (d.weeks > 0) parts.push(`<span class="cal-num-val">${d.weeks}</span><span class="cal-num-unit">周</span>`);
     parts.push(`<span class="cal-num-val">${d.days}</span><span class="cal-num-unit">天</span>`);
-    const mdStr = `${h.dateObj.getMonth() + 1}月${h.dateObj.getDate()}日`;
     return `
       <div class="cal-countdown">
         <div class="cal-countdown-label">
           <img class="cal-countdown-ico" src="${iconUrl}" alt="${h.name}"/>
-          <span>距${h.name}（${mdStr}）</span>
+          <span>距${h.name}还剩</span>
         </div>
         <div class="cal-countdown-numbers">${parts.map(p => `<div class="cal-num">${p}</div>`).join('<div class="cal-sep">·</div>')}</div>
       </div>

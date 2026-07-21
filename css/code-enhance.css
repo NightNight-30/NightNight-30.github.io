@@ -357,7 +357,7 @@ body .navbar-blur::after {
   padding: 10px 14px;
   border-radius: 12px;
   background: none !important;
-  border: 1px solid var(--bg-a60, rgba(0,0,0,0.05));
+  border: none !important;
 }
 .sitemap-group > .fs15 {
   font-size: 13px !important;
@@ -380,8 +380,9 @@ body .navbar-blur::after {
   display: flex !important;
   align-items: center;
   gap: 8px;
-  padding: 4px 6px;
+  padding: 4px 8px;
   border-radius: 6px;
+  width: 100% !important;
   color: var(--text-p1, inherit) !important;
   text-decoration: none !important;
   font-size: 14px;
@@ -401,7 +402,7 @@ body .navbar-blur::after {
   background-image: url('https://api.iconify.design/solar:arrow-right-up-linear.svg?color=%23888');
 }
 .sitemap-group a:hover {
-  background: var(--bg-a100, rgba(0,0,0,0.06));
+  background: hsla(192, 98%, 55%, 0.10) !important;
   color: var(--text-link, hsl(207 90% 54%)) !important;
 }
 .sitemap-group a:hover::before {
@@ -421,10 +422,13 @@ body .navbar-blur::after {
 .sitemap-group a[href="/disclaimer/"]::before  { background-image: url('https://api.iconify.design/solar:danger-triangle-outline.svg?color=%23ef4444'); }
 [data-theme="dark"] .sitemap-group {
   background: none !important;
-  border-color: var(--bg-a60, rgba(255,255,255,0.06));
+  border: none !important;
 }
 [data-theme="dark"] .sitemap-group a::before {
   opacity: 0.5;
+}
+[data-theme="dark"] .sitemap-group a:hover {
+  background: hsla(192, 98%, 65%, 0.14) !important;
 }
 [data-theme="dark"] .sitemap-group a:hover::before {
   opacity: 1;
@@ -484,13 +488,13 @@ body .navbar-blur::after {
   cursor: default;
 }
 .cal-today {
-  background: linear-gradient(135deg, hsl(14 100% 57%), hsl(25 95% 55%));
+  background: linear-gradient(135deg, hsl(192 98% 55%), hsl(165 95% 56%));
   color: #fff !important;
   font-weight: 700;
-  box-shadow: 0 2px 6px rgba(244, 63, 30, 0.35);
+  box-shadow: 0 2px 6px hsla(192, 98%, 55%, 0.35);
 }
 .cal-today:hover {
-  background: linear-gradient(135deg, hsl(14 100% 57%), hsl(25 95% 55%)) !important;
+  background: linear-gradient(135deg, hsl(192 98% 55%), hsl(165 95% 56%)) !important;
 }
 /* 倒计时块：透明（不卡片化，融入便签） */
 .cal-countdown {
@@ -530,7 +534,7 @@ body .navbar-blur::after {
   font-size: 18px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: hsl(14 100% 57%);
+  color: hsl(192 98% 55%);
   line-height: 1;
 }
 .cal-num-unit {
@@ -547,7 +551,7 @@ body .navbar-blur::after {
   border: none !important;
 }
 [data-theme="dark"] .cal-num-val {
-  color: hsl(14 100% 65%);
+  color: hsl(192 98% 65%);
 }
 
 /* === 近期说说 widget（主页右栏）：去掉 welcome 便签样式 === */
@@ -606,10 +610,33 @@ body .navbar-blur::after {
    会自动生效，但日历是数据展示组件，需要：
    1. 去掉「日历」标题文字
    2. 数字用系统字体不用钢笔体
-   3. 文字色覆盖棕墨色，用主题 text 变量（明暗自适应） */
+   3. 文字色覆盖棕墨色，用主题 text 变量（明暗自适应）
+   4. 不倾斜（覆盖基类 rotate(-2.5deg)）
+   5. 顶部胶带改为图钉图标 */
 .widget-wrapper.markdown:has(#sidebar-calendar) {
   margin: 18px 8px 20px 8px !important;
   padding: 0 0 16px !important;
+  transform: none !important; /* 不倾斜 */
+}
+/* 顶部图钉图标替代胶带 */
+.widget-wrapper.markdown:has(#sidebar-calendar)::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -10px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 22px !important;
+  height: 22px !important;
+  background: url('https://api.iconify.design/solar:pin-bold-duotone.svg?color=%23d32f2f') center / contain no-repeat !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar)::before {
+  background: url('https://api.iconify.design/solar:pin-bold-duotone.svg?color=%23ef5350') center / contain no-repeat !important;
+  border: none !important;
 }
 .widget-wrapper.markdown:has(#sidebar-calendar) .widget-header {
   display: none !important; /* 去掉「日历」标题 */
@@ -648,24 +675,25 @@ body .navbar-blur::after {
 .sidebar-talks-container .body p {
   margin: 0;
   color: inherit;
+  background: none !important;
 }
-.sidebar-talks-container .body:hover,
-.sidebar-talks-container .timenode:hover .body {
-  color: var(--text-a85, #555) !important; /* hover 时文字色保持不变 */
-  background: hsla(192, 98%, 55%, 0.10) !important; /* 主题色淡底，替代原来的白色 */
-  box-shadow: inset 3px 0 0 hsl(192 98% 55%); /* 左侧主题色竖条提示选中 */
+/* hover 整个 timenode：整行青色 tint（header + body 都覆盖），不单独给 body/p 设背景 */
+.sidebar-talks-container .timenode:hover {
+  background: hsla(192, 98%, 55%, 0.10) !important;
+  border-radius: 6px;
 }
 /* body 文字色继承，链接也保持普通文字色（ stellar 默认 link 色） */
 .sidebar-talks-container .body,
 .sidebar-talks-container .body p,
 .sidebar-talks-container .body:hover,
-.sidebar-talks-container .body:hover p {
+.sidebar-talks-container .body:hover p,
+.sidebar-talks-container .timenode:hover .body,
+.sidebar-talks-container .timenode:hover .body p {
   color: var(--text-a85, #555) !important;
+  background: none !important;
 }
-[data-theme="dark"] .sidebar-talks-container .body:hover,
-[data-theme="dark"] .sidebar-talks-container .timenode:hover .body {
+[data-theme="dark"] .sidebar-talks-container .timenode:hover {
   background: hsla(192, 98%, 65%, 0.14) !important;
-  box-shadow: inset 3px 0 0 hsl(192 98% 65%);
 }
 .sidebar-talks-loading, .sidebar-talks-empty, .sidebar-talks-error {
   font-size: 13px;
