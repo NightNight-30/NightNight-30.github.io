@@ -1,9 +1,9 @@
 /**
  * sidebar-calendar.js
- * 主页右栏日历 widget：
- * 1. 显示当月日历网格（周一为首列），高亮今天
- * 2. 日历下方显示「今年还剩 X 个月 Y 周 Z 天」倒计时
- * 每分钟刷新一次倒计时（跨天会更新日历高亮）
+ * 主页右栏日历 widget（便签格式）：
+ * 1. 当月日历网格（周一为首列），高亮今天（主题色渐变）
+ * 2. 倒计时块：显示「距最近法定节假日 X 个月 Y 周 Z 天」+ 下个节日图标
+ * 每分钟刷新一次（跨天会更新日历高亮 + 倒计时）
  */
 (function() {
   const el = document.getElementById('sidebar-calendar');
@@ -12,6 +12,21 @@
   const WEEK_HEADER = ['一', '二', '三', '四', '五', '六', '日'];
   const MONTH_NAMES = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 
+  // 法定节假日列表（按日期升序；iconify 图标 + 配色）
+  // 2026
+  const HOLIDAYS = [
+    { name: '元旦',   date: '2026-01-01', icon: 'solar:calendar-bold-duotone',         color: 'e91e63' },
+    { name: '春节',   date: '2026-02-17', icon: 'solar:gift-bold-duotone',             color: 'd32f2f' },
+    { name: '清明',   date: '2026-04-05', icon: 'solar:leaf-bold-duotone',             color: '4caf50' },
+    { name: '劳动节', date: '2026-05-01', icon: 'solar:case-bold-duotone',             color: 'ff9800' },
+    { name: '端午',   date: '2026-06-19', icon: 'solar:water-bold-duotone',            color: '00bcd4' },
+    { name: '中秋',   date: '2026-09-25', icon: 'solar:moon-stars-bold-duotone',       color: 'ffc107' },
+    { name: '国庆',   date: '2026-10-01', icon: 'solar:flag-bold-duotone',             color: 'd32f2f' },
+    // 2027（年初时元旦为下一个）
+    { name: '元旦',   date: '2027-01-01', icon: 'solar:calendar-bold-duotone',         color: 'e91e63' },
+    { name: '春节',   date: '2027-02-06', icon: 'solar:gift-bold-duotone',             color: 'd32f2f' },
+  ];
+
   function pad(n) { return String(n).padStart(2, '0'); }
 
   function renderCalendar(now) {
@@ -19,21 +34,17 @@
     const month = now.getMonth();
     const today = now.getDate();
     const firstDay = new Date(year, month, 1);
-    // 把周日(0) 转成最后一列(6)，周一(1)→第0列...周六(6)→第5列
     let firstCol = firstDay.getDay() - 1;
     if (firstCol < 0) firstCol = 6;
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     let cells = '';
-    // 表头
     WEEK_HEADER.forEach(d => {
       cells += `<div class="cal-cell cal-head">${d}</div>`;
     });
-    // 前置空白
     for (let i = 0; i < firstCol; i++) {
       cells += '<div class="cal-cell cal-empty"></div>';
     }
-    // 日期
     for (let d = 1; d <= daysInMonth; d++) {
       const isToday = (d === today);
       const cls = isToday ? 'cal-cell cal-day cal-today' : 'cal-cell cal-day';
@@ -48,39 +59,50 @@
     `;
   }
 
-  function calcYearRemaining(now) {
-    const year = now.getFullYear();
-    const end = new Date(year + 1, 0, 1, 0, 0, 0);
-    const diffMs = end - now;
-    if (diffMs <= 0) return { months: 0, weeks: 0, days: 0, total: 0 };
-    const totalDays = diffMs / 86400000;
-    const months = 11 - now.getMonth();
-    // 剩余天数减去本月剩余：从现在到月底的天数
-    const lastOfThisMonth = new Date(year, now.getMonth() + 1, 0).getDate();
-    const daysIntoNextMonth = (lastOfThisMonth - now.getDate());
-    const remainingDays = Math.floor(totalDays);
-    // weeks 用剩余天数算更准
+  // 算从 now 到 target 的「几个月 + 几周 + 几天」
+  // months = 跨过的完整日历月数；remainder 用周 + 天表达
+  function diffMonthsWeeksDays(now, target) {
+    let months = (target.getFullYear() - now.getFullYear()) * 12 + (target.getMonth() - now.getMonth());
+    let anchor = new Date(now);
+    anchor.setMonth(anchor.getMonth() + months);
+    if (anchor > target) {
+      months--;
+      anchor.setMonth(anchor.getMonth() - 1);
+    }
+    const remainingDays = Math.max(0, Math.floor((target - anchor) / 86400000));
     const weeks = Math.floor(remainingDays / 7);
     const days = remainingDays % 7;
-    return { months, weeks, days, total: remainingDays };
+    return { months, weeks, days };
+  }
+
+  function nextHoliday(now) {
+    for (const h of HOLIDAYS) {
+      const d = new Date(h.date + 'T00:00:00');
+      if (d >= now) {
+        const diff = diffMonthsWeeksDays(now, d);
+        return Object.assign({}, h, { dateObj: d, diff });
+      }
+    }
+    return null;
   }
 
   function renderCountdown(now) {
-    const r = calcYearRemaining(now);
-    const year = now.getFullYear();
+    const h = nextHoliday(now);
+    if (!h) return '';
+    const iconUrl = `https://api.iconify.design/${h.icon}.svg?color=%23${h.color}`;
+    const d = h.diff;
+    const parts = [];
+    if (d.months > 0) parts.push(`<span class="cal-num-val">${d.months}</span><span class="cal-num-unit">个月</span>`);
+    if (d.weeks > 0) parts.push(`<span class="cal-num-val">${d.weeks}</span><span class="cal-num-unit">周</span>`);
+    parts.push(`<span class="cal-num-val">${d.days}</span><span class="cal-num-unit">天</span>`);
+    const mdStr = `${h.dateObj.getMonth() + 1}月${h.dateObj.getDate()}日`;
     return `
       <div class="cal-countdown">
         <div class="cal-countdown-label">
-          <img class="cal-countdown-ico" src="https://api.iconify.design/solar:calendar-2-bold-duotone.svg?color=%231e90ff" alt=""/>
-          <span>${year} 年还剩</span>
+          <img class="cal-countdown-ico" src="${iconUrl}" alt="${h.name}"/>
+          <span>距${h.name}（${mdStr}）</span>
         </div>
-        <div class="cal-countdown-numbers">
-          <div class="cal-num"><span class="cal-num-val">${r.months}</span><span class="cal-num-unit">个月</span></div>
-          <div class="cal-sep">·</div>
-          <div class="cal-num"><span class="cal-num-val">${r.weeks}</span><span class="cal-num-unit">周</span></div>
-          <div class="cal-sep">·</div>
-          <div class="cal-num"><span class="cal-num-val">${r.days}</span><span class="cal-num-unit">天</span></div>
-        </div>
+        <div class="cal-countdown-numbers">${parts.map(p => `<div class="cal-num">${p}</div>`).join('<div class="cal-sep">·</div>')}</div>
       </div>
     `;
   }
@@ -92,6 +114,5 @@
   }
 
   render();
-  // 每分钟刷新一次（倒计时数字 + 跨天高亮）
   setInterval(render, 60 * 1000);
 })();

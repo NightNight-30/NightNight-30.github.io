@@ -180,6 +180,15 @@ body .navbar-blur::after {
   font-size: 15px !important;
   font-family: 'LXGW WenKai', 'system-ui', sans-serif !important;
 }
+/* welcome 便签（左侧栏）标题加粗居中——只 l_left 的 markdown widget 是 welcome */
+.l_left .widget-wrapper.markdown .widget-header {
+  justify-content: center !important;
+}
+.l_left .widget-wrapper.markdown .widget-header .name {
+  font-weight: 700 !important;
+  text-align: center !important;
+  letter-spacing: 1px;
+}
 .widget-wrapper.markdown .widget-body {
   background: none !important;
   font-size: 14px !important;
@@ -347,7 +356,7 @@ body .navbar-blur::after {
   gap: 2px;
   padding: 10px 14px;
   border-radius: 12px;
-  background: var(--bg-a60, rgba(0,0,0,0.03));
+  background: none !important;
   border: 1px solid var(--bg-a60, rgba(0,0,0,0.05));
 }
 .sitemap-group > .fs15 {
@@ -386,7 +395,8 @@ body .navbar-blur::after {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.65;
+  opacity: 0.4;
+  filter: grayscale(1);
   /* 默认图标（未匹配到 href 时）*/
   background-image: url('https://api.iconify.design/solar:arrow-right-up-linear.svg?color=%23888');
 }
@@ -396,6 +406,7 @@ body .navbar-blur::after {
 }
 .sitemap-group a:hover::before {
   opacity: 1;
+  filter: grayscale(0);
 }
 /* 按路径匹配专属图标，让每条链接视觉有差异 */
 .sitemap-group a[href="/"]::before             { background-image: url('https://api.iconify.design/solar:document-add-outline.svg?color=%231e90ff'); }
@@ -405,12 +416,15 @@ body .navbar-blur::after {
 .sitemap-group a[href="/friends/"]::before     { background-image: url('https://api.iconify.design/solar:users-group-rounded-outline.svg?color=%236366f1'); }
 .sitemap-group a[href="/shuoshuo/"]::before     { background-image: url('https://api.iconify.design/solar:balloon-outline.svg?color=%2300bfa5'); }
 .sitemap-group a[href="/about/"]::before       { background-image: url('https://api.iconify.design/solar:user-circle-outline.svg?color=%236d28d9'); }
+.sitemap-group a[href="/privacy/"]::before     { background-image: url('https://api.iconify.design/solar:lock-keyhole-minimalistic-outline.svg?color=%2310b981'); }
+.sitemap-group a[href="/license/"]::before     { background-image: url('https://api.iconify.design/solar:shield-check-outline.svg?color=%238b5cf6'); }
+.sitemap-group a[href="/disclaimer/"]::before  { background-image: url('https://api.iconify.design/solar:danger-triangle-outline.svg?color=%23ef4444'); }
 [data-theme="dark"] .sitemap-group {
-  background: var(--bg-a60, rgba(255,255,255,0.04));
+  background: none !important;
   border-color: var(--bg-a60, rgba(255,255,255,0.06));
 }
 [data-theme="dark"] .sitemap-group a::before {
-  opacity: 0.8;
+  opacity: 0.5;
 }
 [data-theme="dark"] .sitemap-group a:hover::before {
   opacity: 1;
@@ -470,21 +484,21 @@ body .navbar-blur::after {
   cursor: default;
 }
 .cal-today {
-  background: linear-gradient(135deg, hsl(192 98% 55%), hsl(207 90% 54%));
+  background: linear-gradient(135deg, hsl(14 100% 57%), hsl(25 95% 55%));
   color: #fff !important;
   font-weight: 700;
-  box-shadow: 0 2px 6px rgba(33, 150, 243, 0.35);
+  box-shadow: 0 2px 6px rgba(244, 63, 30, 0.35);
 }
 .cal-today:hover {
-  background: linear-gradient(135deg, hsl(192 98% 55%), hsl(207 90% 54%)) !important;
+  background: linear-gradient(135deg, hsl(14 100% 57%), hsl(25 95% 55%)) !important;
 }
-/* 年剩余倒计时块 */
+/* 倒计时块：透明（不卡片化，融入便签） */
 .cal-countdown {
   margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: var(--bg-a60, rgba(0,0,0,0.03));
-  border: 1px solid var(--bg-a60, rgba(0,0,0,0.05));
+  padding: 8px 4px 0;
+  border-radius: 0;
+  background: none !important;
+  border: none !important;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -516,7 +530,7 @@ body .navbar-blur::after {
   font-size: 18px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: hsl(192 98% 55%);
+  color: hsl(14 100% 57%);
   line-height: 1;
 }
 .cal-num-unit {
@@ -529,11 +543,11 @@ body .navbar-blur::after {
   opacity: 0.6;
 }
 [data-theme="dark"] .cal-countdown {
-  background: var(--bg-a60, rgba(255,255,255,0.04));
-  border-color: var(--bg-a60, rgba(255,255,255,0.06));
+  background: none !important;
+  border: none !important;
 }
 [data-theme="dark"] .cal-num-val {
-  color: hsl(192 98% 65%);
+  color: hsl(14 100% 65%);
 }
 
 /* === 近期说说 widget（主页右栏）：去掉 welcome 便签样式 === */
@@ -587,40 +601,25 @@ body .navbar-blur::after {
   color: inherit !important;
 }
 
-/* === 日历 widget（主页右栏）：去掉 welcome 便签样式，跟近期说说一样的透明卡片 === */
+/* === 日历 widget：继承 welcome 便签样式（旋转+胶带+边框+阴影），仅隐藏标题 ===
+   基类 .widget-wrapper.markdown 的便签样式（透明底+棕墨色+LXGW 钢笔体+旋转+胶带）
+   会自动生效，但日历是数据展示组件，需要：
+   1. 去掉「日历」标题文字
+   2. 数字用系统字体不用钢笔体
+   3. 文字色覆盖棕墨色，用主题 text 变量（明暗自适应） */
 .widget-wrapper.markdown:has(#sidebar-calendar) {
-  background: none !important;
-  background-color: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  margin: 0 !important;
+  margin: 18px 8px 20px 8px !important;
   padding: 0 0 16px !important;
-  transform: none !important;
-  overflow: visible !important;
-  font-family: inherit !important;
 }
-.widget-wrapper.markdown:has(#sidebar-calendar)::before {
-  display: none !important;
-}
-.widget-wrapper.markdown:has(#sidebar-calendar) .widget-header .name {
-  font-weight: 600 !important;
-  color: var(--text-p3, inherit) !important;
-  font-size: 15px !important;
-  font-family: inherit !important;
+.widget-wrapper.markdown:has(#sidebar-calendar) .widget-header {
+  display: none !important; /* 去掉「日历」标题 */
 }
 .widget-wrapper.markdown:has(#sidebar-calendar) .widget-body {
+  padding: 8px 14px 4px !important;
+  color: var(--text-p1, inherit) !important; /* 覆盖棕墨色 */
+  font-family: inherit !important; /* 不用 LXGW 钢笔体，数字用系统字体 */
   font-size: 14px !important;
   line-height: 1.5 !important;
-  color: inherit !important;
-  font-family: inherit !important;
-  padding: 0 !important;
-}
-[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar),
-[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar) .widget-header .name,
-[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar) .widget-body {
-  background: none !important;
-  color: inherit !important;
 }
 
 /* === 近期说说：复用 stellar 的 .tag-plugin.timeline .timenode 样式 === */
@@ -653,7 +652,8 @@ body .navbar-blur::after {
 .sidebar-talks-container .body:hover,
 .sidebar-talks-container .timenode:hover .body {
   color: var(--text-a85, #555) !important; /* hover 时文字色保持不变 */
-  background: none !important;
+  background: hsla(192, 98%, 55%, 0.10) !important; /* 主题色淡底，替代原来的白色 */
+  box-shadow: inset 3px 0 0 hsl(192 98% 55%); /* 左侧主题色竖条提示选中 */
 }
 /* body 文字色继承，链接也保持普通文字色（ stellar 默认 link 色） */
 .sidebar-talks-container .body,
@@ -661,6 +661,11 @@ body .navbar-blur::after {
 .sidebar-talks-container .body:hover,
 .sidebar-talks-container .body:hover p {
   color: var(--text-a85, #555) !important;
+}
+[data-theme="dark"] .sidebar-talks-container .body:hover,
+[data-theme="dark"] .sidebar-talks-container .timenode:hover .body {
+  background: hsla(192, 98%, 65%, 0.14) !important;
+  box-shadow: inset 3px 0 0 hsl(192 98% 65%);
 }
 .sidebar-talks-loading, .sidebar-talks-empty, .sidebar-talks-error {
   font-size: 13px;
