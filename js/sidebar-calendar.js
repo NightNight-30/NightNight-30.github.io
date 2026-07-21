@@ -62,14 +62,19 @@
   // 算从 now 到 target 的「几个月 + 几周 + 几天」
   // months = 跨过的完整日历月数；remainder 用周 + 天表达
   function diffMonthsWeeksDays(now, target) {
-    let months = (target.getFullYear() - now.getFullYear()) * 12 + (target.getMonth() - now.getMonth());
-    let anchor = new Date(now);
+    // 都归一到本地午夜，避免时间差导致 days 差一
+    const nowMid = new Date(now);
+    nowMid.setHours(0, 0, 0, 0);
+    const targetMid = new Date(target);
+    targetMid.setHours(0, 0, 0, 0);
+    let months = (targetMid.getFullYear() - nowMid.getFullYear()) * 12 + (targetMid.getMonth() - nowMid.getMonth());
+    let anchor = new Date(nowMid);
     anchor.setMonth(anchor.getMonth() + months);
-    if (anchor > target) {
+    if (anchor > targetMid) {
       months--;
       anchor.setMonth(anchor.getMonth() - 1);
     }
-    const remainingDays = Math.max(0, Math.floor((target - anchor) / 86400000));
+    const remainingDays = Math.max(0, Math.floor((targetMid - anchor) / 86400000));
     const weeks = Math.floor(remainingDays / 7);
     const days = remainingDays % 7;
     return { months, weeks, days };
