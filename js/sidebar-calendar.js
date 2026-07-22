@@ -1,9 +1,10 @@
 /**
  * sidebar-calendar.js
- * 主页右栏日历 widget（便签格式）：
- * 1. 当月日历网格（周一为首列），高亮今天（主题色渐变）
- * 2. 倒计时块：显示「距最近法定节假日 X 个月 Y 周 Z 天」+ 下个节日图标
- * 每分钟刷新一次（跨天会更新日历高亮 + 倒计时）
+ * 主页右栏万年历 widget（便签格式）：
+ * 1. 当月日历网格（周一为首列），每格下面显示农历（节气/节日/农历日），高亮今天（主题色渐变）
+ * 2. 当天详情：农历日期 + 宜/忌（黄历）
+ * 3. 倒计时块：显示「距最近法定节假日 X 个月 Y 周 Z 天」+ 下个节日图标
+ * 每分钟刷新一次（跨天会更新日历高亮 + 农历 + 宜忌 + 倒计时）
  */
 (function() {
   const el = document.getElementById('sidebar-calendar');
@@ -27,7 +28,47 @@
     { name: '春节',   date: '2027-02-06', icon: 'solar:gift-bold-duotone',             color: 'd32f2f' },
   ];
 
-  function pad(n) { return String(n).padStart(2, '0'); }
+  // 获取某天的农历标签（节气 > 农历节日 > 公历节日 > 初一显示月名 > 农历日）
+  function getLunarLabel(date) {
+    if (typeof Lunar === 'undefined') return '';
+    try {
+      const lunar = Lunar.fromDate(date);
+      const jieQi = lunar.getJieQi();
+      if (jieQi) return jieQi;
+      const lunarFestivals = lunar.getFestivals();
+      if (lunarFestivals && lunarFestivals.length > 0) return lunarFestivals[0].slice(0, 4);
+      const solarFestivals = lunar.getSolarFestivals ? lunar.getSolarFestivals() : [];
+      if (solarFestivals && solarFestivals.length > 0) return solarFestivals[0].slice(0, 4);
+      const dayCh = lunar.getDayInChinese();
+      if (dayCh === '初一') {
+        return lunar.getMonthInChinese() + '月';
+      }
+      return dayCh;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  // 获取今天的农历详情（干支年 + 生肖 + 月 + 日 + 宜 + 忌）
+  function getTodayLunarInfo(date) {
+    if (typeof Lunar === 'undefined') return null;
+    try {
+      const lunar = Lunar.fromDate(date);
+      const yearGanZhi = lunar.getYearInGanZhi();
+      const monthCh = lunar.getMonthInChinese();
+      const dayCh = lunar.getDayInChinese();
+      const shengXiao = lunar.getYearShengXiao();
+      const lunarDateStr = `${yearGanZhi}年（${shengXiao}）${monthCh}月${dayCh}`;
+      const yiStr = lunar.getDayYi() || '';
+      const jiStr = lunar.getDayJi() || '';
+      // 宜忌字符串以 . 或 , 分隔
+      const yiList = yiStr.split(/[.,，、]/).map(s => s.trim()).filter(Boolean).slice(0, 6);
+      const jiList = jiStr.split(/[.,，、]/).map(s => s.trim()).filter(Boolean).slice(0, 6);
+      return { lunarDateStr, yiList, jiList };
+    } catch (e) {
+      return null;
+    }
+  }
 
   function renderCalendar(now) {
     const year = now.getFullYear();
@@ -47,14 +88,30 @@
     }
     for (let d = 1; d <= daysInMonth; d++) {
       const isToday = (d === today);
+      const cellDate = new Date(year, month, d);
+      const lunarLabel = getLunarLabel(cellDate);
       const cls = isToday ? 'cal-cell cal-day cal-today' : 'cal-cell cal-day';
-      cells += `<div class="${cls}">${d}</div>`;
+      cells += `<div class="${cls}"><div class="cal-day-num">${d}</div><div class="cal-day-lunar">${lunarLabel}</div></div>`;
     }
 
     return `
       <div class="cal-grid">
         <div class="cal-title">${year} 年 ${MONTH_NAMES[month]}</div>
         <div class="cal-cells">${cells}</div>
+      </div>
+    `;
+  }
+
+  function renderTodayInfo(now) {
+    const info = getTodayLunarInfo(now);
+    if (!info) return '';
+    const yiStr = info.yiList.length > 0 ? info.yiList.join(' ') : '无';
+    const jiStr = info.jiList.length > 0 ? info.jiList.join(' ') : '无';
+    return `
+      <div class="cal-day-info">
+        <div class="cal-lunar-date">${info.lunarDateStr}</div>
+        <div class="cal-yi"><span class="cal-yi-label">宜</span><span class="cal-yi-list">${yiStr}</span></div>
+        <div class="cal-ji"><span class="cal-ji-label">忌</span><span class="cal-ji-list">${jiStr}</span></div>
       </div>
     `;
   }
@@ -114,9 +171,18 @@
   function render() {
     const now = new Date();
     el.className = 'sidebar-calendar-container';
-    el.innerHTML = renderCalendar(now) + renderCountdown(now);
+    el.innerHTML = renderCalendar(now) + renderTodayInfo(now) + renderCountdown(now);
   }
 
-  render();
-  setInterval(render, 60 * 1000);
+  // Lunar 库（CDN defer 加载）可能比本脚本晚到，等一下
+  function init() {
+    if (typeof Lunar === 'undefined') {
+      setTimeout(init, 200);
+      return;
+    }
+    render();
+    setInterval(render, 60 * 1000);
+  }
+
+  init();
 })();
