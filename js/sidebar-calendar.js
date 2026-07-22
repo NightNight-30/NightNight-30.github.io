@@ -162,7 +162,7 @@
       <div class="cal-countdown">
         <div class="cal-countdown-label">
           <img class="cal-countdown-ico" src="${iconUrl}" alt="${h.name}"/>
-          <span>距${h.name}还剩</span>
+          <span>距下个法定节假日 · ${h.name}还剩</span>
         </div>
         <div class="cal-countdown-numbers">${parts.map(p => `<div class="cal-num">${p}</div>`).join('<div class="cal-sep">·</div>')}</div>
       </div>

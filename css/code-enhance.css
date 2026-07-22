@@ -149,7 +149,7 @@ body .navbar-blur::after {
   border-radius: 2px !important;
   box-shadow: 0 1px 0 rgba(0,0,0,0.04), 2px 3px 6px rgba(0,0,0,0.14), 4px 6px 14px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(255,255,255,0.5) !important;
   transform: none !important;
-  margin: 18px 8px 20px 8px !important;
+  margin: 8px 8px 20px 8px !important;
   padding: 0 0 24px !important;
   overflow: visible !important;
   position: relative !important;
@@ -237,43 +237,73 @@ body .navbar-blur::after {
 }
 
 
-/* === 左侧栏博客名后：白天/夜间模式切换按钮（与头像对称）===
-   头像在 logo-wrap 左侧 48×48 圆 + margin-right:1rem；
-   这里把 toggle 放 logo-wrap 右侧，48×48 圆 + margin-left:1rem，
-   尺寸/形状/留白镜像头像，视觉上左右平衡 */
-.l_left .header .logo-wrap .theme-toggle {
+/* === 左侧栏底部：白天/夜间模式切换卡片 ===
+   放在 .footer.dis-select 末尾，社交图标下方
+   宽度撑满 sidebar footer（与社交图标行对齐），矩形带圆角（非正方形圆）
+   左半 = 日间太阳图标，右半 = 夜间月亮图标，中间细线分隔
+   当前主题侧高亮（渐变底+图标发光），另一侧半透明灰显 */
+.l_left .footer.dis-select .theme-toggle-card {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  margin-top: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--bg-a100, rgba(0,0,0,0.08));
+  background: var(--bg-a60, rgba(0,0,0,0.04));
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.l_left .footer.dis-select .theme-toggle-card:hover {
+  background: var(--bg-a100, rgba(0,0,0,0.08));
+}
+.l_left .footer.dis-select .theme-toggle-card .side {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  flex-shrink: 0;
-  border-radius: 48px;
-  margin-left: 1rem;
-  background: var(--bg-a60, rgba(0,0,0,0.04));
-  border: 1px solid var(--bg-a100, rgba(0,0,0,0.06));
-  cursor: pointer;
-  padding: 0;
-  transition: background 0.2s ease, transform 0.3s ease, box-shadow 0.2s ease;
+  height: 100%;
+  transition: background 0.25s ease;
 }
-.l_left .header .logo-wrap .theme-toggle:hover {
-  background: var(--bg-a100, rgba(0,0,0,0.08));
-  transform: rotate(20deg);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-.l_left .header .logo-wrap .theme-toggle:active {
-  transform: rotate(20deg) scale(0.95);
-}
-.l_left .header .logo-wrap .theme-toggle img {
-  width: 24px;
-  height: 24px;
+.l_left .footer.dis-select .theme-toggle-card .side img {
+  width: 22px;
+  height: 22px;
   pointer-events: none;
+  opacity: 0.35;
+  transition: opacity 0.25s ease, filter 0.25s ease;
 }
-[data-theme="dark"] .l_left .header .logo-wrap .theme-toggle {
+.l_left .footer.dis-select .theme-toggle-card .divider {
+  width: 1px;
+  height: 60%;
+  background: var(--bg-a100, rgba(0,0,0,0.10));
+  flex-shrink: 0;
+}
+/* 当前主题侧：渐变底 + 图标全亮 + 微发光 */
+.l_left .footer.dis-select .theme-toggle-card.is-light .day-side {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.20), rgba(251, 191, 36, 0.08));
+}
+.l_left .footer.dis-select .theme-toggle-card.is-light .day-side img {
+  opacity: 1;
+  filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.45));
+}
+.l_left .footer.dis-select .theme-toggle-card.is-dark .night-side {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(168, 85, 247, 0.10));
+}
+.l_left .footer.dis-select .theme-toggle-card.is-dark .night-side img {
+  opacity: 1;
+  filter: drop-shadow(0 0 4px rgba(99, 102, 241, 0.45));
+}
+[data-theme="dark"] .l_left .footer.dis-select .theme-toggle-card {
   background: var(--bg-a60, rgba(255,255,255,0.05));
   border-color: var(--bg-a100, rgba(255,255,255,0.08));
 }
-[data-theme="dark"] .l_left .header .logo-wrap .theme-toggle:hover {
+[data-theme="dark"] .l_left .footer.dis-select .theme-toggle-card:hover {
+  background: var(--bg-a100, rgba(255,255,255,0.10));
+}
+[data-theme="dark"] .l_left .footer.dis-select .theme-toggle-card .divider {
   background: var(--bg-a100, rgba(255,255,255,0.10));
 }
 
@@ -312,9 +342,9 @@ body .navbar-blur::after {
 }
 .footer-ico.cc-license {
   width: auto;
-  height: 15px;
+  height: 22px;
   vertical-align: middle;
-  margin-right: 2px;
+  margin-right: 4px;
   opacity: 0.95;
 }
 .footer-beian {
@@ -582,9 +612,9 @@ body .navbar-blur::after {
 .cal-countdown {
   margin-top: 10px;
   padding: 8px 4px 0;
+  border-top: 1px dashed var(--bg-a60, rgba(0, 0, 0, 0.10));
   border-radius: 0;
   background: none !important;
-  border: none !important;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -630,7 +660,7 @@ body .navbar-blur::after {
 }
 [data-theme="dark"] .cal-countdown {
   background: none !important;
-  border: none !important;
+  border-top: 1px dashed var(--bg-a60, rgba(255, 255, 255, 0.10));
 }
 [data-theme="dark"] .cal-num-val {
   color: rgb(192, 132, 252);
