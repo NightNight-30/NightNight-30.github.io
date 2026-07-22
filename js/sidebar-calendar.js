@@ -59,11 +59,12 @@
       const dayCh = lunar.getDayInChinese();
       const shengXiao = lunar.getYearShengXiao();
       const lunarDateStr = `${yearGanZhi}年（${shengXiao}）${monthCh}月${dayCh}`;
-      const yiStr = lunar.getDayYi() || '';
-      const jiStr = lunar.getDayJi() || '';
-      // 宜忌字符串以 . 或 , 分隔
-      const yiList = yiStr.split(/[.,，、]/).map(s => s.trim()).filter(Boolean).slice(0, 6);
-      const jiList = jiStr.split(/[.,，、]/).map(s => s.trim()).filter(Boolean).slice(0, 6);
+      // v1.7.7: getDayYi/getDayJi 返回数组；旧版返回字符串（以 . 或 , 分隔）
+      const yiRaw = lunar.getDayYi() || '';
+      const jiRaw = lunar.getDayJi() || '';
+      const toArray = v => Array.isArray(v) ? v : (typeof v === 'string' ? v.split(/[.,，、]/).map(s => s.trim()).filter(Boolean) : []);
+      const yiList = toArray(yiRaw).slice(0, 6);
+      const jiList = toArray(jiRaw).slice(0, 6);
       return { lunarDateStr, yiList, jiList };
     } catch (e) {
       return null;
