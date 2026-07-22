@@ -148,7 +148,7 @@ body .navbar-blur::after {
   border: 1px solid rgba(180, 150, 90, 0.22) !important;
   border-radius: 2px !important;
   box-shadow: 0 1px 0 rgba(0,0,0,0.04), 2px 3px 6px rgba(0,0,0,0.14), 4px 6px 14px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(255,255,255,0.5) !important;
-  transform: rotate(-2.5deg) !important;
+  transform: none !important;
   margin: 18px 8px 20px 8px !important;
   padding: 0 0 24px !important;
   overflow: visible !important;
@@ -402,7 +402,7 @@ body .navbar-blur::after {
   background-image: url('https://api.iconify.design/solar:arrow-right-up-linear.svg?color=%23888');
 }
 .sitemap-group a:hover {
-  background: hsla(192, 98%, 55%, 0.10) !important;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.10) 0%, rgba(168, 85, 247, 0.06) 50%, rgba(236, 72, 153, 0.08) 100%) !important;
   color: var(--text-link, hsl(207 90% 54%)) !important;
 }
 .sitemap-group a:hover::before {
@@ -428,7 +428,7 @@ body .navbar-blur::after {
   opacity: 0.5;
 }
 [data-theme="dark"] .sitemap-group a:hover {
-  background: hsla(192, 98%, 65%, 0.14) !important;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18) 0%, rgba(168, 85, 247, 0.12) 50%, rgba(236, 72, 153, 0.15) 100%) !important;
 }
 [data-theme="dark"] .sitemap-group a:hover::before {
   opacity: 1;
@@ -677,9 +677,9 @@ body .navbar-blur::after {
   color: inherit;
   background: none !important;
 }
-/* hover 整个 timenode：整行青色 tint（header + body 都覆盖），不单独给 body/p 设背景 */
+/* hover 整个 timenode：整行紫粉渐变底（与 .post-card 一致），不单独给 body/p 设背景 */
 .sidebar-talks-container .timenode:hover {
-  background: hsla(192, 98%, 55%, 0.10) !important;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.10) 0%, rgba(168, 85, 247, 0.06) 50%, rgba(236, 72, 153, 0.08) 100%) !important;
   border-radius: 6px;
 }
 /* body 文字色继承，链接也保持普通文字色（ stellar 默认 link 色） */
@@ -693,7 +693,7 @@ body .navbar-blur::after {
   background: none !important;
 }
 [data-theme="dark"] .sidebar-talks-container .timenode:hover {
-  background: hsla(192, 98%, 65%, 0.14) !important;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18) 0%, rgba(168, 85, 247, 0.12) 50%, rgba(236, 72, 153, 0.15) 100%) !important;
 }
 .sidebar-talks-loading, .sidebar-talks-empty, .sidebar-talks-error {
   font-size: 13px;
