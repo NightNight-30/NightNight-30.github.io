@@ -1,9 +1,10 @@
 /**
  * theme-toggle.js
- * 在左侧栏底部社交图标下方注入一个白天/夜间模式切换卡片
- * 卡片左边是白天图标（太阳），右边是夜间图标（月亮），中间一道分隔线
- * 当前主题对应那一侧高亮（渐变底+图标发光），另一侧灰显
- * 点击任意位置切换 light↔dark（跳过 auto，避免循环不直觉）
+ * 在左侧栏底部社交图标下方注入一个白天/夜间模式切换滑动 pill
+ * 整个按钮就是 pill 轨道：左侧隐约的太阳图标、右侧隐约的月亮图标
+ * 圆形 knob 在轨道里滑动：light 模式 knob 停在左端（盖住太阳 bg 图标，knob 上显示太阳）
+ * 点击后 knob 滑到右端、主题切到 dark、knob 上图标换成月亮
+ * 跳过 auto，避免循环不直觉
  */
 (function() {
   const SUN_ICON  = 'https://api.iconify.design/solar:sun-bold-duotone.svg?color=%23f59e0b';
@@ -31,39 +32,43 @@
     }
   }
 
-  function updateCard(card) {
+  function updatePill(pill) {
     const current = effective();
-    card.classList.toggle('is-light', current === 'light');
-    card.classList.toggle('is-dark', current === 'dark');
+    pill.classList.toggle('is-light', current === 'light');
+    pill.classList.toggle('is-dark', current === 'dark');
+    const knobIcon = pill.querySelector('.knob-icon');
+    if (knobIcon) {
+      knobIcon.src = current === 'dark' ? MOON_ICON : SUN_ICON;
+    }
   }
 
   function createToggle() {
     const footer = document.querySelector('.l_left .footer.dis-select') || document.querySelector('.l_left .footer');
     if (!footer) return null;
-    if (footer.querySelector('.theme-toggle-card')) return footer.querySelector('.theme-toggle-card');
+    if (footer.querySelector('.theme-toggle-pill')) return footer.querySelector('.theme-toggle-pill');
     const btn = document.createElement('button');
-    btn.className = 'theme-toggle-card';
+    btn.className = 'theme-toggle-pill';
     btn.type = 'button';
     btn.setAttribute('aria-label', '切换白天/夜间模式');
     btn.title = '切换白天/夜间模式';
     btn.innerHTML = `
-      <span class="side day-side"><img src="${SUN_ICON}" alt="日间"/></span>
-      <span class="divider"></span>
-      <span class="side night-side"><img src="${MOON_ICON}" alt="夜间"/></span>
+      <span class="track-icon track-sun"><img src="${SUN_ICON}" alt="日间"/></span>
+      <span class="track-icon track-moon"><img src="${MOON_ICON}" alt="夜间"/></span>
+      <span class="knob"><img class="knob-icon" src="${SUN_ICON}" alt=""/></span>
     `;
     btn.addEventListener('click', () => {
       const next = effective() === 'dark' ? 'light' : 'dark';
       apply(next);
-      updateCard(btn);
+      updatePill(btn);
     });
     footer.appendChild(btn);
-    updateCard(btn);
+    updatePill(btn);
     return btn;
   }
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    const btn = document.querySelector('.l_left .theme-toggle-card');
-    if (btn && stored() === 'auto') updateCard(btn);
+    const btn = document.querySelector('.l_left .theme-toggle-pill');
+    if (btn && stored() === 'auto') updatePill(btn);
   });
 
   if (document.readyState === 'loading') {

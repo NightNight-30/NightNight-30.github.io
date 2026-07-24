@@ -237,73 +237,104 @@ body .navbar-blur::after {
 }
 
 
-/* === 左侧栏底部：白天/夜间模式切换卡片 ===
+/* === 左侧栏头像：hover 时 360° 旋转（点击仍跳 /about/）===
+   avatar 是 <a class="avatar"><img class="avatar"></a>，给 img 加 transition + hover rotate */
+.l_left .header .logo-wrap a.avatar {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.l_left .header .logo-wrap a.avatar:hover {
+  transform: rotate(360deg);
+}
+.l_left .header .logo-wrap a.avatar img.avatar {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+
+/* === 左侧栏底部：白天/夜间模式切换滑动 pill ===
    放在 .footer.dis-select 末尾，社交图标下方
-   宽度撑满 sidebar footer（与社交图标行对齐），矩形带圆角（非正方形圆）
-   左半 = 日间太阳图标，右半 = 夜间月亮图标，中间细线分隔
-   当前主题侧高亮（渐变底+图标发光），另一侧半透明灰显 */
-.l_left .footer.dis-select .theme-toggle-card {
-  display: flex;
-  align-items: center;
+   整个按钮就是 pill 轨道：左侧隐约的太阳、右侧隐约的月亮
+   圆形 knob 在轨道里左右滑动：light 模式 knob 停在左端（显示太阳）
+   点击后 knob 滑到右端、主题切到 dark、knob 上图标换成月亮 */
+/* sidebar footer 整体下移：social-wrap 与 theme-toggle 与上方 recent widget 拉开距离 */
+.l_left .footer.dis-select {
+  margin-top: 24px;
+  padding-bottom: 8px;
+}
+.l_left .footer.dis-select .theme-toggle-pill {
+  position: relative;
+  display: block;
   width: 100%;
-  height: 44px;
+  height: 36px;
   margin-top: 10px;
-  border-radius: 12px;
+  border-radius: 18px;
   border: 1px solid var(--bg-a100, rgba(0,0,0,0.08));
   background: var(--bg-a60, rgba(0,0,0,0.04));
   cursor: pointer;
   padding: 0;
-  position: relative;
   overflow: hidden;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
-.l_left .footer.dis-select .theme-toggle-card:hover {
+.l_left .footer.dis-select .theme-toggle-pill:hover {
   background: var(--bg-a100, rgba(0,0,0,0.08));
 }
-.l_left .footer.dis-select .theme-toggle-card .side {
-  flex: 1;
+/* 轨道两端的隐约图标（提示另一侧的状态） */
+.l_left .footer.dis-select .theme-toggle-pill .track-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  opacity: 0.3;
+  pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.l_left .footer.dis-select .theme-toggle-pill .track-sun {
+  left: 9px;
+}
+.l_left .footer.dis-select .theme-toggle-pill .track-moon {
+  right: 9px;
+}
+.l_left .footer.dis-select .theme-toggle-pill .track-icon img {
+  width: 100%;
   height: 100%;
-  transition: background 0.25s ease;
 }
-.l_left .footer.dis-select .theme-toggle-card .side img {
-  width: 22px;
-  height: 22px;
+/* 滑动 knob：圆形，根据 is-light/is-dark 停在左/右端 */
+.l_left .footer.dis-select .theme-toggle-pill .knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.25) inset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s ease, box-shadow 0.35s ease;
+  z-index: 1;
+}
+.l_left .footer.dis-select .theme-toggle-pill.is-dark .knob {
+  left: calc(100% - 31px);
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.28), 0 0 4px rgba(168, 85, 247, 0.4), 0 0 0 1px rgba(255,255,255,0.15) inset;
+}
+.l_left .footer.dis-select .theme-toggle-pill.is-light .knob {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18), 0 0 4px rgba(245, 158, 11, 0.35), 0 0 0 1px rgba(255,255,255,0.25) inset;
+}
+.l_left .footer.dis-select .theme-toggle-pill .knob-icon {
+  width: 18px;
+  height: 18px;
   pointer-events: none;
-  opacity: 0.35;
-  transition: opacity 0.25s ease, filter 0.25s ease;
 }
-.l_left .footer.dis-select .theme-toggle-card .divider {
-  width: 1px;
-  height: 60%;
-  background: var(--bg-a100, rgba(0,0,0,0.10));
-  flex-shrink: 0;
-}
-/* 当前主题侧：渐变底 + 图标全亮 + 微发光 */
-.l_left .footer.dis-select .theme-toggle-card.is-light .day-side {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.20), rgba(251, 191, 36, 0.08));
-}
-.l_left .footer.dis-select .theme-toggle-card.is-light .day-side img {
-  opacity: 1;
-  filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.45));
-}
-.l_left .footer.dis-select .theme-toggle-card.is-dark .night-side {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(168, 85, 247, 0.10));
-}
-.l_left .footer.dis-select .theme-toggle-card.is-dark .night-side img {
-  opacity: 1;
-  filter: drop-shadow(0 0 4px rgba(99, 102, 241, 0.45));
-}
-[data-theme="dark"] .l_left .footer.dis-select .theme-toggle-card {
+[data-theme="dark"] .l_left .footer.dis-select .theme-toggle-pill {
   background: var(--bg-a60, rgba(255,255,255,0.05));
   border-color: var(--bg-a100, rgba(255,255,255,0.08));
 }
-[data-theme="dark"] .l_left .footer.dis-select .theme-toggle-card:hover {
-  background: var(--bg-a100, rgba(255,255,255,0.10));
-}
-[data-theme="dark"] .l_left .footer.dis-select .theme-toggle-card .divider {
+[data-theme="dark"] .l_left .footer.dis-select .theme-toggle-pill:hover {
   background: var(--bg-a100, rgba(255,255,255,0.10));
 }
 
