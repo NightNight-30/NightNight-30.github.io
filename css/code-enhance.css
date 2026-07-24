@@ -5,6 +5,13 @@
    其 unicode-range 分包加载，只下载便签里实际用到的字符范围 */
 @import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont/lxgwwenkai-regular.css');
 
+/* 引入思源宋体（Noto Serif SC）—— 全站正文字体
+   字重 300（Light）做正文（瘦劲，类似瘦金体感），700（Bold）做标题/加粗对比
+   只加载 chinese-simplified 分包（含拉丁字母 + 简体中文），全字符集一次性加载
+   welcome 便签在下方显式覆盖为 LXGW WenKai，不受影响 */
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.3.0/chinese-simplified-300.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.3.0/chinese-simplified-700.css');
+
 /* === 文章卡片 / 专栏卡片改成跟 Ech0 说说一样的渐变毛玻璃 === */
 /* stellar 默认 .post-card 是 rgba(255,255,255,0.5) 白底，在彩色背景图上太突兀。
    借用 ech0-talks.css 的紫粉渐变（indigo→purple→pink 135deg）+ blur 16px，视觉跟说说统一 */
