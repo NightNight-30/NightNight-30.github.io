@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
-  <link rel="canonical" href="https://nightfall7.top/tags/">
-  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://nightfall7.top/2026/07/24/nightfall-blog-build/">
+  
   <meta name="generator" content="Hexo 8.1.1">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,25 +17,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>标签 - NightFall</title>
+  <title>NightFall 博客搭建记 - NightFall</title>
 
   
-    <meta name="description" content="NightFall de bolg">
-<meta property="og:type" content="website">
-<meta property="og:title" content="标签">
-<meta property="og:url" content="https://nightfall7.top/tags/">
+    <meta name="description" content="从零到上线，用 Hexo + Stellar 搭建个人博客的完整过程，涵盖技术选型、架构设计、模块实现、视觉打磨与部署上线。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NightFall 博客搭建记">
+<meta property="og:url" content="https://nightfall7.top/2026/07/24/nightfall-blog-build/">
 <meta property="og:site_name" content="NightFall">
-<meta property="og:description" content="NightFall de bolg">
+<meta property="og:description" content="从零到上线，用 Hexo + Stellar 搭建个人博客的完整过程，涵盖技术选型、架构设计、模块实现、视觉打磨与部署上线。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.com/NightNight-30.png">
+<meta property="article:published_time" content="2026-07-24T07:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-24T07:09:51.276Z">
 <meta property="article:author" content="NightFall">
-<meta property="article:tag" content="life">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="stellar">
+<meta property="article:tag" content="博客搭建">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/NightNight-30.png">
   
   
   
-  <meta name="keywords" content="life">
+  <meta name="keywords" content="hexo,stellar,博客搭建">
 
   <!-- feed -->
   
@@ -49,12 +53,12 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://nightfall7.top","author":{"@type":"Person","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png"},"name":"NightFall","description":"NightFall de bolg","url":"https://nightfall7.top"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png"},"dateCreated":"2026-07-24T15:00:00+08:00","dateModified":"2026-07-24T15:09:51+08:00","datePublished":"2026-07-24T15:00:00+08:00","description":"从零到上线，用 Hexo + Stellar 搭建个人博客的完整过程，涵盖技术选型、架构设计、模块实现、视觉打磨与部署上线。","headline":"NightFall 博客搭建记","mainEntityOfPage":{"@type":"WebPage","@id":"https://nightfall7.top/2026/07/24/nightfall-blog-build/"},"publisher":{"@type":"Organization","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png","logo":{"@type":"ImageObject","url":"https://github.com/NightNight-30.png"}},"url":"https://nightfall7.top/2026/07/24/nightfall-blog-build/","keywords":"hexo, stellar, 博客搭建","image":[]}</script>
   <link rel="stylesheet" href="/css/code-enhance.css?v=20260724d">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
 
-<div class="l_body index" id="start" layout="tags" type="undefined" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://github.com/NightNight-30.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">NightFall</div><div class="sub normal cap">岂能尽如人意</div><div class="sub hover cap" style="opacity:0"> 但求无愧我心</div></a></div></header>
@@ -77,36 +81,135 @@
 <p><strong>让消失的留下痕迹，让抵达的可以回望。</strong></p>
 </div></widget>
 
+<widget class="widget-wrapper related post-list"><div class="widget-header dis-select"><span class="name">专栏：Hexo 教程</span></div><div class="widget-body"><a class="item active" href="/2026/07/24/nightfall-blog-build/"><span class="title">NightFall 博客搭建记</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="item" href="/2026/04/30/test-post-2/"><span class="title">测试文章 2 - Hexo 常用命令</span></a><a class="item" href="/2026/04/30/test-post-1/"><span class="title">测试文章 1 - Stellar 主题初体验</span></a><a class="item" href="/2026/04/30/hello-world/"><span class="title">Hello World</span></a></div></widget>
+
 <widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/07/24/nightfall-blog-build/"><span class="title">NightFall 博客搭建记</span></a><a class="item title" href="/2026/04/30/hello-world/"><span class="title">Hello World</span></a><a class="item title" href="/2026/04/30/test-post-2/"><span class="title">测试文章 2 - Hexo 常用命令</span></a><a class="item title" href="/2026/04/30/test-post-1/"><span class="title">测试文章 1 - Stellar 主题初体验</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NightNight-30" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder/social/08a41b181ce68.svg"/></a><a class="social" href="https://gitee.com/slient_7" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://api.iconify.design/simple-icons:gitee.svg?color=%23c71d23"/></a><a class="social" href="https://music.163.com/#/user/home?id=91356672" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder/social/3845874.svg"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://github.com/NightNight-30.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">NightFall</div><div class="sub normal cap">岂能尽如人意</div><div class="sub hover cap" style="opacity:0"> 但求无愧我心</div></a></div></header>
 
 
-  
-  
-  
 
-<div class="navbar top"><div class="navbar-blur"><div class="navbar-container"><nav class="post"><a href="/">近期发布</a><a class="active" href="/tags/">标签</a><a href="/topic/">专栏</a><a href="/archives/">归档</a></nav></div></div></div>
-  <div class='post-list'>
-    <article class='' id='tags'>
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/2026/07/24/nightfall-blog-build/">Hexo 教程</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-07-24T07:00:00.000Z">2026-07-24</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-07-24T07:09:51.276Z">2026-07-24</time></span></div></div></div>
+    
+    <div class="bottom only-title">
       
-        <a class='tag' href="/tags/hexo/">
-          <span class='name'>hexo</span>
-        </a>
-      
-        <a class='tag' href="/tags/stellar/">
-          <span class='name'>stellar</span>
-        </a>
-      
-        <a class='tag' href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
-          <span class='name'>博客搭建</span>
-        </a>
-      
-    </article>
+      <div class="text-area">
+        <h1 class="text title"><span>NightFall 博客搭建记</span></h1>
+        
+      </div>
+    </div>
+    
   </div>
+  </div><article class="md-text content"><div class="tag-plugin banner"><img class="lazy bg" data-src="/img/site-bg-mountains.jpg"><div class="content"><div class="top">
+    <button class="back cap" onclick="window.history.back()">
+      <svg aria-hidden="true" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>
+    </button>
+    </div><div class="bottom"><div class="text-area"><div class="text title">NightFall博客搭建记</div><div class="text subtitle">从零到上线，用 Hexo + Stellar 搭建个人博客的完整过程</div></div></div></div></div>
+
+<h2 id="一、缘起"><a href="#一、缘起" class="headerlink" title="一、缘起"></a>一、缘起</h2><blockquote>
+<p>岂能尽如人意，但求无愧我心。</p>
+</blockquote>
+<p>搭一个自己的博客，记录生活感受、学习成长、岁月变迁——<strong>让消失的留下痕迹，让抵达的可以回望。</strong> 这是 NightFall 的初衷。</p>
+<p>市面上的博客平台不少，但要么受制于平台的规则与边界，要么样式千篇一律没有个人色彩。最终决定从零搭建：选一个开源可控的框架，配上一个颜值在线的主题，一点一点打磨成自己喜欢的样子。</p>
+<h2 id="二、技术选型"><a href="#二、技术选型" class="headerlink" title="二、技术选型"></a>二、技术选型</h2><p>选型时考虑了几个维度：<strong>开源、可定制、易维护、中文友好</strong>。</p>
+<p>最终方案：</p>
+<ul>
+<li><strong>Hexo 8.1.1</strong>：静态站点生成器，编译快、生态成熟、中文社区活跃</li>
+<li><strong>Stellar 1.33.1</strong>：xaoxuu 出品的 Hexo 主题，模块化设计、文档详尽、颜值在线</li>
+<li><strong>GitHub Pages</strong>：免费托管博客本体，自带 CDN + HTTPS</li>
+<li><strong>阿里云轻量服务器</strong>：跑后端服务（说说 + 评论），国内访问快</li>
+<li><strong>域名 nightfall7.top</strong>：阿里云万网注册，ICP 备案合规</li>
+</ul>
+<p>Hexo 的好处是「本地写作 → 一键生成 → 推送部署」，所有内容都是 Markdown 源文件，版本可控、迁移方便。Stellar 主题提供了侧边栏 widget、容器标签、tag-plugins 等模块化组件，省去了大量前端开发成本。</p>
+<h2 id="三、整体架构"><a href="#三、整体架构" class="headerlink" title="三、整体架构"></a>三、整体架构</h2><p>采用前后端分离的 split 架构：</p>
+<ul>
+<li><strong>前端</strong>（博客本体）：走 apex 域 <code>nightfall7.top</code>，CNAME 到 GitHub Pages，享受 GitHub CDN</li>
+<li><strong>后端</strong>（API + 管理后台）：走子域 <code>api.nightfall7.top</code>，A 记录到阿里云服务器</li>
+</ul>
+<p>这样分工的好处：前端静态文件白嫖 GitHub 资源（免费 + 全球 CDN + 自带 HTTPS），后端服务独立可扩（评论 &#x2F; 说说 &#x2F; 后台互不影响），域名干净（博客走 apex，后端走子域避免 DNS 冲突）。</p>
+<h2 id="四、模块设计"><a href="#四、模块设计" class="headerlink" title="四、模块设计"></a>四、模块设计</h2><h3 id="4-1-内容组织"><a href="#4-1-内容组织" class="headerlink" title="4.1 内容组织"></a>4.1 内容组织</h3><p>四类内容各司其职：</p>
+<ul>
+<li><strong>文章</strong>：长文写作，技术笔记与生活记录</li>
+<li><strong>专栏</strong>：系列文章聚合，配 OKR 目标管理追踪进度</li>
+<li><strong>笔记本</strong>：碎片化笔记，按标签树组织</li>
+<li><strong>独立页面</strong>：关于 &#x2F; 友链 &#x2F; 生活 &#x2F; 说说等独立模块</li>
+</ul>
+<p>每类内容有独立的路由、模板、侧边栏配置，互不干扰。</p>
+<h3 id="4-2-侧边栏-widget"><a href="#4-2-侧边栏-widget" class="headerlink" title="4.2 侧边栏 widget"></a>4.2 侧边栏 widget</h3><p>主页采用左右双栏布局，widget 各展所长：</p>
+<ul>
+<li><strong>welcome 博客指南</strong>：左栏顶部，霞鹜文楷钢笔楷书风格的便签卡片，写博客宗旨</li>
+<li><strong>calendar 万年历</strong>：右栏日历网格，每格显示农历 &#x2F; 节气 &#x2F; 节日，高亮今天，附当日宜忌 + 法定节假日倒计时</li>
+<li><strong>recent_talks 近期说说</strong>：右栏从 ech0 API 动态拉取最新 5 条说说，点击跳详情</li>
+<li><strong>recent 最近发布</strong>：左栏文章列表，sticky 文章带「置顶」渐变徽章</li>
+<li><strong>related 相关文章</strong>：文章内页按专栏机制推荐同主题文章</li>
+</ul>
+<p>所有 widget 都可按页面类型（首页 &#x2F; 文章 &#x2F; 笔记）灵活配置，不同场景侧边栏内容不同。</p>
+<h3 id="4-3-互动系统"><a href="#4-3-互动系统" class="headerlink" title="4.3 互动系统"></a>4.3 互动系统</h3><ul>
+<li><strong>Artalk 评论</strong>：自托管评论系统，Go + SQLite 轻量级，支持 Markdown &#x2F; 表情 &#x2F; 图片上传 &#x2F; 邮件通知。管理面板独立，可封禁 &#x2F; 审计</li>
+<li><strong>Ech0 说说</strong>：自托管微博客，两列瀑布流布局 + 渐变毛玻璃卡片 + 点赞 &#x2F; 评论 &#x2F; 分享三件套 + APlayer 音乐 &#x2F; Bilibili 视频嵌入</li>
+</ul>
+<p>两个服务都跑在阿里云服务器上，通过 Nginx 反代暴露 API，数据独立可迁移。</p>
+<h3 id="4-4-视觉设计"><a href="#4-4-视觉设计" class="headerlink" title="4.4 视觉设计"></a>4.4 视觉设计</h3><p>全站视觉语言统一：</p>
+<ul>
+<li><strong>背景图</strong>：山景照片 + 100px 模糊 + 300% 饱和度，整页 fixed 铺底，营造氛围感</li>
+<li><strong>卡片</strong>：indigo→purple→pink 135deg 紫粉渐变毛玻璃，全站统一（文章卡片 &#x2F; 说说卡片 &#x2F; 标签徽章复用同一配色）</li>
+<li><strong>字体</strong>：正文用思源宋体 Light 字重（笔画瘦劲，类似瘦金体的方正感），welcome 便签保留霞鹜文楷钢笔楷书做层次区分</li>
+<li><strong>置顶徽章</strong>：sticky 文章标题前渲染「置顶」渐变 badge，复用强调色</li>
+<li><strong>代码块</strong>：3D 立体阴影（右下偏移硬边阴影）+ 同色系淡渐变背景，呼应侧边栏蓝青绿渐变</li>
+</ul>
+<p>视觉打磨的核心是「一致性」：所有强调元素复用同一套渐变配色，所有圆角遵循统一的尺寸阶梯，所有字号遵循同一套比例。</p>
+<h3 id="4-5-SEO"><a href="#4-5-SEO" class="headerlink" title="4.5 SEO"></a>4.5 SEO</h3><ul>
+<li><strong>Open Graph</strong>：自动生成 og:type &#x2F; title &#x2F; url &#x2F; image 等社交分享标签</li>
+<li><strong>Canonical</strong>：防备用站 &#x2F; 盗站分散主站权重，非主站访问弹「备用站 &#x2F; 盗站」提示并加 noindex &#x2F; nofollow</li>
+</ul>
+<h2 id="五、部署上线"><a href="#五、部署上线" class="headerlink" title="五、部署上线"></a>五、部署上线</h2><p>ICP 备案通过后，从 8443 临时端口切 443 标准端口，手机端访问不再被运营商拦截。阿里云 DNS 配 split 架构（apex CNAME GitHub，api A 记录服务器）。Nginx 反代后端容器，SSL 证书走 HTTP-01 自动续期，不用手动续。</p>
+<p>部署流程：本地改 Markdown &#x2F; 配置 → <code>hexo clean &amp;&amp; hexo deploy</code> → GitHub Actions 自动构建 Pages → CDN 生效。整个流程不到 1 分钟。</p>
+<h2 id="六、回顾与展望"><a href="#六、回顾与展望" class="headerlink" title="六、回顾与展望"></a>六、回顾与展望</h2><p>从 6 月底立项到 7 月底稳定运行，一个月迭代了七次（6-26 ~ 7-24）。每一版变更都留档在 Obsidian 笔记，包括变更记录（按日期追加历史）和项目文档（只反映最新状态），方便回溯与复盘。</p>
+<p>博客是个长期项目，接下来打算：</p>
+<ul>
+<li>丰富生活记录栏目（相册 &#x2F; 旅行 &#x2F; 美食）</li>
+<li>启用 timeline 时间线标签，把 GitHub issues 当说说发</li>
+<li>持续打磨视觉细节（暗色模式 &#x2F; 移动端适配）</li>
+</ul>
+<p>博客的意义不在于有多少人看，而在于<strong>有一块属于自己的地方，可以认真地写一些东西</strong>。技术框架可以复刻，但写下的字、记录的瞬间，是独一无二的。</p>
+<blockquote>
+<p>让消失的留下痕迹，让抵达的可以回望。</p>
+</blockquote>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/04/30/test-post-2/">测试文章 2 - Hexo 常用命令</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body artalk'>
+      
+
+<div class="artalk with-fancybox" id="artalk_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
 
 
 <footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/topic/">专栏</a><a href="/tags/">标签</a><a href="/archives/">归档</a></div><div class="sitemap-group"><span class="fs15">导航</span><a href="/life/">生活</a><a href="/friends/">友链</a><a href="/shuoshuo/">说说</a><a href="/about/">关于</a></div><div class="sitemap-group"><span class="fs15">协议</span><a href="/privacy/">隐私说明</a><a href="/license/">版权协议</a><a href="/disclaimer/">免责声明</a><a target="_blank" rel="noopener" href="https://yibo.iyiyun.com/">公益404</a></div></div><div class="text"><div class="footer-info">
@@ -147,7 +250,10 @@
 <script src="/js/footer-uptime.js" defer></script>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel'>
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%BC%98%E8%B5%B7"><span class="toc-text">一、缘起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B"><span class="toc-text">二、技术选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-text">三、整体架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1"><span class="toc-text">四、模块设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%86%85%E5%AE%B9%E7%BB%84%E7%BB%87"><span class="toc-text">4.1 内容组织</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E4%BE%A7%E8%BE%B9%E6%A0%8F-widget"><span class="toc-text">4.2 侧边栏 widget</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E4%BA%92%E5%8A%A8%E7%B3%BB%E7%BB%9F"><span class="toc-text">4.3 互动系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E8%A7%86%E8%A7%89%E8%AE%BE%E8%AE%A1"><span class="toc-text">4.4 视觉设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-SEO"><span class="toc-text">4.5 SEO</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%83%A8%E7%BD%B2%E4%B8%8A%E7%BA%BF"><span class="toc-text">五、部署上线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%9B%9E%E9%A1%BE%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="toc-text">六、回顾与展望</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
@@ -641,6 +747,33 @@
 
 
 <!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('artalk_container');
+  util.viewportLazyload(el, load_artalk, false);
+
+  function load_artalk() {
+    if (!el) return;
+    utils.css('https://cdn.jsdelivr.net/npm/artalk@2.9/dist/Artalk.css');
+    utils.js('https://cdn.jsdelivr.net/npm/artalk@2.9/dist/Artalk.js', {defer: true}).then(function () {
+      // 监听 Artalk 事件
+      // FIXME: Artalk开启了懒加载会导致评论输入预览框里的图也变成data-src，导致看不到图
+      // Artalk.use((ctx) => {
+      //   ctx.on('list-loaded', () => window.lazyLoadInstance?.update())
+      // })
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      const artalk = Artalk.init({
+        el: '#artalk_container',
+        pageKey: path,
+        pageTitle: 'NightFall 博客搭建记',
+        server: 'https://api.nightfall7.top/artalk',
+        site: 'NightFall',
+        darkMode: 'auto',
+        
+      });
+    });
+  }
+</script>
 
 
 
