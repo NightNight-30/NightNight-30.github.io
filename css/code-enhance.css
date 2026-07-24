@@ -256,6 +256,14 @@ body .navbar-blur::after {
    整个按钮就是 pill 轨道：左侧隐约的太阳、右侧隐约的月亮
    圆形 knob 在轨道里左右滑动：light 模式 knob 停在左端（显示太阳）
    点击后 knob 滑到右端、主题切到 dark、knob 上图标换成月亮 */
+/* sidebar 底部预留 margin 从 stellar 默认 96px → 36px，多出来的 60px 给 .widgets
+   滚动区让最近更新显示更多文章（welcome+recent 原本 overflow 67px，加 60px 后基本不滚） */
+.l_left {
+  max-height: calc(100vh - var(--gap-margin) * 2 - 36px) !important;
+}
+.l_left .leftbar-container {
+  height: calc(100vh - var(--gap-margin) * 2 - 36px) !important;
+}
 /* sidebar footer 整体下移：social-wrap 与 theme-toggle 与上方 recent widget 拉开距离 */
 .l_left .footer.dis-select {
   margin-top: 24px;
