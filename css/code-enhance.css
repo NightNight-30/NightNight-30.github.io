@@ -884,3 +884,54 @@ body .navbar-blur::after {
 [data-theme="dark"] .post-title .pin-badge {
   box-shadow: 0 2px 8px rgba(168, 85, 247, 0.45);
 }
+
+/* === 置顶文章卡片：cover 由独立块改为整卡片叠加背景，文字浮于其上 ===
+   解决 stellar 默认 .post-cover position:static + aspect-ratio:2/1 导致
+   卡片高度从 ~165px 膨胀到 ~507px、图与文字上下分开的问题 */
+.post-list .post-card.md-text:has(.pin-badge) {
+  position: relative;
+  overflow: hidden;
+}
+.post-list .post-card.md-text:has(.pin-badge) .post-cover {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.post-list .post-card.md-text:has(.pin-badge) .post-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: auto;
+}
+.post-list .post-card.md-text:has(.pin-badge) .post-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.70));
+  z-index: 1;
+}
+.post-list .post-card.md-text:has(.pin-badge) .post-title,
+.post-list .post-card.md-text:has(.pin-badge) .excerpt,
+.post-list .post-card.md-text:has(.pin-badge) .meta {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+}
+.post-list .post-card.md-text:has(.pin-badge) .post-title {
+  text-shadow: 0 2px 6px rgba(0,0,0,0.55);
+}
+.post-list .post-card.md-text:has(.pin-badge) .excerpt p,
+.post-list .post-card.md-text:has(.pin-badge) .meta,
+.post-list .post-card.md-text:has(.pin-badge) .meta time,
+.post-list .post-card.md-text:has(.pin-badge) .meta .cap {
+  color: rgba(255,255,255,0.92);
+}
+.post-list .post-card.md-text:has(.pin-badge) .pin-badge {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+}
+[data-theme="dark"] .post-list .post-card.md-text:has(.pin-badge) .post-cover::after {
+  background: linear-gradient(135deg, rgba(0,0,0,0.65), rgba(0,0,0,0.78));
+}
