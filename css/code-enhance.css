@@ -855,3 +855,25 @@ body .navbar-blur::after {
 .sidebar-talks-empty a, .sidebar-talks-error a {
   color: var(--text-p3, inherit);
 }
+
+/* === 文章卡片「置顶」渐变徽章（替代 stellar 默认 pin 图标） ===
+   复用博客强调色 indigo→purple→pink 135deg 渐变（与 .post-card / 日历今日格 / sitemap 竖线一致）
+   放在 <h2 class="post-title"> 内、标题文字前 */
+.post-title .pin-badge {
+  display: inline-block;
+  vertical-align: middle;
+  background: linear-gradient(135deg, rgb(99, 102, 241), rgb(168, 85, 247), rgb(236, 72, 153));
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-right: 8px;
+  box-shadow: 0 2px 6px rgba(168, 85, 247, 0.35);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+[data-theme="dark"] .post-title .pin-badge {
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.45);
+}
