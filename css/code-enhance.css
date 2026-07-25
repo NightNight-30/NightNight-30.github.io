@@ -161,29 +161,15 @@ body .navbar-blur::after {
   overflow: visible !important;
   position: relative !important;
 }
-/* welcome 便签：紫粉渐变双线相框（替代原折角设计）
-   外层 border 用紫粉渐变 border-image，内层 ::before 1px 紫粉半透明细线
-   inset 4px 形成 mounting 卡纸留白，呼应全站 indigo→purple→pink 强调色
-   border-image 不支持 border-radius，用直角更接近传统画框 */
+/* welcome 便签：紫粉渐变毛玻璃卡片（与全站卡片渐变风格统一）
+   半透明紫粉渐变背景 + 1px 紫色细 border + 8px 圆角 + 投影
+   padding-top 16px 让标题/内容整体下移，避免贴顶 */
 .l_left .widget-wrapper.markdown {
-  border: 1px solid !important;
-  border-image: linear-gradient(135deg, rgb(99, 102, 241), rgb(168, 85, 247), rgb(236, 72, 153)) 1 !important;
-  border-radius: 0 !important;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.04), 2px 3px 6px rgba(0,0,0,0.14), 4px 6px 14px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(255,255,255,0.4) !important;
-  padding: 4px 4px 24px !important;
-}
-.l_left .widget-wrapper.markdown::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 4px !important;
-  right: 4px !important;
-  bottom: 4px !important;
-  left: 4px !important;
-  border: 1px solid !important;
-  border-image: linear-gradient(135deg, rgba(99, 102, 241, 0.45), rgba(168, 85, 247, 0.45), rgba(236, 72, 153, 0.45)) 1 !important;
-  border-radius: 0 !important;
-  pointer-events: none !important;
-  z-index: 0 !important;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.06), rgba(236, 72, 153, 0.10)) !important;
+  border: 1px solid rgba(168, 85, 247, 0.35) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04), 2px 3px 6px rgba(0,0,0,0.14), 4px 6px 14px rgba(0,0,0,0.10) !important;
+  padding: 16px 16px 24px !important;
 }
 .widget-wrapper.markdown > * {
   position: relative;
@@ -236,8 +222,9 @@ body .navbar-blur::after {
   border-color: rgba(200, 170, 100, 0.22) !important;
   box-shadow: 0 1px 0 rgba(0,0,0,0.20), 2px 3px 6px rgba(0,0,0,0.30), 4px 6px 14px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.08) !important;
 }
-[data-theme="dark"] .l_left .widget-wrapper.markdown::before {
-  border-image: linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.35), rgba(236, 72, 153, 0.35)) 1 !important;
+[data-theme="dark"] .l_left .widget-wrapper.markdown {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(168, 85, 247, 0.14), rgba(236, 72, 153, 0.20)) !important;
+  border-color: rgba(168, 85, 247, 0.45) !important;
 }
 [data-theme="dark"] .widget-wrapper.markdown .widget-header .name {
   color: rgba(255, 245, 200, 0.92) !important;
@@ -942,4 +929,20 @@ body .navbar-blur::after {
 }
 [data-theme="dark"] .post-list .post-card:has(.pin-badge) .post-cover::after {
   background: linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0.45));
+}
+
+/* === RSS social 图标：默认深灰透着黑（和其他 social 一致），hover 显示原本的橙色 ===
+   src 用橙色 SVG，filter grayscale+brightness 把彩色压成深灰，hover 时 filter:none 还原彩色 */
+a.social[href*="atom.xml"] img {
+  filter: grayscale(1) brightness(0.2);
+  transition: filter 0.3s ease;
+}
+a.social[href*="atom.xml"]:hover img {
+  filter: none;
+}
+[data-theme="dark"] a.social[href*="atom.xml"] img {
+  filter: grayscale(1) brightness(0.6);
+}
+[data-theme="dark"] a.social[href*="atom.xml"]:hover img {
+  filter: none;
 }
