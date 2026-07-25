@@ -161,15 +161,27 @@ body .navbar-blur::after {
   overflow: visible !important;
   position: relative !important;
 }
-/* welcome 便签：紫粉渐变毛玻璃卡片（与全站卡片渐变风格统一）
-   半透明紫粉渐变背景 + 1px 紫色细 border + 8px 圆角 + 投影
-   padding-top 16px 让标题/内容整体下移，避免贴顶 */
-.l_left .widget-wrapper.markdown {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.06), rgba(236, 72, 153, 0.10)) !important;
-  border: 1px solid rgba(168, 85, 247, 0.35) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.04), 2px 3px 6px rgba(0,0,0,0.14), 4px 6px 14px rgba(0,0,0,0.10) !important;
-  padding: 16px 16px 24px !important;
+/* welcome 便签顶部胶带：半透明白色 + 虚线边模拟胶带齿纹，倾斜挂在便签上沿
+   用 .l_left 限定只对 welcome 生效（日历/近期说说在右栏，不应用胶带） */
+.l_left .widget-wrapper.markdown::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -8px !important;
+  left: 50% !important;
+  transform: translateX(-50%) rotate(-3deg) !important;
+  width: 86px !important;
+  height: 16px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(245,240,220,0.4)) !important;
+  border-left: 1px dashed rgba(180, 150, 90, 0.35) !important;
+  border-right: 1px dashed rgba(180, 150, 90, 0.35) !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+[data-theme="dark"] .l_left .widget-wrapper.markdown::before {
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(245,240,220,0.06)) !important;
+  border-left-color: rgba(200, 170, 100, 0.35) !important;
+  border-right-color: rgba(200, 170, 100, 0.35) !important;
 }
 .widget-wrapper.markdown > * {
   position: relative;
@@ -177,7 +189,7 @@ body .navbar-blur::after {
 }
 .widget-wrapper.markdown .widget-header .name {
   font-weight: 600 !important;
-  color: rgba(80, 60, 20, 0.9) !important;
+  color: #0a0a0a !important;
   font-size: 15px !important;
   font-family: 'Noto Serif SC', system-ui, sans-serif !important;
 }
@@ -221,10 +233,6 @@ body .navbar-blur::after {
   background-color: transparent !important;
   border-color: rgba(200, 170, 100, 0.22) !important;
   box-shadow: 0 1px 0 rgba(0,0,0,0.20), 2px 3px 6px rgba(0,0,0,0.30), 4px 6px 14px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.08) !important;
-}
-[data-theme="dark"] .l_left .widget-wrapper.markdown {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(168, 85, 247, 0.14), rgba(236, 72, 153, 0.20)) !important;
-  border-color: rgba(168, 85, 247, 0.45) !important;
 }
 [data-theme="dark"] .widget-wrapper.markdown .widget-header .name {
   color: rgba(255, 245, 200, 0.92) !important;
