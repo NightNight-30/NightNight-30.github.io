@@ -785,7 +785,7 @@ body .navbar-blur::after {
   transform: translateX(-50%) !important;
   width: 22px !important;
   height: 22px !important;
-  background: url('https://api.iconify.design/solar:pin-bold-duotone.svg?color=%23d32f2f') center / contain no-repeat !important;
+  background: url('/img/图钉.svg') center / contain no-repeat !important;
   background-color: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -793,7 +793,7 @@ body .navbar-blur::after {
   pointer-events: none !important;
 }
 [data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar)::before {
-  background: url('https://api.iconify.design/solar:pin-bold-duotone.svg?color=%23ef5350') center / contain no-repeat !important;
+  background: url('/img/图钉.svg') center / contain no-repeat !important;
   border: none !important;
 }
 .widget-wrapper.markdown:has(#sidebar-calendar) .widget-header {
