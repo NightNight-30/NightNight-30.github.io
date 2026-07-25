@@ -202,6 +202,20 @@ body .navbar-blur::after {
   text-align: center !important;
   letter-spacing: 1px;
 }
+/* welcome 便签整体放大 + 文本下移：padding-top 20px + 标题/正文各 +2px */
+.l_left .widget-wrapper.markdown {
+  padding: 20px 0 24px !important;
+}
+.l_left .widget-wrapper.markdown .widget-header .name {
+  font-size: 17px !important;
+}
+.l_left .widget-wrapper.markdown .widget-body {
+  font-size: 16px !important;
+}
+.l_left .widget-wrapper.markdown .widget-body em {
+  font-weight: 700 !important;
+  font-style: italic !important;
+}
 .widget-wrapper.markdown .widget-body {
   background: none !important;
   font-size: 14px !important;
@@ -217,8 +231,7 @@ body .navbar-blur::after {
 }
 .widget-wrapper.markdown .widget-body ul {
   margin: 6px 0 !important;
-  padding-left: 20px !important;
-}
+  padding-left: 20px !important;}
 .widget-wrapper.markdown .widget-body li {
   margin: 4px 0 !important;
   line-height: 1.75 !important;
