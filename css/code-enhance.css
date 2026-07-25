@@ -161,20 +161,21 @@ body .navbar-blur::after {
   overflow: visible !important;
   position: relative !important;
 }
-/* 右上角折角：模拟便签纸被翻起的角，替代原顶部胶带
-   用 225deg 渐变在 26x26 区域分两半：右上半透明（露底层），左下米黄（折角翻起面）
-   配 box-shadow 投影 + inset 高光，营造翻起的立体感 */
-.widget-wrapper.markdown::after {
+/* welcome 便签右上角折角：替代原顶部胶带
+   用 .l_left 限定只对 welcome 生效（日历 / 近期说说在右栏，不应用折角）
+   折角是不透明米黄三角形（clip-path 切右上对角线），完全遮挡便签主体右上角 border
+   filter:drop-shadow 做投影（clip-path 会切 box-shadow，必须用 drop-shadow） */
+.l_left .widget-wrapper.markdown::after {
   content: '' !important;
   position: absolute !important;
   top: 0 !important;
   right: 0 !important;
   width: 26px !important;
   height: 26px !important;
-  background: linear-gradient(225deg, transparent 0, transparent 50%, rgba(245, 235, 200, 0.55) 50%, rgba(245, 235, 200, 0.55) 100%) !important;
-  box-shadow: -2px 2px 3px rgba(0,0,0,0.12), inset 1px 1px 0 rgba(255,255,255,0.30) !important;
-  border-radius: 0 2px 0 0 !important;
-  z-index: 1 !important;
+  background: linear-gradient(135deg, rgba(245, 235, 200, 0.95), rgba(220, 200, 150, 1)) !important;
+  clip-path: polygon(0 0, 100% 0, 100% 100%) !important;
+  filter: drop-shadow(-2px 2px 1px rgba(0,0,0,0.18)) !important;
+  z-index: 2 !important;
   pointer-events: none !important;
 }
 .widget-wrapper.markdown > * {
@@ -185,7 +186,7 @@ body .navbar-blur::after {
   font-weight: 600 !important;
   color: rgba(80, 60, 20, 0.9) !important;
   font-size: 15px !important;
-  font-family: '"Noto Serif SC", system-ui, sans-serif' !important;
+  font-family: 'Noto Serif SC', system-ui, sans-serif !important;
 }
 /* welcome 便签（左侧栏）标题加粗居中——只 l_left 的 markdown widget 是 welcome */
 .l_left .widget-wrapper.markdown .widget-header {
@@ -201,7 +202,7 @@ body .navbar-blur::after {
   font-size: 14px !important;
   line-height: 1.75 !important;
   color: rgba(60, 45, 15, 0.85) !important;
-  font-family: '"Noto Serif SC", system-ui, sans-serif' !important;
+  font-family: 'Noto Serif SC', system-ui, sans-serif !important;
   padding: 4px 16px !important;
   border-radius: 0 !important;
 }
@@ -228,9 +229,9 @@ body .navbar-blur::after {
   border-color: rgba(200, 170, 100, 0.22) !important;
   box-shadow: 0 1px 0 rgba(0,0,0,0.20), 2px 3px 6px rgba(0,0,0,0.30), 4px 6px 14px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.08) !important;
 }
-[data-theme="dark"] .widget-wrapper.markdown::after {
-  background: linear-gradient(225deg, transparent 0, transparent 50%, rgba(180, 150, 90, 0.18) 50%, rgba(180, 150, 90, 0.18) 100%) !important;
-  box-shadow: -2px 2px 3px rgba(0,0,0,0.35), inset 1px 1px 0 rgba(255,255,255,0.08) !important;
+[data-theme="dark"] .l_left .widget-wrapper.markdown::after {
+  background: linear-gradient(135deg, rgba(180, 150, 90, 0.30), rgba(140, 110, 60, 0.45)) !important;
+  filter: drop-shadow(-2px 2px 1px rgba(0,0,0,0.5)) !important;
 }
 [data-theme="dark"] .widget-wrapper.markdown .widget-header .name {
   color: rgba(255, 245, 200, 0.92) !important;
