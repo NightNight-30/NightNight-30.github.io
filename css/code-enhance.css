@@ -161,26 +161,33 @@ body .navbar-blur::after {
   overflow: visible !important;
   position: relative !important;
 }
-/* welcome 便签右上角折角：替代原顶部胶带
-   用 .l_left 限定只对 welcome 生效（日历 / 近期说说在右栏，不应用折角）
-   折角是不透明米黄三角形（clip-path 切右上对角线），完全遮挡便签主体右上角 border
-   filter:drop-shadow 做投影（clip-path 会切 box-shadow，必须用 drop-shadow） */
-.l_left .widget-wrapper.markdown::after {
+/* welcome 便签：紫粉渐变双线相框（替代原折角设计）
+   外层 border 用紫粉渐变 border-image，内层 ::before 1px 紫粉半透明细线
+   inset 4px 形成 mounting 卡纸留白，呼应全站 indigo→purple→pink 强调色
+   border-image 不支持 border-radius，用直角更接近传统画框 */
+.l_left .widget-wrapper.markdown {
+  border: 1px solid !important;
+  border-image: linear-gradient(135deg, rgb(99, 102, 241), rgb(168, 85, 247), rgb(236, 72, 153)) 1 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04), 2px 3px 6px rgba(0,0,0,0.14), 4px 6px 14px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(255,255,255,0.4) !important;
+  padding: 4px 4px 24px !important;
+}
+.l_left .widget-wrapper.markdown::before {
   content: '' !important;
   position: absolute !important;
-  top: 0 !important;
-  right: 0 !important;
-  width: 26px !important;
-  height: 26px !important;
-  background: linear-gradient(135deg, rgba(245, 235, 200, 0.95), rgba(220, 200, 150, 1)) !important;
-  clip-path: polygon(0 0, 100% 0, 100% 100%) !important;
-  filter: drop-shadow(-2px 2px 1px rgba(0,0,0,0.18)) !important;
-  z-index: 2 !important;
+  top: 4px !important;
+  right: 4px !important;
+  bottom: 4px !important;
+  left: 4px !important;
+  border: 1px solid !important;
+  border-image: linear-gradient(135deg, rgba(99, 102, 241, 0.45), rgba(168, 85, 247, 0.45), rgba(236, 72, 153, 0.45)) 1 !important;
+  border-radius: 0 !important;
   pointer-events: none !important;
+  z-index: 0 !important;
 }
 .widget-wrapper.markdown > * {
   position: relative;
-  z-index: 0;
+  z-index: 1;
 }
 .widget-wrapper.markdown .widget-header .name {
   font-weight: 600 !important;
@@ -229,9 +236,8 @@ body .navbar-blur::after {
   border-color: rgba(200, 170, 100, 0.22) !important;
   box-shadow: 0 1px 0 rgba(0,0,0,0.20), 2px 3px 6px rgba(0,0,0,0.30), 4px 6px 14px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.08) !important;
 }
-[data-theme="dark"] .l_left .widget-wrapper.markdown::after {
-  background: linear-gradient(135deg, rgba(180, 150, 90, 0.30), rgba(140, 110, 60, 0.45)) !important;
-  filter: drop-shadow(-2px 2px 1px rgba(0,0,0,0.5)) !important;
+[data-theme="dark"] .l_left .widget-wrapper.markdown::before {
+  border-image: linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.35), rgba(236, 72, 153, 0.35)) 1 !important;
 }
 [data-theme="dark"] .widget-wrapper.markdown .widget-header .name {
   color: rgba(255, 245, 200, 0.92) !important;
@@ -283,15 +289,16 @@ body .navbar-blur::after {
   height: 36px;
   margin-top: 10px;
   border-radius: 18px;
-  border: 1px solid var(--bg-a100, rgba(0,0,0,0.08));
-  background: var(--bg-a60, rgba(0,0,0,0.04));
+  border: 1px solid rgba(245, 200, 100, 0.40);
+  background: linear-gradient(135deg, rgba(255, 247, 220, 0.85), rgba(255, 230, 170, 0.70));
   cursor: pointer;
   padding: 0;
   overflow: hidden;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 .l_left .footer.dis-select .theme-toggle-pill:hover {
-  background: var(--bg-a100, rgba(0,0,0,0.08));
+  background: linear-gradient(135deg, rgba(255, 240, 195, 0.95), rgba(255, 220, 150, 0.85));
+  border-color: rgba(245, 200, 100, 0.60);
 }
 /* 轨道两端的隐约图标（提示另一侧的状态） */
 .l_left .footer.dis-select .theme-toggle-pill .track-icon {
