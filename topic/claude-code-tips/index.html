@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
-  <link rel="canonical" href="https://nightfall7.top/topic/tech-sharing/">
+  <link rel="canonical" href="https://nightfall7.top/topic/claude-code-tips/">
   
   <meta name="generator" content="Hexo 8.1.1">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
@@ -17,19 +17,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>技术分享 - NightFall</title>
+  <title>Claude Code 使用分享 - NightFall</title>
 
   
-    <meta name="description" content="工作流、工具链与内部技术分享沉淀">
+    <meta name="description" content="Claude Code 使用相关技术与技巧分享沉淀">
 <meta property="og:type" content="website">
-<meta property="og:title" content="技术分享">
-<meta property="og:url" content="https://nightfall7.top/topic/tech-sharing/">
+<meta property="og:title" content="Claude Code 使用分享">
+<meta property="og:url" content="https://nightfall7.top/topic/claude-code-tips/">
 <meta property="og:site_name" content="NightFall">
-<meta property="og:description" content="工作流、工具链与内部技术分享沉淀">
+<meta property="og:description" content="Claude Code 使用相关技术与技巧分享沉淀">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.com/NightNight-30.png">
 <meta property="article:published_time" content="2026-08-06T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-08-06T09:34:13.025Z">
+<meta property="article:modified_time" content="2026-08-06T09:58:55.066Z">
 <meta property="article:author" content="NightFall">
 <meta property="article:tag" content="life">
 <meta name="twitter:card" content="summary">
@@ -53,7 +53,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://nightfall7.top/topic/tech-sharing/","author":{"@type":"Person","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png"},"name":"技术分享","description":"工作流、工具链与内部技术分享沉淀","url":"https://nightfall7.top/topic/tech-sharing/","keywords":"life"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://nightfall7.top/topic/claude-code-tips/","author":{"@type":"Person","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png"},"name":"Claude Code 使用分享","description":"Claude Code 使用相关技术与技巧分享沉淀","url":"https://nightfall7.top/topic/claude-code-tips/","keywords":"life"}</script>
   <link rel="stylesheet" href="/css/code-enhance.css?v=20260728a">
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -81,7 +81,7 @@
 <p><strong>让消失的留下痕迹，<br>让抵达的可以回望。</strong></p>
 </div></widget>
 
-<widget class="widget-wrapper related post-list"><div class="widget-header dis-select"><span class="name">专栏：技术分享</span></div><div class="widget-body"><a class="item" href="/2026/08/06/claude-code-workflow-3-cc-features/"><span class="title">Claude Code 工作流（三）：内置功能 — agents view + /insights</span></a><a class="item" href="/2026/08/06/claude-code-workflow-2-databricks/"><span class="title">Claude Code 工作流（二）：Claude Code × Databricks</span></a><a class="item" href="/2026/08/06/claude-code-workflow-1-knowledge-base/"><span class="title">Claude Code 工作流（一）：知识库双范式 — Obsidian × Notion</span></a></div></widget>
+<widget class="widget-wrapper related post-list"><div class="widget-header dis-select"><span class="name">专栏：Claude Code 使用分享</span></div><div class="widget-body"><a class="item" href="/2026/08/06/claude-code-workflow-3-cc-features/"><span class="title">Claude Code 工作流（三）：内置功能 — agents view + /insights</span></a><a class="item" href="/2026/08/06/claude-code-workflow-2-databricks/"><span class="title">Claude Code 工作流（二）：Claude Code × Databricks</span></a><a class="item" href="/2026/08/06/claude-code-workflow-1-knowledge-base/"><span class="title">Claude Code 工作流（一）：知识库双范式 — Obsidian × Notion</span></a></div></widget>
 
 <widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/08/06/claude-code-workflow-3-cc-features/"><span class="title">Claude Code 工作流（三）：内置功能 — agents view + /insights</span></a><a class="item title" href="/2026/08/06/claude-code-workflow-2-databricks/"><span class="title">Claude Code 工作流（二）：Claude Code × Databricks</span></a><a class="item title" href="/2026/08/06/claude-code-workflow-1-knowledge-base/"><span class="title">Claude Code 工作流（一）：知识库双范式 — Obsidian × Notion</span></a><a class="item title" href="/2026/07/24/nightfall-blog-build/"><span class="title">NightFall 博客搭建记</span></a><a class="item title" href="/2026/04/30/hello-world/"><span class="title">Hello World</span></a><a class="item title" href="/2026/04/30/test-post-2/"><span class="title">测试文章 2 - Hexo 常用命令</span></a><a class="item title" href="/2026/04/30/test-post-1/"><span class="title">测试文章 1 - Stellar 主题初体验</span></a></div></widget>
 </div>
@@ -97,20 +97,20 @@
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 
   <span class="sep"></span>
-  <a class="cap breadcrumb" href="/topic/tech-sharing/">技术分享</a>
+  <a class="cap breadcrumb" href="/topic/claude-code-tips/">Claude Code 使用分享</a>
   </div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-08-06T10:00:00.000Z">2026-08-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-06T09:34:13.025Z">2026-08-06</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-08-06T10:00:00.000Z">2026-08-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-06T09:58:55.066Z">2026-08-06</time></span></div></div></div>
     
     <div class="bottom only-title">
       
       <div class="text-area">
-        <h1 class="text title"><span>技术分享</span></h1>
+        <h1 class="text title"><span>Claude Code 使用分享</span></h1>
         
       </div>
     </div>
     
   </div>
-  </div><article class="md-text content"><p>本专栏记录日常技术分享的整理与沉淀，含 Claude Code 工作流、Databricks 集成、知识库工具选型等。每篇都配可交互的 Slidev deck 嵌入与详细文字解读。</p>
+  </div><article class="md-text content"><p>本专栏记录 Claude Code 使用相关技术、工作流、工具链集成的整理与沉淀，含知识库工具选型、Databricks 集成、内置功能用法等。每篇都配可交互的 Slidev deck 嵌入与详细文字解读。</p>
 <h2 id="专栏文章"><a href="#专栏文章" class="headerlink" title="专栏文章"></a>专栏文章</h2><p>按发布倒序：</p>
 <ol>
 <li><strong><a href="/posts/claude-code-workflow-1-knowledge-base/">Claude Code 工作流（一）：知识库双范式 — Obsidian × Notion</a></strong> — 本地 markdown 双链 vs block + database + relation，附 daily-todo-bot 把 Notion 待办推钉钉的实战。</li>
@@ -688,7 +688,7 @@
       const artalk = Artalk.init({
         el: '#artalk_container',
         pageKey: path,
-        pageTitle: '技术分享',
+        pageTitle: 'Claude Code 使用分享',
         server: 'https://api.nightfall7.top/artalk',
         site: 'NightFall',
         darkMode: 'auto',
