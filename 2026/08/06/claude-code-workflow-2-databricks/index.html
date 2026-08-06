@@ -1,0 +1,1020 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  <link rel="canonical" href="https://nightfall7.top/2026/08/06/claude-code-workflow-2-databricks/">
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Claude Code 工作流（二）：Claude Code × Databricks - NightFall</title>
+
+  
+    <meta name="description" content="远程 MCP Server vs 本地 CLI + Skills 选型，9 步测试工作流闭环，10 行 × 68 列自主抓取实战。Slidev deck 嵌入 + 逐页文字详解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude Code 工作流（二）：Claude Code × Databricks">
+<meta property="og:url" content="https://nightfall7.top/2026/08/06/claude-code-workflow-2-databricks/">
+<meta property="og:site_name" content="NightFall">
+<meta property="og:description" content="远程 MCP Server vs 本地 CLI + Skills 选型，9 步测试工作流闭环，10 行 × 68 列自主抓取实战。Slidev deck 嵌入 + 逐页文字详解。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/NightNight-30.png">
+<meta property="article:published_time" content="2026-08-06T10:45:00.000Z">
+<meta property="article:modified_time" content="2026-08-06T09:36:53.011Z">
+<meta property="article:author" content="NightFall">
+<meta property="article:tag" content="Claude Code">
+<meta property="article:tag" content="Databricks">
+<meta property="article:tag" content="MCP">
+<meta property="article:tag" content="Skills">
+<meta property="article:tag" content="工作流">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.com/NightNight-30.png">
+  
+  
+  
+  <meta name="keywords" content="Claude Code,工作流,Databricks,MCP,Skills">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="NightFall" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/img/favicon.svg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png"},"dateCreated":"2026-08-06T18:45:00+08:00","dateModified":"2026-08-06T17:36:53+08:00","datePublished":"2026-08-06T18:45:00+08:00","description":"远程 MCP Server vs 本地 CLI + Skills 选型，9 步测试工作流闭环，10 行 × 68 列自主抓取实战。Slidev deck 嵌入 + 逐页文字详解。","headline":"Claude Code 工作流（二）：Claude Code × Databricks","mainEntityOfPage":{"@type":"WebPage","@id":"https://nightfall7.top/2026/08/06/claude-code-workflow-2-databricks/"},"publisher":{"@type":"Organization","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png","logo":{"@type":"ImageObject","url":"https://github.com/NightNight-30.png"}},"url":"https://nightfall7.top/2026/08/06/claude-code-workflow-2-databricks/","keywords":"Claude Code, 工作流, Databricks, MCP, Skills","thumbnailUrl":"/img/site-bg-mountains.jpg","image":1}</script>
+  <link rel="stylesheet" href="/css/code-enhance.css?v=20260728a">
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://github.com/NightNight-30.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">NightFall</div><div class="sub normal cap">岂能尽如人意</div><div class="sub hover cap" style="opacity:0"> 但求无愧我心</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#E91E63"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a><a class="nav-item" title="生活" href="/life/" style="color:#FFC107"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M9.778 21h4.444c3.121 0 4.682 0 5.803-.735a4.4 4.4 0 0 0 1.226-1.204c.749-1.1.749-2.633.749-5.697s0-4.597-.749-5.697a4.4 4.4 0 0 0-1.226-1.204c-.72-.473-1.622-.642-3.003-.702c-.659 0-1.226-.49-1.355-1.125A2.064 2.064 0 0 0 13.634 3h-3.268c-.988 0-1.839.685-2.033 1.636c-.129.635-.696 1.125-1.355 1.125c-1.38.06-2.282.23-3.003.702A4.4 4.4 0 0 0 2.75 7.667C2 8.767 2 10.299 2 13.364s0 4.596.749 5.697c.324.476.74.885 1.226 1.204C5.096 21 6.657 21 9.778 21" opacity=".5"/><path fill="currentColor" d="M17.556 9.272a.826.826 0 0 0-.833.819c0 .452.373.818.833.818h1.111c.46 0 .834-.367.834-.818a.826.826 0 0 0-.834-.819z"/><path fill="currentColor" fill-rule="evenodd" d="M12 9.272c-2.3 0-4.166 1.832-4.166 4.091s1.865 4.091 4.167 4.091c2.3 0 4.166-1.831 4.166-4.09s-1.865-4.092-4.166-4.092m0 1.637c-1.38 0-2.5 1.099-2.5 2.454s1.12 2.455 2.5 2.455c1.381 0 2.5-1.099 2.5-2.455c0-1.355-1.119-2.454-2.5-2.454" clip-rule="evenodd"/></svg></a><a class="nav-item" title="友链" href="/friends/" style="color:#6366F1"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="说说" href="/shuoshuo/" style="color:#00BFA5"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 18c4.142.034 7.594-3.92 7.56-8.196C19.527 5.53 16.142 2.034 12 2S4.527 5.404 4.56 9.68C4.595 13.954 7.859 17.964 12 18" opacity=".5"/><path fill="currentColor" fill-rule="evenodd" d="M11.75 5.994a.75.75 0 0 1 .756-.744a3.785 3.785 0 0 1 3.744 3.744a.75.75 0 0 1-1.5.012a2.285 2.285 0 0 0-2.256-2.256a.75.75 0 0 1-.744-.756" clip-rule="evenodd"/><path fill="currentColor" d="M13.18 17.901a6.5 6.5 0 0 1-2.352-.019l-.018.04c-.152.274-.228.41-.261.516c-.193.617.204 1.262.858 1.39c.111.022.272.022.593.022s.482 0 .593-.022c.654-.128 1.051-.773.858-1.39c-.033-.105-.109-.242-.261-.515z"/><path fill="currentColor" d="M11.25 19.786q.076.026.157.042c.111.022.272.022.593.022s.482 0 .593-.022q.081-.015.157-.042v1.464a.75.75 0 0 1-1.5 0z" opacity=".5"/></svg></a><a class="nav-item" title="关于" href="/about/" style="color:#6D28D9"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><circle cx="12" cy="6" r="4" fill="currentColor"/><path fill="currentColor" d="M20 17.5c0 2.485 0 4.5-8 4.5s-8-2.015-8-4.5S7.582 13 12 13s8 2.015 8 4.5" opacity=".5"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<widget class="widget-wrapper markdown"><div class="widget-header dis-select"><span class="name">博客指南</span></div><div class="widget-body fs14"><ul>
+<li><p>记录生活感受</p>
+</li>
+<li><p>记录学习成长</p>
+</li>
+<li><p>记录岁月变迁</p>
+</li>
+</ul>
+<p><strong>让消失的留下痕迹，<br>让抵达的可以回望。</strong></p>
+</div></widget>
+
+<widget class="widget-wrapper related post-list"><div class="widget-header dis-select"><span class="name">专栏：技术分享</span></div><div class="widget-body"><a class="item" href="/2026/08/06/claude-code-workflow-3-cc-features/"><span class="title">Claude Code 工作流（三）：内置功能 — agents view + /insights</span></a><a class="item active" href="/2026/08/06/claude-code-workflow-2-databricks/"><span class="title">Claude Code 工作流（二）：Claude Code × Databricks</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="item" href="/2026/08/06/claude-code-workflow-1-knowledge-base/"><span class="title">Claude Code 工作流（一）：知识库双范式 — Obsidian × Notion</span></a></div></widget>
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/08/06/claude-code-workflow-3-cc-features/"><span class="title">Claude Code 工作流（三）：内置功能 — agents view + /insights</span></a><a class="item title" href="/2026/08/06/claude-code-workflow-2-databricks/"><span class="title">Claude Code 工作流（二）：Claude Code × Databricks</span></a><a class="item title" href="/2026/08/06/claude-code-workflow-1-knowledge-base/"><span class="title">Claude Code 工作流（一）：知识库双范式 — Obsidian × Notion</span></a><a class="item title" href="/2026/07/24/nightfall-blog-build/"><span class="title">NightFall 博客搭建记</span></a><a class="item title" href="/2026/04/30/hello-world/"><span class="title">Hello World</span></a><a class="item title" href="/2026/04/30/test-post-2/"><span class="title">测试文章 2 - Hexo 常用命令</span></a><a class="item title" href="/2026/04/30/test-post-1/"><span class="title">测试文章 1 - Stellar 主题初体验</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/NightNight-30" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder/social/08a41b181ce68.svg"/></a><a class="social" href="https://gitee.com/slient_7" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://api.iconify.design/simple-icons:gitee.svg?color=%23c71d23"/></a><a class="social" href="https://music.163.com/#/user/home?id=91356672" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder/social/3845874.svg"/></a><a class="social" href="/atom.xml" rel="noopener noreferrer"><img src="https://api.iconify.design/fa6-solid:rss.svg?color=%23ff7a00"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/2026/08/06/claude-code-workflow-3-cc-features/">技术分享</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-08-06T10:45:00.000Z">2026-08-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-06T09:36:53.011Z">2026-08-06</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Claude Code 工作流（二）：Claude Code × Databricks</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><blockquote>
+<p>这是「Claude Code 工作流」系列第二篇，对应 deck 的 Part 2（第 09-12 页）。下方嵌入了可交互的完整 deck，按方向键翻页，按 <code>O</code> 出缩略图多任务视图。</p>
+</blockquote>
+<iframe src="/claude-code-workflow-deck/?slide=8" width="100%" height="540" frameborder="0" style="border: 2px solid var(--wood-border, #b8a589); border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin: 16px 0; max-width: 960px; aspect-ratio: 16/9;"></iframe>
+
+<blockquote>
+<p>移动端 iframe 体验有限，可<a href="/claude-code-workflow-deck/">点此全屏查看 deck</a>。</p>
+</blockquote>
+<h2 id="P09-·-Part-2-目录：Claude-Code-×-Databricks"><a href="#P09-·-Part-2-目录：Claude-Code-×-Databricks" class="headerlink" title="P09 · Part 2 目录：Claude Code × Databricks"></a>P09 · Part 2 目录：Claude Code × Databricks</h2><p>Part 2 共 3 节：2.1 两种连接方式对比 + 选型 &#x2F; 2.2 测试工作流（Jobs 模式）&#x2F; 2.3 实战示例。</p>
+<p>核心问题：<strong>Claude Code 怎么连 Databricks</strong>？答案是——<strong>不要走第三方 MCP Server，直接用官方 CLI + markdown Skills</strong>。</p>
+<h2 id="P10-·-2-1-两种连接方式对比-选型结论"><a href="#P10-·-2-1-两种连接方式对比-选型结论" class="headerlink" title="P10 · 2.1 两种连接方式对比 + 选型结论"></a>P10 · 2.1 两种连接方式对比 + 选型结论</h2><h3 id="方式一：远程-MCP-Server"><a href="#方式一：远程-MCP-Server" class="headerlink" title="方式一：远程 MCP Server"></a>方式一：远程 MCP Server</h3><p>架构：<code>Claude ⇄ MCP 协议 ⇄ 第三方 Server ⇄ Databricks API</code></p>
+<ul>
+<li>依赖：找&#x2F;装第三方 Server</li>
+<li>能力：受限于 Server 暴露的工具</li>
+<li>拓展：改 Server 源码重启</li>
+<li>Azure 中国：看社区实现，不一定可用</li>
+</ul>
+<h3 id="方式二：本地-CLI-Skills-✓（选型结论）"><a href="#方式二：本地-CLI-Skills-✓（选型结论）" class="headerlink" title="方式二：本地 CLI + Skills ✓（选型结论）"></a>方式二：本地 CLI + Skills ✓（选型结论）</h3><p>架构：<code>Claude ⇄ Bash ⇄ databricks CLI ⇄ Databricks API</code></p>
+<ul>
+<li>依赖：官方 CLI + markdown Skills</li>
+<li>能力：全 CLI 子命令 + REST</li>
+<li>拓展：直接调子命令</li>
+<li>Azure 中国：官方原生支持</li>
+</ul>
+<h3 id="配合的-skill"><a href="#配合的-skill" class="headerlink" title="配合的 skill"></a>配合的 skill</h3><ul>
+<li><code>databricks-core</code> — 日常 CLI 操作、auth、profile、bundle</li>
+<li><code>databricks-pipelines</code> — Lakeflow Spark Declarative Pipelines（原 DLT）</li>
+<li><code>ddl-to-data-dictionary</code> — DDL 翻数据字典</li>
+</ul>
+<h3 id="选型结论：本地-CLI-Skills"><a href="#选型结论：本地-CLI-Skills" class="headerlink" title="选型结论：本地 CLI + Skills"></a>选型结论：本地 CLI + Skills</h3><p>四个理由：</p>
+<ol>
+<li><strong>官方维护</strong> — 不靠第三方，能力全集</li>
+<li><strong>Azure 中国 endpoint 原生适配</strong> — 不用等社区实现</li>
+<li><strong>加新能力直接调子命令</strong> — 不改 Server 源码</li>
+<li><strong>调试链路短</strong> — 报错直接可见，不经过 MCP 协议层</li>
+</ol>
+<blockquote>
+<p>远程 MCP Server 不是不能用，而是「能用多少看 Server 暴露多少」——这个不确定性对工作流是硬伤。</p>
+</blockquote>
+<h2 id="P11-·-2-2-测试工作流（Jobs-模式）"><a href="#P11-·-2-2-测试工作流（Jobs-模式）" class="headerlink" title="P11 · 2.2 测试工作流（Jobs 模式）"></a>P11 · 2.2 测试工作流（Jobs 模式）</h2><h3 id="9-步闭环-·-不动现有-jobs-编排"><a href="#9-步闭环-·-不动现有-jobs-编排" class="headerlink" title="9 步闭环 · 不动现有 jobs 编排"></a>9 步闭环 · 不动现有 jobs 编排</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. export 云上 .py    →   2. Claude 改   →   3. import 回云</span><br><span class="line">                                                       ↓</span><br><span class="line">6. export-run    ←   5. run-now    ←   4. 建临时 job</span><br><span class="line">       ↓</span><br><span class="line">7. 解码 base64  →   8. Claude 分析   →   9. 回到 2 ↻</span><br></pre></td></tr></table></figure>
+
+<p>详细步骤：</p>
+<ol>
+<li><strong>用户 export 云上 .py</strong> — 从 Databricks workspace 导出 notebook</li>
+<li><strong>Claude 改本地 .py</strong> — 在 workspace 编辑，迭代逻辑</li>
+<li><strong>用户 import 回云</strong> — 把改好的 .py 导回 workspace</li>
+<li><strong>建临时 job</strong> — 不动现有 jobs 编排，新建一个临时 job 跑测试</li>
+<li><strong>Claude <code>jobs run-now</code></strong> — 触发 job</li>
+<li><strong>Claude <code>jobs export-run</code></strong> — 抓取执行结果</li>
+<li><strong>Claude 解码 base64+URL</strong> — export-run 输出是 base64+URL 编码</li>
+<li><strong>Claude 自主分析</strong> — 看 stdout&#x2F;stderr、数据样本、schema</li>
+<li><strong>回到步骤 2</strong> — 根据结果迭代，循环往复</li>
+</ol>
+<h3 id="踩坑点"><a href="#踩坑点" class="headerlink" title="踩坑点"></a>踩坑点</h3><ul>
+<li><strong><code>get-run-output</code> 只收 <code>dbutils.notebook.exit()</code></strong> — 想拿完整 cell 输出要用 <code>export-run</code></li>
+<li><strong>Azure 中国禁 <code>/api/1.2/commands</code> 端点</strong> — 不能用旧版 commands API</li>
+<li><strong>输出是 base64+URL 双重编码</strong> — 解码两层才能拿到可读文本</li>
+</ul>
+<h3 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h3><ul>
+<li>不动现有 jobs 编排</li>
+<li>不跑 workspace import&#x2F;export（用户手动操作）</li>
+<li>用 all-purpose cluster（不用 SQL Warehouse）</li>
+<li>临时 job 跑完即弃</li>
+</ul>
+<h2 id="P12-·-2-3-实战示例（2026-07-29）"><a href="#P12-·-2-3-实战示例（2026-07-29）" class="headerlink" title="P12 · 2.3 实战示例（2026-07-29）"></a>P12 · 2.3 实战示例（2026-07-29）</h2><h3 id="test-job-配置"><a href="#test-job-配置" class="headerlink" title="test job 配置"></a>test job 配置</h3><ul>
+<li><strong>job_id</strong>: <code>10761020612585</code></li>
+<li><strong>notebook</strong>: <code>/Shared/powerlink_warehouse/other/test</code></li>
+<li><strong>cluster</strong>: all-purpose</li>
+<li><strong>2 cells</strong>: Python + SQL</li>
+</ul>
+<h3 id="执行结果-·-全链路通"><a href="#执行结果-·-全链路通" class="headerlink" title="执行结果 · 全链路通"></a>执行结果 · 全链路通</h3><ul>
+<li>✅ 18 秒跑完，无报错</li>
+<li>✅ Python cell 设参数成功</li>
+<li>✅ SQL cell 返回数据</li>
+<li>✅ export-run 拿到全 cell</li>
+<li>✅ base64+URL 解码成可读文本</li>
+<li>✅ stdout &#x2F; stderr 分离提取</li>
+</ul>
+<h3 id="自主抓取数据"><a href="#自主抓取数据" class="headerlink" title="自主抓取数据"></a>自主抓取数据</h3><p><strong>Cell 0 (Python)</strong> — 设参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark.conf.<span class="built_in">set</span>(<span class="string">&quot;param.bizdate&quot;</span>, <span class="string">&quot;20260707&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Cell 1 (SQL)</strong> — 查数据：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> powerlink_prod.pw_ads.</span><br><span class="line">  ads_pw_credit_metric_df</span><br><span class="line"><span class="keyword">where</span> dt<span class="operator">=</span><span class="string">&#x27;$&#123;param.bizdate&#125;&#x27;</span></span><br><span class="line">limit <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>结果</strong>：10 行 × 68 列完整数据，含 <code>sap_code</code> &#x2F; <code>company_name</code> &#x2F; <code>company_paydex</code> 等。</p>
+<h3 id="Claude-自主迭代"><a href="#Claude-自主迭代" class="headerlink" title="Claude 自主迭代"></a>Claude 自主迭代</h3><p>拿到数据后 Claude 不只是看一眼就完，会自主推断：</p>
+<ul>
+<li><code>dt</code> 是分区列 → 自动加 <code>where</code> 条件避免全表扫描</li>
+<li><code>sap_code</code> → 推断 SAP 主数据关联</li>
+<li>10 行样本看 schema，不拉全量（省 token、省时间）</li>
+</ul>
+<p>这个「样本看 schema，不拉全量」的能力是 9 步闭环的价值——Claude 不需要人告诉它怎么看数据，它自己会推断。</p>
+<hr>
+<p>下一篇：<a href="/posts/claude-code-workflow-3-cc-features/">Claude Code 工作流（三）：内置功能 — agents view + &#x2F;insights</a> — 一屏管理所有后台会话的状态体系，历史会话分析报告的正确用法与常见误区。</p>
+<blockquote>
+<p>回到本专栏首页：<a href="/topic/tech-sharing/">技术分享</a>。</p>
+</blockquote>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/08/06/claude-code-workflow-3-cc-features/">Claude Code 工作流（三）：内置功能 — agents view + /insights</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/08/06/claude-code-workflow-1-knowledge-base/">Claude Code 工作流（一）：知识库双范式 — Obsidian × Notion</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body artalk'>
+      
+
+<div class="artalk with-fancybox" id="artalk_container"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:3;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/topic/">专栏</a><a href="/tags/">标签</a><a href="/archives/">归档</a></div><div class="sitemap-group"><span class="fs15">导航</span><a href="/life/">生活</a><a href="/friends/">友链</a><a href="/shuoshuo/">说说</a><a href="/about/">关于</a></div><div class="sitemap-group"><span class="fs15">协议</span><a href="/privacy/">隐私说明</a><a href="/license/">版权协议</a><a href="/disclaimer/">免责声明</a><a target="_blank" rel="noopener" href="https://yibo.iyiyun.com/">公益404</a></div></div><div class="text"><div class="footer-info">
+  <div class="footer-row">
+    <img class="footer-ico" src="/img/网站管理@2x.svg" alt=""/>
+    <span>本站由 <a href="/">NightFall</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建</span>
+  </div>
+  <div class="footer-row">
+    <img class="footer-ico" src="/img/隐私保护.svg" alt=""/>
+    <span>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener"><img class="footer-ico cc-license" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="CC BY-NC-SA 4.0"/></a> 许可协议，转载请注明出处</span>
+  </div>
+  <div class="footer-row footer-beian">
+    <span class="beian-item">
+      <img class="footer-ico" src="/img/工信部.svg" alt=""/>
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">沪ICP备2026031983号-1</a>
+    </span>
+    <span class="beian-sep">·</span>
+    <span class="beian-item">
+      <img class="footer-ico beian-police" src="/img/beian-police.png" alt="公安"/>
+      <a href="http://www.beian.mps.gov.cn/" target="_blank" rel="noopener">沪公网安备31011302009443号</a>
+    </span>
+    <span class="beian-sep">·</span>
+    <span class="beian-item">
+      <img class="footer-ico beian-moe" src="/img/beian-moe.svg" alt="萌"/>
+      <a href="https://icp.gov.moe/?keyword=20260810" target="_blank" rel="noopener">萌ICP备20260810号</a>
+    </span>
+  </div>
+  <div class="footer-row">
+    <img class="footer-ico" src="/img/时间.svg" alt=""/>
+    <span>本站已运行 <span id="uptime-counter">加载中...</span></span>
+    <span class="beian-sep">·</span>
+    <img class="footer-ico" src="/img/访问量.svg" alt=""/>
+    <span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv">0</span> 次</span>
+  </div>
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="/js/footer-uptime.js" defer></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#P09-%C2%B7-Part-2-%E7%9B%AE%E5%BD%95%EF%BC%9AClaude-Code-%C3%97-Databricks"><span class="toc-text">P09 · Part 2 目录：Claude Code × Databricks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#P10-%C2%B7-2-1-%E4%B8%A4%E7%A7%8D%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94-%E9%80%89%E5%9E%8B%E7%BB%93%E8%AE%BA"><span class="toc-text">P10 · 2.1 两种连接方式对比 + 选型结论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9A%E8%BF%9C%E7%A8%8B-MCP-Server"><span class="toc-text">方式一：远程 MCP Server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9A%E6%9C%AC%E5%9C%B0-CLI-Skills-%E2%9C%93%EF%BC%88%E9%80%89%E5%9E%8B%E7%BB%93%E8%AE%BA%EF%BC%89"><span class="toc-text">方式二：本地 CLI + Skills ✓（选型结论）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E5%90%88%E7%9A%84-skill"><span class="toc-text">配合的 skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E5%9E%8B%E7%BB%93%E8%AE%BA%EF%BC%9A%E6%9C%AC%E5%9C%B0-CLI-Skills"><span class="toc-text">选型结论：本地 CLI + Skills</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#P11-%C2%B7-2-2-%E6%B5%8B%E8%AF%95%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%88Jobs-%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="toc-text">P11 · 2.2 测试工作流（Jobs 模式）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E6%AD%A5%E9%97%AD%E7%8E%AF-%C2%B7-%E4%B8%8D%E5%8A%A8%E7%8E%B0%E6%9C%89-jobs-%E7%BC%96%E6%8E%92"><span class="toc-text">9 步闭环 · 不动现有 jobs 编排</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E7%82%B9"><span class="toc-text">踩坑点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E5%88%99"><span class="toc-text">规则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#P12-%C2%B7-2-3-%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%EF%BC%882026-07-29%EF%BC%89"><span class="toc-text">P12 · 2.3 实战示例（2026-07-29）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#test-job-%E9%85%8D%E7%BD%AE"><span class="toc-text">test job 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C-%C2%B7-%E5%85%A8%E9%93%BE%E8%B7%AF%E9%80%9A"><span class="toc-text">执行结果 · 全链路通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E4%B8%BB%E6%8A%93%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-text">自主抓取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Claude-%E8%87%AA%E4%B8%BB%E8%BF%AD%E4%BB%A3"><span class="toc-text">Claude 自主迭代</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":"nightfall7.top","officialHosts":["localhost"],"encoded":"bmlnaHRmYWxsNy50b3A="};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":[],"codeblock":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.getElementById('artalk_container');
+  util.viewportLazyload(el, load_artalk, false);
+
+  function load_artalk() {
+    if (!el) return;
+    utils.css('https://cdn.jsdelivr.net/npm/artalk@2.9/dist/Artalk.css');
+    utils.js('https://cdn.jsdelivr.net/npm/artalk@2.9/dist/Artalk.js', {defer: true}).then(function () {
+      // 监听 Artalk 事件
+      // FIXME: Artalk开启了懒加载会导致评论输入预览框里的图也变成data-src，导致看不到图
+      // Artalk.use((ctx) => {
+      //   ctx.on('list-loaded', () => window.lazyLoadInstance?.update())
+      // })
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      const artalk = Artalk.init({
+        el: '#artalk_container',
+        pageKey: path,
+        pageTitle: 'Claude Code 工作流（二）：Claude Code × Databricks',
+        server: 'https://api.nightfall7.top/artalk',
+        site: 'NightFall',
+        darkMode: 'auto',
+        
+      });
+    });
+  }
+</script>
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img, .tag-plugin.swiper .swiper-slide img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+<script src="/js/tech-listing-banner.js" defer></script><script src="/js/swiper-fancybox-group.js" defer></script><script src="/js/sidebar-talks.js?v=20260721c" defer></script><script src="/js/lunar.js?v=20260722c" defer></script><script src="/js/sidebar-calendar.js?v=20260722e" defer></script><script src="/js/theme-toggle.js?v=20260724a" defer></script><script src="/js/pin-badge.js?v=20260724a" defer></script><script src="/js/typewriter.js?v=20260728a" defer></script>
+</div></body></html>
