@@ -785,41 +785,113 @@ body .navbar-blur::after {
    2. 数字用系统字体不用钢笔体
    3. 文字色覆盖棕墨色，用主题 text 变量（明暗自适应）
    4. 不倾斜（覆盖基类 rotate(-2.5deg)）
-   5. 顶部胶带改为图钉图标 */
+   5. 顶部图钉已移除，改用顶部红色撕页条做实物日历感 */
 .widget-wrapper.markdown:has(#sidebar-calendar) {
   margin: 18px 8px 20px 8px !important;
   padding: 0 0 16px !important;
   transform: none !important; /* 不倾斜 */
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 8px !important;
+  background: linear-gradient(180deg, #fdfaf3 0%, #faf5e8 100%) !important;
+  box-shadow: 0 2px 10px rgba(120, 90, 40, 0.10), 0 1px 0 rgba(255,255,255,0.8) inset !important;
 }
-/* 顶部图钉图标替代胶带 */
+/* 顶部红色撕页条（模仿实物日历的装订红条） */
 .widget-wrapper.markdown:has(#sidebar-calendar)::before {
   content: '' !important;
   position: absolute !important;
-  top: -10px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: 22px !important;
-  height: 22px !important;
-  background: url('/img/解除固定,图钉.svg') center / contain no-repeat !important;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  z-index: 1 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 6px !important;
+  background: linear-gradient(180deg, #d32f2f 0%, #b71c1c 100%) !important;
+  border-radius: 8px 8px 0 0 !important;
+  box-shadow: 0 1px 2px rgba(183, 28, 28, 0.4) !important;
+  z-index: 2 !important;
   pointer-events: none !important;
 }
-[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar)::before {
-  background: url('/img/解除固定,图钉.svg') center / contain no-repeat !important;
-  border: none !important;
+/* 撕页条上的两个装订孔（圆点） */
+.widget-wrapper.markdown:has(#sidebar-calendar)::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 1px !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
+  background-image: radial-gradient(circle at 18% 50%, rgba(255,255,255,0.85) 1.2px, transparent 1.8px),
+                     radial-gradient(circle at 82% 50%, rgba(255,255,255,0.85) 1.2px, transparent 1.8px) !important;
+  background-repeat: no-repeat !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
+}
+[data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar) {
+  background: linear-gradient(180deg, #2a2620 0%, #232019 100%) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), 0 1px 0 rgba(255,255,255,0.04) inset !important;
 }
 .widget-wrapper.markdown:has(#sidebar-calendar) .widget-header {
   display: none !important; /* 去掉「日历」标题 */
 }
 .widget-wrapper.markdown:has(#sidebar-calendar) .widget-body {
-  padding: 8px 14px 4px !important;
+  padding: 14px 14px 4px !important;
   color: var(--text-p1, inherit) !important; /* 覆盖棕墨色 */
   font-family: inherit !important; /* 不用 LXGW 钢笔体，数字用系统字体 */
   font-size: 14px !important;
   line-height: 1.5 !important;
+}
+/* === 实物日历样式：月份标题 + 周末红字 + 今天红圈 === */
+.cal-title {
+  position: relative !important;
+  font-family: 'Noto Serif SC', 'Source Han Serif', system-ui, serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #5d4037 !important;
+  padding: 4px 0 6px !important;
+  border-bottom: 1px solid rgba(120, 90, 40, 0.18) !important;
+  margin-bottom: 4px !important;
+  letter-spacing: 1px !important;
+}
+[data-theme="dark"] .cal-title {
+  color: #d7c9a8 !important;
+  border-bottom-color: rgba(215, 201, 168, 0.18) !important;
+}
+/* 周末（周六周日）表头红色 */
+.cal-weekend-head {
+  color: #c62828 !important;
+}
+[data-theme="dark"] .cal-weekend-head {
+  color: #ef9a9a !important;
+}
+/* 周末日期数字红色（非今日） */
+.cal-day.cal-weekend:not(.cal-today) .cal-day-num {
+  color: #c62828 !important;
+}
+[data-theme="dark"] .cal-day.cal-weekend:not(.cal-today) .cal-day-num {
+  color: #ef9a9a !important;
+}
+/* 今天：改用红圈标记（替代原来的渐变方块） */
+.cal-today {
+  background: transparent !important;
+  box-shadow: none !important;
+  position: relative !important;
+}
+.cal-today .cal-day-num {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  background: #d32f2f !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 3px rgba(211, 47, 47, 0.45) !important;
+}
+.cal-today .cal-day-lunar {
+  color: #d32f2f !important;
+  font-weight: 600 !important;
+}
+.cal-today:hover {
+  background: transparent !important;
 }
 
 /* === 近期说说：复用 stellar 的 .tag-plugin.timeline .timenode 样式 === */

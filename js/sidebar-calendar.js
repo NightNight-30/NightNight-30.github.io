@@ -81,8 +81,9 @@
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     let cells = '';
-    WEEK_HEADER.forEach(d => {
-      cells += `<div class="cal-cell cal-head">${d}</div>`;
+    WEEK_HEADER.forEach((d, i) => {
+      const weekendCls = (i >= 5) ? ' cal-weekend-head' : '';
+      cells += `<div class="cal-cell cal-head${weekendCls}">${d}</div>`;
     });
     for (let i = 0; i < firstCol; i++) {
       cells += '<div class="cal-cell cal-empty"></div>';
@@ -91,8 +92,10 @@
       const isToday = (d === today);
       const cellDate = new Date(year, month, d);
       const lunarLabel = getLunarLabel(cellDate);
-      const cls = isToday ? 'cal-cell cal-day cal-today' : 'cal-cell cal-day';
-      cells += `<div class="${cls}"><div class="cal-day-num">${d}</div><div class="cal-day-lunar">${lunarLabel}</div></div>`;
+      const dow = cellDate.getDay(); // 0=日 6=六
+      const weekendCls = (dow === 0 || dow === 6) ? ' cal-weekend' : '';
+      const todayCls = isToday ? ' cal-today' : '';
+      cells += `<div class="cal-cell cal-day${weekendCls}${todayCls}"><div class="cal-day-num">${d}</div><div class="cal-day-lunar">${lunarLabel}</div></div>`;
     }
 
     return `
