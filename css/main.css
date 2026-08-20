@@ -34,19 +34,19 @@
   --gap-max: calc(var(--gap-margin) + var(--gap-padding));
 }
 :root {
-  --hue: 192deg;
-  --sat: 98%;
-  --light: 55%;
+  --hue: 150deg;
+  --sat: 32%;
+  --light: 40%;
   --alpha: 1;
   --theme: hsla(var(--hue) var(--sat) var(--light) / 1);
   --theme-a10: hsla(var(--hue) var(--sat) var(--light) / 0.1);
   --theme-a20: hsla(var(--hue) var(--sat) var(--light) / 0.2);
   --theme-a30: hsla(var(--hue) var(--sat) var(--light) / 0.3);
-  --accent: #ff5724;
-  --link: hsla(207deg 90% 54% / 1);
-  --link-a20: hsla(207deg 90% 54% / 0.2);
+  --accent: #356e52;
+  --link: hsla(155deg 40% 28% / 1);
+  --link-a20: hsla(155deg 40% 28% / 0.2);
   --background: hsla(210deg 20% 98% / 1);
-  --card: rgba(255,255,255,0.5);
+  --card: #fff;
   --bg-a20: hsla(210deg 0% 100% / 0.2);
   --bg-a50: hsla(210deg 0% 100% / 0.5);
   --bg-a60: hsla(210deg 0% 100% / 0.6);
@@ -68,7 +68,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: hsla(210deg 8% 12% / 1);
-    --card: rgba(255,255,255,0.25);
+    --card: hsla(210deg 10% 24% / 1);
     --bg-a20: hsla(210deg 0% 0% / 0.2);
     --bg-a50: hsla(210deg 0% 0% / 0.5);
     --bg-a60: hsla(210deg 0% 0% / 0.6);
@@ -96,7 +96,7 @@
 }
 :root[data-theme="light"] {
   --background: hsla(210deg 20% 98% / 1);
-  --card: rgba(255,255,255,0.5);
+  --card: #fff;
   --bg-a20: hsla(210deg 0% 100% / 0.2);
   --bg-a50: hsla(210deg 0% 100% / 0.5);
   --bg-a60: hsla(210deg 0% 100% / 0.6);
@@ -117,7 +117,7 @@
 }
 :root[data-theme="dark"] {
   --background: hsla(210deg 8% 12% / 1);
-  --card: rgba(255,255,255,0.25);
+  --card: hsla(210deg 10% 24% / 1);
   --bg-a20: hsla(210deg 0% 0% / 0.2);
   --bg-a50: hsla(210deg 0% 0% / 0.5);
   --bg-a60: hsla(210deg 0% 0% / 0.6);
@@ -333,50 +333,50 @@
   --link-a20: hsla(291.24087591240874deg 95% 32% / 0.2);
 }
 .colorful[color='theme'] {
-  --hue: 192deg;
-  --sat: 98%;
-  --light: 55%;
+  --hue: 150deg;
+  --sat: 32%;
+  --light: 40%;
   --alpha: 1;
   --theme: hsla(var(--hue) var(--sat) var(--light) / 1);
   --theme-a10: hsla(var(--hue) var(--sat) var(--light) / 0.1);
   --theme-a20: hsla(var(--hue) var(--sat) var(--light) / 0.2);
   --theme-a30: hsla(var(--hue) var(--sat) var(--light) / 0.3);
-  --link: hsla(192deg 98% 55% / 1);
-  --link-a20: hsla(192deg 98% 55% / 0.2);
-  --theme-border: hsla(192deg 50% 80% / var(--alpha));
-  --theme-block: hsla(192deg 90% 92% / var(--alpha));
-  --theme-mark: hsla(192deg 95% 80% / var(--alpha));
-  --theme-codeblock: hsla(192deg 50% 95% / var(--alpha));
-  --text: hsla(192deg 55% 16% / 1);
-  --text-p1: hsla(192deg 90% 20% / 1);
-  --text-p2: hsla(192deg 90% 20% / 0.8);
-  --text-p3: hsla(192deg 90% 20% / 0.6);
-  --text-p4: hsla(192deg 90% 20% / 0.4);
-  --link: hsla(192deg 95% 32% / 1);
-  --link-a20: hsla(192deg 95% 32% / 0.2);
+  --link: hsla(150deg 32% 40% / 1);
+  --link-a20: hsla(150deg 32% 40% / 0.2);
+  --theme-border: hsla(150deg 50% 80% / var(--alpha));
+  --theme-block: hsla(150deg 90% 92% / var(--alpha));
+  --theme-mark: hsla(150deg 95% 80% / var(--alpha));
+  --theme-codeblock: hsla(150deg 50% 95% / var(--alpha));
+  --text: hsla(150deg 55% 16% / 1);
+  --text-p1: hsla(150deg 90% 20% / 1);
+  --text-p2: hsla(150deg 90% 20% / 0.8);
+  --text-p3: hsla(150deg 90% 20% / 0.6);
+  --text-p4: hsla(150deg 90% 20% / 0.4);
+  --link: hsla(150deg 95% 32% / 1);
+  --link-a20: hsla(150deg 95% 32% / 0.2);
 }
 .colorful[color='accent'] {
-  --hue: 14deg;
-  --sat: 100%;
-  --light: 57%;
+  --hue: 150deg;
+  --sat: 35%;
+  --light: 32%;
   --alpha: 1;
   --theme: hsla(var(--hue) var(--sat) var(--light) / 1);
   --theme-a10: hsla(var(--hue) var(--sat) var(--light) / 0.1);
   --theme-a20: hsla(var(--hue) var(--sat) var(--light) / 0.2);
   --theme-a30: hsla(var(--hue) var(--sat) var(--light) / 0.3);
-  --link: hsla(14deg 100% 57% / 1);
-  --link-a20: hsla(14deg 100% 57% / 0.2);
-  --theme-border: hsla(14deg 50% 80% / var(--alpha));
-  --theme-block: hsla(14deg 90% 92% / var(--alpha));
-  --theme-mark: hsla(14deg 95% 80% / var(--alpha));
-  --theme-codeblock: hsla(14deg 50% 95% / var(--alpha));
-  --text: hsla(14deg 55% 16% / 1);
-  --text-p1: hsla(14deg 90% 20% / 1);
-  --text-p2: hsla(14deg 90% 20% / 0.8);
-  --text-p3: hsla(14deg 90% 20% / 0.6);
-  --text-p4: hsla(14deg 90% 20% / 0.4);
-  --link: hsla(14deg 95% 32% / 1);
-  --link-a20: hsla(14deg 95% 32% / 0.2);
+  --link: hsla(150deg 35% 32% / 1);
+  --link-a20: hsla(150deg 35% 32% / 0.2);
+  --theme-border: hsla(150deg 50% 80% / var(--alpha));
+  --theme-block: hsla(150deg 90% 92% / var(--alpha));
+  --theme-mark: hsla(150deg 95% 80% / var(--alpha));
+  --theme-codeblock: hsla(150deg 50% 95% / var(--alpha));
+  --text: hsla(150deg 55% 16% / 1);
+  --text-p1: hsla(150deg 90% 20% / 1);
+  --text-p2: hsla(150deg 90% 20% / 0.8);
+  --text-p3: hsla(150deg 90% 20% / 0.6);
+  --text-p4: hsla(150deg 90% 20% / 0.4);
+  --link: hsla(150deg 95% 32% / 1);
+  --link-a20: hsla(150deg 95% 32% / 0.2);
 }
 .colorful[color='light'] {
   --theme: #fff;
@@ -384,7 +384,7 @@
   --theme-mark: var(--theme);
   --theme-codeblock: var(--theme);
   --background: hsla(210deg 20% 98% / 1);
-  --card: rgba(255,255,255,0.5);
+  --card: #fff;
   --bg-a20: hsla(210deg 0% 100% / 0.2);
   --bg-a50: hsla(210deg 0% 100% / 0.5);
   --bg-a60: hsla(210deg 0% 100% / 0.6);
@@ -405,7 +405,7 @@
 }
 .colorful[color='dark'] {
   --background: hsla(210deg 8% 12% / 1);
-  --card: rgba(255,255,255,0.25);
+  --card: hsla(210deg 10% 24% / 1);
   --bg-a20: hsla(210deg 0% 0% / 0.2);
   --bg-a50: hsla(210deg 0% 0% / 0.5);
   --bg-a60: hsla(210deg 0% 0% / 0.6);
@@ -458,7 +458,7 @@
   --link: hsla(50.96385542168675deg 95% 32% / 1);
   --link-a20: hsla(50.96385542168675deg 95% 32% / 0.2);
   --background: hsla(210deg 20% 98% / 1);
-  --card: rgba(255,255,255,0.5);
+  --card: #fff;
   --bg-a20: hsla(210deg 0% 100% / 0.2);
   --bg-a50: hsla(210deg 0% 100% / 0.5);
   --bg-a60: hsla(210deg 0% 100% / 0.6);
@@ -505,7 +505,7 @@
   --link: hsla(4.105263157894738deg 80% 60% / 1);
   --link-a20: hsla(4.105263157894738deg 80% 60% / 0.2);
   --background: hsla(210deg 8% 12% / 1);
-  --card: rgba(255,255,255,0.25);
+  --card: hsla(210deg 10% 24% / 1);
   --bg-a20: hsla(210deg 0% 0% / 0.2);
   --bg-a50: hsla(210deg 0% 0% / 0.5);
   --bg-a60: hsla(210deg 0% 0% / 0.6);
@@ -536,27 +536,27 @@
   }
 }
 :root[data-theme="dark"] .tag-plugin.tag {
-  --hue: 192deg;
-  --sat: 98%;
-  --light: 55%;
+  --hue: 150deg;
+  --sat: 32%;
+  --light: 40%;
   --alpha: 1;
   --theme: hsla(var(--hue) var(--sat) var(--light) / 1);
   --theme-a10: hsla(var(--hue) var(--sat) var(--light) / 0.1);
   --theme-a20: hsla(var(--hue) var(--sat) var(--light) / 0.2);
   --theme-a30: hsla(var(--hue) var(--sat) var(--light) / 0.3);
-  --link: hsla(192deg 98% 55% / 1);
-  --link-a20: hsla(192deg 98% 55% / 0.2);
-  --theme-border: hsla(192deg 40% 24% / var(--alpha));
-  --theme-block: hsla(192deg 24% 24% / var(--alpha));
-  --theme-mark: hsla(192deg 24% 24% / var(--alpha));
-  --theme-codeblock: hsla(192deg 12% 24% / var(--alpha));
-  --text: hsla(192deg 50% 75% / 1);
-  --text-p1: hsla(192deg 80% 80% / 1);
-  --text-p2: hsla(192deg 80% 80% / 0.8);
-  --text-p3: hsla(192deg 80% 80% / 0.6);
-  --text-p4: hsla(192deg 80% 80% / 0.4);
-  --link: hsla(192deg 80% 60% / 1);
-  --link-a20: hsla(192deg 80% 60% / 0.2);
+  --link: hsla(150deg 32% 40% / 1);
+  --link-a20: hsla(150deg 32% 40% / 0.2);
+  --theme-border: hsla(150deg 40% 24% / var(--alpha));
+  --theme-block: hsla(150deg 24% 24% / var(--alpha));
+  --theme-mark: hsla(150deg 24% 24% / var(--alpha));
+  --theme-codeblock: hsla(150deg 12% 24% / var(--alpha));
+  --text: hsla(150deg 50% 75% / 1);
+  --text-p1: hsla(150deg 80% 80% / 1);
+  --text-p2: hsla(150deg 80% 80% / 0.8);
+  --text-p3: hsla(150deg 80% 80% / 0.6);
+  --text-p4: hsla(150deg 80% 80% / 0.4);
+  --link: hsla(150deg 80% 60% / 1);
+  --link-a20: hsla(150deg 80% 60% / 0.2);
 }
 :root[data-theme="dark"] .colorful[color='red'] {
   --hue: 4.105263157894738deg;
@@ -744,27 +744,27 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) .tag-plugin.tag {
-    --hue: 192deg;
-    --sat: 98%;
-    --light: 55%;
+    --hue: 150deg;
+    --sat: 32%;
+    --light: 40%;
     --alpha: 1;
     --theme: hsla(var(--hue) var(--sat) var(--light) / 1);
     --theme-a10: hsla(var(--hue) var(--sat) var(--light) / 0.1);
     --theme-a20: hsla(var(--hue) var(--sat) var(--light) / 0.2);
     --theme-a30: hsla(var(--hue) var(--sat) var(--light) / 0.3);
-    --link: hsla(192deg 98% 55% / 1);
-    --link-a20: hsla(192deg 98% 55% / 0.2);
-    --theme-border: hsla(192deg 40% 24% / var(--alpha));
-    --theme-block: hsla(192deg 24% 24% / var(--alpha));
-    --theme-mark: hsla(192deg 24% 24% / var(--alpha));
-    --theme-codeblock: hsla(192deg 12% 24% / var(--alpha));
-    --text: hsla(192deg 50% 75% / 1);
-    --text-p1: hsla(192deg 80% 80% / 1);
-    --text-p2: hsla(192deg 80% 80% / 0.8);
-    --text-p3: hsla(192deg 80% 80% / 0.6);
-    --text-p4: hsla(192deg 80% 80% / 0.4);
-    --link: hsla(192deg 80% 60% / 1);
-    --link-a20: hsla(192deg 80% 60% / 0.2);
+    --link: hsla(150deg 32% 40% / 1);
+    --link-a20: hsla(150deg 32% 40% / 0.2);
+    --theme-border: hsla(150deg 40% 24% / var(--alpha));
+    --theme-block: hsla(150deg 24% 24% / var(--alpha));
+    --theme-mark: hsla(150deg 24% 24% / var(--alpha));
+    --theme-codeblock: hsla(150deg 12% 24% / var(--alpha));
+    --text: hsla(150deg 50% 75% / 1);
+    --text-p1: hsla(150deg 80% 80% / 1);
+    --text-p2: hsla(150deg 80% 80% / 0.8);
+    --text-p3: hsla(150deg 80% 80% / 0.6);
+    --text-p4: hsla(150deg 80% 80% / 0.4);
+    --link: hsla(150deg 80% 60% / 1);
+    --link-a20: hsla(150deg 80% 60% / 0.2);
   }
   :root:not([data-theme]) .colorful[color='red'] {
     --hue: 4.105263157894738deg;
@@ -1122,7 +1122,7 @@ a.button.start.gradient {
 :root[data-theme="dark"] a.button.start.gradient {
   transition: 0.38s ease-out;
   z-index: 0;
-  background: linear-gradient(to right, #4c95fa, #38c9fa, #24f9c4, #24f9c4, #38c9fa, #4c95fa);
+  background: linear-gradient(to right, #6aaf98, #5ca374, #74a15e, #74a15e, #5ca374, #6aaf98);
   background-size: 1000%;
   color: #fff;
   text-shadow: 0 0 1px rgba(0,0,0,0.12);
@@ -1182,7 +1182,7 @@ a.button.start.gradient {
   :root:not([data-theme]) a.button.start.gradient {
     transition: 0.38s ease-out;
     z-index: 0;
-    background: linear-gradient(to right, #4c95fa, #38c9fa, #24f9c4, #24f9c4, #38c9fa, #4c95fa);
+    background: linear-gradient(to right, #6aaf98, #5ca374, #74a15e, #74a15e, #5ca374, #6aaf98);
     background-size: 1000%;
     color: #fff;
     text-shadow: 0 0 1px rgba(0,0,0,0.12);
@@ -7721,6 +7721,11 @@ details.toc[open] >div.body section .header+.doc_tree {
   background: var(--block);
   border-radius: 4px;
 }
+@media screen and (min-width: 1180px) {
+  .widget-wrapper.toc {
+    background: var(--background);
+  }
+}
 .widget-wrapper.toc .toc {
   --fsp: calc(17px - 2px);
   padding: 0;
@@ -8256,7 +8261,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   display: inline-block;
   width: 12px;
   height: 1.2em;
-  background: #ff5724;
+  background: #356e52;
   transform: skewX(-20deg);
   margin: 0 0.5em;
   vertical-align: top;
@@ -9077,7 +9082,6 @@ body>.sitebg {
   right: 0;
   bottom: 0;
   background-size: cover;
-  background-image: url("/img/site-bg-mountains.jpg");
 }
 body>.sitebg .siteblur {
   width: 100%;
@@ -9822,7 +9826,7 @@ a[data-fancybox] {
   --at-color-sub: var(--text-p3);
   --at-color-grey: var(--text-p4);
   --at-color-meta: var(--text-p4);
-  --at-color-border: transparent;
+  --at-color-border: var(--block-border);
   --at-color-light: var(--link);
   --at-color-bg: var(--card);
   --at-color-bg-transl: var(--card);

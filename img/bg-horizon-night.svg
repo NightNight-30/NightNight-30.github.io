@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 360" fill="none">
+  <!-- 月牙（mask 咬出）+ 光晕 -->
+  <circle cx="1108" cy="100" r="40" fill="#22d3ee" opacity="0.04"/>
+  <mask id="moon-cut">
+    <rect width="1440" height="360" fill="white"/>
+    <circle cx="1120" cy="92" r="19" fill="black"/>
+  </mask>
+  <circle cx="1108" cy="100" r="22" fill="#d9edf8" opacity="0.28" mask="url(#moon-cut)"/>
+  <!-- 几颗亮星 -->
+  <circle cx="240" cy="84" r="1.6" fill="#e0f2fe" opacity="0.45"/>
+  <circle cx="520" cy="142" r="1.2" fill="#e0f2fe" opacity="0.30"/>
+  <circle cx="860" cy="64" r="1.4" fill="#e0f2fe" opacity="0.40"/>
+  <circle cx="1300" cy="150" r="1.2" fill="#e0f2fe" opacity="0.28"/>
+  <!-- 远山 + 山脊微光 -->
+  <path d="M0 252 C120 216 200 176 320 196 C440 216 520 156 640 172 C760 188 840 148 960 168 C1080 188 1160 156 1280 180 C1360 196 1400 190 1440 198 L1440 360 L0 360 Z" fill="#1a2431"/>
+  <path d="M0 252 C120 216 200 176 320 196 C440 216 520 156 640 172 C760 188 840 148 960 168 C1080 188 1160 156 1280 180 C1360 196 1400 190 1440 198" stroke="#22d3ee" stroke-opacity="0.10" stroke-width="1.5"/>
+  <!-- 近山 -->
+  <path d="M0 306 C140 280 240 246 380 264 C520 282 620 240 760 258 C900 276 1000 244 1140 262 C1280 280 1360 262 1440 274 L1440 360 L0 360 Z" fill="#141c26"/>
+</svg>
