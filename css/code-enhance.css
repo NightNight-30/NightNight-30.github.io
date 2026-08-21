@@ -42,6 +42,22 @@
   border-color: rgba(140, 205, 165, 0.40);
 }
 
+/* === 主页：无封面图的文章卡片 → 透明底 + 不透明实色边框（本地预览，与日历/说说同款处理） === */
+/* 有 .post-cover 的卡片保留实底（封面图需要不透明容器） */
+.post-list .post-card:not(:has(.post-cover)) {
+  background: transparent !important;
+  border: 1px solid #738070;
+}
+.post-list .post-card:not(:has(.post-cover)):hover {
+  border-color: #5d6b5a;
+}
+[data-theme="dark"] .post-list .post-card:not(:has(.post-cover)) {
+  border-color: #4a5a50;
+}
+[data-theme="dark"] .post-list .post-card:not(:has(.post-cover)):hover {
+  border-color: #6e8577;
+}
+
 /* === navbar-blur 在背景图上白底太突兀，直接干掉磨砂伪元素 + 白色文字光晕 === */
 /* stellar newblur() mixin 给 ::before/::after 做 8px+16px 模糊 + 0.3 白底，
    还给 navbar-blur 和未选中 a 加了三层白色 text-shadow + drop-shadow 光晕，
@@ -56,6 +72,13 @@ body .navbar-blur nav a:not(.active) {
 body .navbar-blur::before,
 body .navbar-blur::after {
   display: none !important;
+}
+
+/* === navbar 选中项改松绿实底 + 白字（本地预览；默认是中性 var(--block) 底） === */
+body .navbar.top nav a.active {
+  background: var(--theme) !important;
+  color: #fff !important;
+  text-shadow: none !important;
 }
 
 /* === 3D 阴影：右下方向偏移，无模糊，营造层叠立体感 === */

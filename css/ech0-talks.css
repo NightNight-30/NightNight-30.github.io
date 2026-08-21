@@ -7,16 +7,21 @@
   position: relative;
 }
 
-/* 加载/错误/空状态 */
+/* 加载/错误/空状态：透明底 + 不透明实色边框（本地预览） */
 .timeline-ech0-container.timeline-loading,
 .timeline-ech0-container.timeline-empty,
 .timeline-ech0-container.timeline-error {
   text-align: center;
   padding: 50px 20px;
-  background: var(--card);
+  background: transparent;
   border-radius: 16px;
   color: var(--text-meta, #666);
-  border: 1px solid rgba(115, 128, 112, 0.18);
+  border: 1px solid #738070;
+}
+[data-theme="dark"] .timeline-ech0-container.timeline-loading,
+[data-theme="dark"] .timeline-ech0-container.timeline-empty,
+[data-theme="dark"] .timeline-ech0-container.timeline-error {
+  border-color: #4a5a50;
 }
 .timeline-ech0-container.timeline-error { color: #e53935; }
 .timeline-ech0-container.timeline-error small {
@@ -24,28 +29,28 @@
   font-size: 12px;
 }
 
-/* 扁平卡片（position 由 JS masonry 设置）- 与整站 var(--card) 纯色卡片同款风格 */
+/* 扁平卡片（position 由 JS masonry 设置）- 透明底 + 不透明实色边框（本地预览，与日历同款处理） */
 .timeline-ech0-container .timeline-card {
-  background: var(--card);
+  background: transparent;
   border-radius: 16px;
   padding: 20px 24px;
   transition: all 0.3s ease;
-  border: 1px solid rgba(115, 128, 112, 0.18);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #738070;
+  box-shadow: none;
   box-sizing: border-box;
 }
 .timeline-ech0-container .timeline-card:hover {
-  border-color: rgba(115, 128, 112, 0.32);
+  border-color: #5d6b5a;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10);
   transform: translateY(-2px);
 }
 
 [data-theme="dark"] .timeline-ech0-container .timeline-card {
-  border-color: rgba(150, 190, 165, 0.16);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20), 0 4px 12px rgba(0, 0, 0, 0.25);
+  border-color: #4a5a50;
+  box-shadow: none;
 }
 [data-theme="dark"] .timeline-ech0-container .timeline-card:hover {
-  border-color: rgba(150, 190, 165, 0.32);
+  border-color: #6e8577;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 

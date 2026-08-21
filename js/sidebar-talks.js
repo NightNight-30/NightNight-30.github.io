@@ -7,7 +7,7 @@
   const API = 'https://api.nightfall7.top/ech0/api/echo/query';
   const AVATAR = 'https://github.com/NightNight-30.png';
   const NICKNAME = 'NightFall';
-  const LIMIT = 5;
+  const LIMIT = 6;
 
   function escapeHtml(s) {
     return String(s || '').replace(/[&<>"']/g, c => ({
