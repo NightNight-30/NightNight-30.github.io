@@ -1473,3 +1473,17 @@ body::after {
   opacity: 0.5;
   color: var(--text-banner-theme, var(--text-banner));
 }
+
+/* === 评论框配色对齐右侧目录栏 ===
+   右栏 TOC widget 底色两个模式都是 var(--background)（亮 #f9fafb / 暗 #1c1f21），
+   但主题 artalk.css 把 --at-color-bg 映射到 var(--card)（亮 #fff / 暗 #373d43），
+   评论框因此比目录栏亮一个色阶。覆写为 var(--background) 对齐。
+   [data-theme] 前缀抬高特异性压过主题的 .cmt-body .artalk（0,2,0）
+   与 .cmt-body .artalk.atk-dark-mode（0,3,0），不动主题与 Artalk 源码 */
+[data-theme] .cmt-body .artalk,
+[data-theme] .cmt-body .atk-layer-wrap,
+[data-theme] .cmt-body .artalk.atk-dark-mode,
+[data-theme] .cmt-body .atk-layer-wrap.atk-dark-mode {
+  --at-color-bg: var(--background);
+  --at-color-bg-transl: var(--background);
+}

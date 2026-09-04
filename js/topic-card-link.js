@@ -73,7 +73,7 @@
   if (!cards.length) return;
 
   // 第十轮：最新文章回填。先于下方 search.json 改写 href 执行，
-  // 此时 cover.href 还是最新文章地址。 Hexo 教程卡只有一篇文章时
+  // 此时 cover.href 还是最新文章地址。专栏卡只有一篇文章时
   // 模板不渲染 topic-posts，缺了就补建
   cards.forEach(function (card) {
     var cover = card.querySelector('a.cover');
