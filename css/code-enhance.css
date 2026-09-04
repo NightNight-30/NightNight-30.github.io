@@ -43,7 +43,9 @@
 }
 
 /* === 主页：无封面图的文章卡片 → 透明底 + 不透明实色边框（本地预览，与日历/说说同款处理） === */
-/* 有 .post-cover 的卡片保留实底（封面图需要不透明容器） */
+/* 有 .post-cover 的卡片保留实底（封面图需要不透明容器）。
+   第十轮曾用 :not(.topic) 排除专栏卡（误匹配会整卡透明），
+   第十一轮用户要求专栏卡也改透明底+边框圆角、参考主页文章卡，故去掉排除 */
 .post-list .post-card:not(:has(.post-cover)) {
   background: transparent !important;
   border: 1px solid #738070;
@@ -58,6 +60,29 @@
   border-color: #6e8577;
 }
 
+/* === 首页文章卡片 hover：补回 1.33.1 hoverable-card()（明浮起阴影 / 暗主题色透光） ===
+   1.44 把 hoverable-card() 从 post 卡片上拿掉了（只留给 grid/link/ghrepo），
+   导致明色模式 hover 没有浮起阴影、暗色模式 hover 没有主题色透光。
+   数值取自 1.33.1 _defines/func.styl + _custom.styl（$boxshadow-card）：
+   - 明：常态 0 1px 2px rgba(0,0,0,.1)；hover 浮起阴影 + 上移 2px
+   - 暗：无常态阴影；hover 主题色透光，主题本身不设 transform，
+     3px 上浮由下方「卡片 hover 微动效」提供（与线上 1.33.1 实际效果一致，此处写明防顺序依赖） */
+.post-list .post-card {
+  transition: all 0.2s ease-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+.post-list .post-card:hover {
+  box-shadow: 0 12px 20px -4px rgba(0, 0, 0, 0.15);
+  transform: translate3d(0, -2px, 0);
+}
+[data-theme="dark"] .post-list .post-card {
+  box-shadow: none;
+}
+[data-theme="dark"] .post-list .post-card:hover {
+  box-shadow: 0 0 4px -2px var(--theme), 0 0 24px -8px var(--theme);
+  transform: translateY(-3px);
+}
+
 /* === navbar-blur 在背景图上白底太突兀，直接干掉磨砂伪元素 + 白色文字光晕 === */
 /* stellar newblur() mixin 给 ::before/::after 做 8px+16px 模糊 + 0.3 白底，
    还给 navbar-blur 和未选中 a 加了三层白色 text-shadow + drop-shadow 光晕，
@@ -65,12 +90,20 @@
 body .navbar-blur {
   text-shadow: none !important;
 }
+/* 1.44 的 .navbar-blur 自身带实色底 + 圆角 + 阴影（导航项后面一条白/深色横条），
+   线上 1.33.1 导航容器全透明、只有选中项是绿色药丸。把条本身也干掉。
+   第八轮曾加常驻透光+流动高光环，第九轮用户要求撤掉、保持线上一致 */
+body .navbar-blur {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
 body .navbar-blur nav a:not(.active) {
   text-shadow: none !important;
   filter: none !important;
 }
-body .navbar-blur::before,
-body .navbar-blur::after {
+/* ::before 是 newblur 的磨砂层，继续干掉 */
+body .navbar-blur::before {
   display: none !important;
 }
 
@@ -144,7 +177,9 @@ body .navbar.top nav a.active {
 /* stellar page/post layout 默认在 l_main 第一个子元素位置生成 .article.banner.top（面包屑+标题+发布日期），
    高 169px，把用户写的 banner 标签往下挤。当文章正文里自己放了 banner 标签时，这个自动横幅就是冗余的，
    用 :has() 检测到 .tag-plugin.banner 后隐藏之，让 banner 标签贴到 navbar 下方。 */
-.l_main:has(.tag-plugin.banner) > .article.banner.top {
+/* 1.44.0 起自动横幅外面多包了一层 .article-banner-wrap，两条选择器都要覆盖 */
+.l_main:has(.tag-plugin.banner) > .article.banner.top,
+.l_main:has(.tag-plugin.banner) > .article-banner-wrap {
   display: none !important;
 }
 /* 同时去掉 article 首元素 banner 的上 margin，让它真正贴顶 */
@@ -312,10 +347,10 @@ body .navbar.top nav a.active {
 /* sidebar 底部预留 margin 从 stellar 默认 96px → 36px，多出来的 60px 给 .widgets
    滚动区让最近更新显示更多文章（welcome+recent 原本 overflow 67px，加 60px 后基本不滚） */
 .l_left {
-  max-height: calc(100vh - var(--gap-margin) * 2 - 36px) !important;
+  max-height: calc(100vh - var(--gap-base) * 2 - 36px) !important;
 }
 .l_left .leftbar-container {
-  height: calc(100vh - var(--gap-margin) * 2 - 36px) !important;
+  height: calc(100vh - var(--gap-base) * 2 - 36px) !important;
 }
 
 /* 主题默认 leftbar 仍带彩虹占位图（配置里注释掉的只是我们这层覆盖），导致
@@ -328,6 +363,153 @@ body .navbar.top nav a.active {
 .l_left .leftbar-container::before {
   display: none !important;
 }
+
+/* === 1.44.0 对齐线上：leftbar 恢复透明 + 菜单恢复横排 5 图标 === */
+/* 1.44 默认 ui-style:card 给 .l_left.leftbar-card 和 leftbar-container 实色 var(--card) + 阴影，
+   线上 1.33.1 实测 .l_left / .leftbar-container / .sidebg 三层全透明，这里去掉实色与阴影 */
+.l_left.leftbar-card,
+.l_left .leftbar-container {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+/* === 第七轮：侧边栏静态边框移除，改常驻透光 + 沿边框流动的高光 ===
+   外发光 = 文章卡 hover 透光同款（var(--theme) 两层阴影），常驻不 hover 也有；
+   边框 = 1px 主题色半透明环（--theme-a20）+ 两条对向旋转的 conic 高亮弧，
+   mask-composite 掏空中心只留环。角度变量用 @property 注册才能被 keyframes
+   动画（老浏览器不转也不破，静态环仍在）。.l_left 本身 sticky，伪元素可绝对定位 */
+/* 第八轮起菜单栏/日历共用同一套角度变量与 keyframes：
+   conic-gradient 默认顺时针展开，角度 0→360 即高光顺时针流动，三处统一 */
+@property --flow-glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes flow-glow-rotate {
+  to { --flow-glow-angle: 360deg; }
+}
+.l_left.leftbar-card {
+  border: none !important;
+  /* 上方透明化规则带 !important，这里必须同权才能盖住 */
+  box-shadow: 0 0 4px -2px var(--theme), 0 0 24px -8px var(--theme) !important;
+}
+.l_left.leftbar-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background:
+    conic-gradient(from var(--flow-glow-angle),
+      transparent 0deg, transparent 30deg,
+      var(--theme) 90deg,
+      transparent 150deg, transparent 210deg,
+      var(--theme) 270deg,
+      transparent 330deg, transparent 360deg),
+    var(--theme-a20);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: flow-glow-rotate 6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .l_left.leftbar-card::before,
+  .widget-wrapper.markdown:has(#sidebar-calendar)::after {
+    animation: none;
+  }
+}
+/* 1.44 把 menubar 改成竖排 ui-collection 列表；改回 1.33.1 menu.styl 的一行 5 个图标方块：
+   grid 5 列 gap 8px、item 40px 圆角 8px 半透明底、图标 28px 淡显、active/hover 实底全彩+底部短横 */
+.l_left nav.menu .ui-collection {
+  display: grid !important;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.l_left nav.menu .ui-collection__item {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 40px;
+  border-radius: 8px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* 1.33.1 的 --bg-a50/a100 是黑白半透明；1.44 在 leftbar 作用域重定义了这两个变量
+     （蓝灰 8%/12%），不写死就对不上线上。数值取自 1.33.1 theme_base.styl x-set-bg-colors */
+  background: rgba(255, 255, 255, 0.5);
+  transition: background 0.2s ease-out;
+}
+[data-theme="dark"] .l_left nav.menu .ui-collection__item {
+  background: rgba(0, 0, 0, 0.5);
+}
+.l_left nav.menu .ui-collection__item img,
+.l_left nav.menu .ui-collection__item svg {
+  height: 28px;
+  object-fit: contain;
+  /* 1.33.1 原 filter 里的 opacity(0.5) 不搬：1.44 主题已给未选中图标加 opacity:.5
+     （hover/选中恢复 1），再叠一层会变 25% 过淡；灰度+亮度保留，透明度交给主题 */
+  filter: grayscale(50%) brightness(0.8);
+  transition: all 0.2s ease-out;
+}
+/* 1.44 给图标套了 .ui-collection__leading（1.5em=25.5px）并对 svg 设 max-height:100%，
+   会把 28px 图标压成 25.5px；撑回 28px 对齐 1.33.1 图标尺寸 */
+.l_left nav.menu .ui-collection__leading {
+  width: 28px;
+  height: 28px;
+}
+.l_left nav.menu .ui-collection__item.is-active,
+.l_left nav.menu .ui-collection__item:hover {
+  background: #fff;
+}
+[data-theme="dark"] .l_left nav.menu .ui-collection__item.is-active,
+[data-theme="dark"] .l_left nav.menu .ui-collection__item:hover {
+  background: #000;
+}
+.l_left nav.menu .ui-collection__item.is-active img,
+.l_left nav.menu .ui-collection__item.is-active svg,
+.l_left nav.menu .ui-collection__item:hover img,
+.l_left nav.menu .ui-collection__item:hover svg {
+  filter: unset;
+}
+.l_left nav.menu .ui-collection__item.is-active:after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  bottom: 2px;
+  background: currentColor;
+}
+.l_left nav.menu .ui-collection__content,
+.l_left nav.menu .ui-collection__indicator {
+  display: none !important;
+}
+/* nav-area 被 leftbar-order.js 移回搜索框上方；1.33.1 nav-area.styl 原文
+   margin: 1rem var(--gap-margin) 0（线上 root 16px → 1rem=16px，gap-margin=16px）。
+   左右各收 16px 后菜单宽 256，图标方块 44.8px，与线上逐像素一致 */
+.l_left .nav-area {
+  margin: 16px var(--gap-base) 0;
+}
+.l_left nav.menu {
+  margin: 8px 0;
+}
+/* 1.44 给 widgets 加了底部渐隐 mask，线上 1.33.1 没有，去掉 */
+.l_left .leftbar-container > .widgets {
+  mask: none;
+  -webkit-mask: none;
+}
+/* navbar 选项：线上 1.33.1 是 32px 圆角药丸，1.44 默认 8px 方角，改回 */
+body .navbar.top nav a {
+  border-radius: 32px;
+}
+/* 第四轮起 #search-wrapper 被 leftbar-extras.js 搬进 .search-modal-card，
+   原先作用在侧边栏内 .search-wrapper 的间距/输入框高度规则不再命中任何节点，
+   已删除；弹层内的样式见 leftbar-extras.css（.search-modal-card 各条）。 */
 
 /* === 左侧栏底部：白天/夜间切换（v2 融入社交图标行）===
    旧版大 pill 与安静侧栏违和；v2 复用 .social 的视觉语言：
@@ -497,6 +679,11 @@ body .navbar.top nav a.active {
 }
 /* 按路径匹配专属图标，让每条链接视觉有差异 */
 .sitemap-group a[href="/"]::before             { background-image: url('https://api.iconify.design/solar:document-add-outline.svg?color=%231e90ff'); }
+/* 第十一轮：专栏、公益404 原先未匹配到专属图标，落回默认箭头；
+   专栏换书本书签图标（橙），公益404 换爱心图标（玫红），
+   公益404 目标同步换成腾讯「寻梦」公益页（原 yibo.iyiyun.com 无法访问） */
+.sitemap-group a[href="/topic/"]::before        { background-image: url('https://api.iconify.design/solar:notebook-bookmark-outline.svg?color=%23ff9800'); }
+.sitemap-group a[href="https://xunmeng.qq.com/"]::before { background-image: url('https://api.iconify.design/solar:heart-outline.svg?color=%23f43f5e'); }
 .sitemap-group a[href="/tags/"]::before         { background-image: url('https://api.iconify.design/solar:hashtag-square-outline.svg?color=%23e91e63'); }
 .sitemap-group a[href="/archives/"]::before     { background-image: url('https://api.iconify.design/solar:archive-minimalistic-outline.svg?color=%239c27b0'); }
 .sitemap-group a[href="/life/"]::before        { background-image: url('https://api.iconify.design/solar:camera-outline.svg?color=%23ffc107'); }
@@ -763,8 +950,8 @@ body .navbar.top nav a.active {
    3. 文字色覆盖棕墨色，用主题 text 变量（明暗自适应）
    4. 不倾斜（覆盖基类 rotate(-2.5deg)）
    5. 顶部图钉已移除，改用顶部红色撕页条做实物日历感 */
-/* === 日历 widget：B方案 扁平化（去米黄纸+红撕页条，保留农历/宜忌内容个性）=== */
-/* 圆角对齐卡片体系 16px；透明底 + 不透明冷灰边（背景图上轮廓清晰） */
+/* === 日历 widget：B方案 扁平化（去米黄纸+红撕页条，保留农历/宜忌内容个性）===
+   圆角对齐卡片体系 16px；透明底；第八轮起静态边框改常驻透光 + 顺时针流动高光环（与侧边栏同款） */
 .widget-wrapper.markdown:has(#sidebar-calendar) {
   margin: 18px 8px 20px 8px !important;
   padding: 0 0 16px !important;
@@ -773,18 +960,38 @@ body .navbar.top nav a.active {
   overflow: hidden !important;
   border-radius: 16px !important;
   background: transparent !important;
-  border: 1px solid #738070 !important;
-  box-shadow: none !important;
+  border: none !important;
+  /* 基类便签规则带 !important，这里同权覆盖 */
+  box-shadow: 0 0 4px -2px var(--theme), 0 0 24px -8px var(--theme) !important;
 }
-/* 撕页条/装订孔在 B 方案里移除（红色是旧历书语言，与冷调冲突） */
-.widget-wrapper.markdown:has(#sidebar-calendar)::before,
-.widget-wrapper.markdown:has(#sidebar-calendar)::after {
+/* 基类胶带伪元素继续隐藏；::after 留给流动高光环 */
+.widget-wrapper.markdown:has(#sidebar-calendar)::before {
   display: none !important;
+}
+.widget-wrapper.markdown:has(#sidebar-calendar)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background:
+    conic-gradient(from var(--flow-glow-angle),
+      transparent 0deg, transparent 30deg,
+      var(--theme) 90deg,
+      transparent 150deg, transparent 210deg,
+      var(--theme) 270deg,
+      transparent 330deg, transparent 360deg),
+    var(--theme-a20);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: flow-glow-rotate 6s linear infinite;
 }
 [data-theme="dark"] .widget-wrapper.markdown:has(#sidebar-calendar) {
   background: transparent !important;
-  border-color: #4a5a50 !important;
-  box-shadow: none !important;
+  box-shadow: 0 0 4px -2px var(--theme), 0 0 24px -8px var(--theme) !important;
 }
 .widget-wrapper.markdown:has(#sidebar-calendar) .widget-header {
   display: none !important; /* 去掉「日历」标题 */
@@ -1102,6 +1309,167 @@ body::after {
 /* 尊重「减少动态效果」偏好：关闭卡片上浮/流光/打字光标动画 */
 @media (prefers-reduced-motion: reduce) {
   .post-card:hover { transform: none; }
+  [data-theme="dark"] .post-list .post-card:hover { transform: none; }
   .post-card::before { display: none; }
   .v0-typing::after { animation: none; }
+}
+
+/* === 第八轮：专栏页卡片对齐线上 1.33.1 横向布局（左 96px 图标 + 右标题/描述） ===
+   1.44 默认上下布局（居中标题 → 2:1 全宽 cover → 文章列表），而专栏 cover 是
+   iconify 图标，拉满全宽后糊成巨大色块，卡片框比例异常。改 grid 横排：
+   图标 96px（对齐线上 .preview 尺寸），标题/描述靠左，文章列表保留在下方通栏。
+   选择器带 article 与主题 .post-card.topic article xxx 同权，靠后加载胜出 */
+.post-list.topic .post-card.topic article {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  grid-template-areas:
+    "icon title"
+    "icon desc"
+    "posts posts";
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 2px;
+  /* 第十一轮：对齐文章卡 .post-list .md-text 的 padding（1rem；移动端 0.5rem 1rem） */
+  padding: 1rem;
+}
+@media screen and (max-width: 667px) {
+  .post-list.topic .post-card.topic article {
+    padding: 0.5rem 1rem;
+  }
+}
+.post-list.topic .post-card.topic article .topic-title {
+  grid-area: title;
+  align-self: end;
+  margin: 0;
+  text-align: left;
+  font-size: 21px;
+}
+/* 去掉 story 标题两侧的斜杠装饰，线上是纯标题 */
+.post-list.topic .post-card.topic article .topic-title::before,
+.post-list.topic .post-card.topic article .topic-title::after {
+  display: none;
+}
+.post-list.topic .post-card.topic article .topic-desc {
+  grid-area: desc;
+  align-self: start;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+}
+.post-list.topic .post-card.topic article .cover {
+  grid-area: icon;
+  width: 96px;
+  height: 96px;
+  aspect-ratio: 1 / 1;
+}
+/* 96px 图标上叠最新文章标题太挤，隐藏（cover 本身仍可点进最新文章） */
+.post-list.topic .post-card.topic article .cover .cover-info {
+  display: none;
+}
+.post-list.topic .post-card.topic article .topic-posts {
+  grid-area: posts;
+  padding: 0;
+  margin-top: 8px;
+}
+@media screen and (max-width: 667px) {
+  .post-list.topic .post-card.topic article {
+    grid-template-columns: 64px 1fr;
+    column-gap: 12px;
+  }
+  .post-list.topic .post-card.topic article .cover {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+/* === 第九轮：专栏卡片恢复整卡点击跳总览页（对齐线上 1.33.1 整卡 <a> → /topic/<slug>/） ===
+   1.44 模板唯一链接是 cover 且跳最新文章；topic-card-link.js 把 cover 的 href
+   改写成总览页，这里再把 cover 的点击区扩到整卡：cover 改 position:static，
+   它的 ::after 借卡片（.post-card 已 position:relative）定位铺满整卡。
+   topic-posts 的文章链接抬 z-index 保持独立可点。cover-info 第八轮已隐藏，
+   cover 改 static 无副作用 */
+.post-list.topic .post-card.topic article .cover {
+  position: static;
+}
+/* cover-overlay mixin 还给 .cover::before 挂了同图模糊层（background-image: var(--cover-url)
+   + mask 只显示底部 128px）、给 ::after 挂了下半部黑色渐变。第九轮只覆盖了
+   pointer-events，没清视觉层，cover 改 static 后这两层跟着铺满整卡——
+   模糊层经 mask 裁剪，在卡片中下部露出一条光带（用户反馈的「中下位置发光」）。
+   第十轮：::before 整个干掉；::after 保留为纯点击层（背景/遮罩/滤镜全清） */
+.post-list.topic .post-card.topic article .cover::before {
+  content: none;
+}
+/* 主题 cover-overlay mixin 对 .cover::after 设了 pointer-events:none + z-index:1，
+   这里必须显式 pointer-events:auto 才能接住点击（pointer-events 不继承） */
+.post-list.topic .post-card.topic article .cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  background: none;
+  -webkit-mask: none;
+  mask: none;
+  filter: none;
+}
+.post-list.topic .post-card.topic article .topic-posts {
+  position: relative;
+  z-index: 1;
+}
+/* 主题对 .post-list.topic .post-card 写了 overflow:visible（服务 cover 模糊层合成），
+   模糊层已除，改回 hidden 与文章卡一致（顶部流光沿圆角裁剪） */
+.post-list.topic .post-card.topic {
+  overflow: hidden;
+}
+
+/* === 第十一轮：专栏卡间距/圆角/透明底对齐首页文章卡 ===
+   主题 list.styl 把 .post-list.topic 的卡片「拍平」成无间距列表：
+   wrap margin:0 + box-shadow:none + border-radius:0，相邻 wrap 用 border-top
+   细线分隔，卡片本身也 background:none + radius 0。第十一轮用户要求专栏卡
+   间距与文章卡一致、透明底+边框圆角（参考主页文章卡片框），这里逐条还原
+   文章卡 wrap 的编译值（1rem 0 / 24px / 0 1px 2px rgba(0,0,0,.1)）：
+   - wrap 恢复外边距+圆角+阴影，去掉 border-top 分隔线
+   - 卡片恢复 24px 圆角（配合上方 overflow:hidden 沿圆角裁剪流光）
+   - 透明底由上方「无封面文章卡」规则自动命中（本轮已去掉 :not(.topic) 排除） */
+.post-list.topic .post-card-wrap {
+  margin: 1rem 0;
+  border-radius: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+.post-list.topic .post-card-wrap + .post-card-wrap {
+  border-top: none;
+}
+.post-list.topic .post-card.topic {
+  border-radius: 24px;
+}
+
+/* === 第十一轮：带背景图文章的顶部卡片补面包屑（配套 topic-card-link.js 注入） ===
+   背景图文章（正文自带 {% banner %} 标签）的自动横幅被上方 :has() 规则隐藏，
+   顶部只剩图片卡，没有「专栏/主页」返回入口；无背景图文章的横幅面包屑正常。
+   JS 把被隐藏横幅里的 #breadcrumb 克隆进 banner 的 .top 行（返回按钮旁），
+   样式对齐 banner 自带导航链接的语言：浅色字+文字阴影+hover 半透明白底 */
+.banner .content .top .banner-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  flex: 1;
+  margin-left: 4px;
+  line-height: 1.5;
+}
+.banner .content .top .banner-breadcrumb a {
+  color: var(--text-banner-theme, var(--text-banner));
+  font-size: calc(var(--fs-content-base) - 1px);
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.12);
+  text-decoration: none;
+  opacity: 0.9;
+}
+.banner .content .top .banner-breadcrumb a:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.25);
+}
+.banner .content .top .banner-breadcrumb .sep {
+  opacity: 0.5;
+  color: var(--text-banner-theme, var(--text-banner));
 }
