@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.44.0" theme-name="Stellar" theme-version="1.44.0">
-  <link rel="canonical" href="https://nightfall7.top/2026/09/04/hexo-stellar-init-config/">
+  <link rel="canonical" href="https://nightfall7.top/2026/09/17/oss-cdn-image-migration/">
   
   <meta name="generator" content="Hexo 8.1.1">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
@@ -17,27 +17,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>博客搭建记录（二）：Hexo + Stellar 初始化配置 - NightFall</title>
+  <title>博客图片迁移到 OSS + CDN - NightFall</title>
 
-  <meta name="description" content="6 月 26 日开工，导航、组件、笔记本、标签插件挨个配过来。记录配置过程，也记录踩的坑。">
+  <meta name="description" content="把博客图片从 GitHub Pages 搬到阿里云 OSS + CDN，记录从建桶、开 CDN、配 HTTPS 证书到替换引用的完整流程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博客搭建记录（二）：Hexo + Stellar 初始化配置">
-<meta property="og:url" content="https://nightfall7.top/2026/09/04/hexo-stellar-init-config/">
+<meta property="og:title" content="博客图片迁移到 OSS + CDN">
+<meta property="og:url" content="https://nightfall7.top/2026/09/17/oss-cdn-image-migration/">
 <meta property="og:site_name" content="NightFall">
-<meta property="og:description" content="6 月 26 日开工，导航、组件、笔记本、标签插件挨个配过来。记录配置过程，也记录踩的坑。">
+<meta property="og:description" content="把博客图片从 GitHub Pages 搬到阿里云 OSS + CDN，记录从建桶、开 CDN、配 HTTPS 证书到替换引用的完整流程。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.com/NightNight-30.png">
-<meta property="article:published_time" content="2026-09-04T08:00:00.000Z">
-<meta property="article:modified_time" content="2026-09-04T10:43:48.570Z">
+<meta property="article:published_time" content="2026-09-17T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-17T06:08:31.525Z">
 <meta property="article:author" content="NightFall">
-<meta property="article:tag" content="hexo">
-<meta property="article:tag" content="stellar">
-<meta property="article:tag" content="博客搭建">
+<meta property="article:tag" content="CDN">
+<meta property="article:tag" content="OSS">
+<meta property="article:tag" content="博客优化">
+<meta property="article:tag" content="图片托管">
+<meta property="article:tag" content="阿里云">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://github.com/NightNight-30.png"><meta name="twitter:title" content="博客搭建记录（二）：Hexo + Stellar 初始化配置">
+<meta name="twitter:image" content="https://github.com/NightNight-30.png"><meta name="twitter:title" content="博客图片迁移到 OSS + CDN">
   
   
-  <meta name="keywords" content="hexo,stellar,博客搭建">
+  <meta name="keywords" content="阿里云,OSS,CDN,博客优化,图片托管">
 
   <!-- feed -->
   
@@ -60,7 +62,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png"},"dateCreated":"2026-09-04T16:00:00+08:00","dateModified":"2026-09-04T18:43:48+08:00","datePublished":"2026-09-04T16:00:00+08:00","description":"6 月 26 日开工，导航、组件、笔记本、标签插件挨个配过来。记录配置过程，也记录踩的坑。","headline":"博客搭建记录（二）：Hexo + Stellar 初始化配置","mainEntityOfPage":{"@type":"WebPage","@id":"https://nightfall7.top/2026/09/04/hexo-stellar-init-config/"},"publisher":{"@type":"Organization","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png","logo":{"@type":"ImageObject","url":"https://github.com/NightNight-30.png"}},"url":"https://nightfall7.top/2026/09/04/hexo-stellar-init-config/","keywords":"hexo, stellar, 博客搭建","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png"},"dateCreated":"2026-09-17T14:00:00+08:00","dateModified":"2026-09-17T14:08:31+08:00","datePublished":"2026-09-17T14:00:00+08:00","description":"把博客图片从 GitHub Pages 搬到阿里云 OSS + CDN，记录从建桶、开 CDN、配 HTTPS 证书到替换引用的完整流程。","headline":"博客图片迁移到 OSS + CDN","mainEntityOfPage":{"@type":"WebPage","@id":"https://nightfall7.top/2026/09/17/oss-cdn-image-migration/"},"publisher":{"@type":"Organization","name":"NightFall","sameAs":[],"image":"https://github.com/NightNight-30.png","logo":{"@type":"ImageObject","url":"https://github.com/NightNight-30.png"}},"url":"https://nightfall7.top/2026/09/17/oss-cdn-image-migration/","keywords":"阿里云, OSS, CDN, 博客优化, 图片托管","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
   <link rel="stylesheet" href="/css/code-enhance.css?v=20260904f"><link rel="stylesheet" href="/css/leftbar-extras.css?v=20260903e">
 
   <!-- icons.yml 驱动的 CSS 装饰图标 -->
@@ -217,7 +219,7 @@
   <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/17/oss-cdn-image-migration/" title="博客图片迁移到 OSS + CDN">
+<a class="ui-collection__item card-hover card-hover--spotlight is-active" href="/2026/09/17/oss-cdn-image-migration/" title="博客图片迁移到 OSS + CDN" aria-current="page">
   
   
   
@@ -229,7 +231,7 @@
     </span>
   
   
-  
+  <span class="ui-collection__indicator"></span>
   
 </a>
 
@@ -325,7 +327,7 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight is-active" href="/2026/09/04/hexo-stellar-init-config/" title="博客搭建记录（二）：Hexo + Stellar 初始化配置" aria-current="page">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/04/hexo-stellar-init-config/" title="博客搭建记录（二）：Hexo + Stellar 初始化配置">
   
   
   
@@ -337,7 +339,7 @@
     </span>
   
   
-  <span class="ui-collection__indicator"></span>
+  
   
 </a>
 
@@ -578,104 +580,255 @@
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/2026/09/17/oss-cdn-image-migration/">博客搭建记录</a>
 </div></div><div class="meta-row">
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-09-04T08:00:00.000Z">2026-09-04</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-04T10:43:48.570Z">2026-09-04</time></span></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-09-17T06:00:00.000Z">2026-09-17</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-17T06:08:31.525Z">2026-09-17</time></span></div>
 </div></div>
     
     <div class="bottom only-title">
       
       <div class="text-area">
-        <h1 class="text title"><span>博客搭建记录（二）：Hexo + Stellar 初始化配置</span></h1>
+        <h1 class="text title"><span>博客图片迁移到 OSS + CDN</span></h1>
         
       </div>
     </div>
     
   </div>
   </div></div>
-<article class="md-text content slide-up"><p>博客 2026 年 6 月 26 日开工，Hexo 8.1.1 加 hexo-theme-stellar 主题。主题是 npm 安装的，放在 node_modules 里，不进 themes/ 目录，也不进 git。日常改的只有三处：<code>_config.yml</code>、<code>_config.stellar.yml</code>、用户资源目录 <code>source/</code>。</p>
-<p>这篇记录初始化阶段做的事：导航、页脚、侧边栏组件、笔记本、标签插件，还有几个反复踩的坑。</p>
-<h2 id="先说热重载规则"><a href="#先说热重载规则" class="headerlink" title="先说热重载规则"></a>先说热重载规则</h2><p>Stellar 的本地预览不是什么都热重载，第一天就交了学费：</p>
+<article class="md-text content slide-up"><h2 id="为什么要搬"><a href="#为什么要搬" class="headerlink" title="为什么要搬"></a>为什么要搬</h2><p>博客之前图片全放在 <code>hexo_wsj/source/img/</code> 里，跟着源码走 GitHub Pages 的 CDN。能用，但有两个问题。</p>
+<p>GitHub Pages 的 CDN 节点主要在海外，国内读者加载图片要绕一大圈。几张 2-3MB 的背景图，首屏加载慢半拍。另外图片跟着源码进 git 历史，仓库越来越大，clone 和 push 都变慢。</p>
+<p>OSS + CDN 的方案很简单：图片存阿里云对象存储，前端通过 CDN 域名访问。CDN 国内节点多，缓存命中后不回源，加载快、费用低。GitHub Pages 那边只留 favicon、备案图标这种几 KB 的小文件。</p>
+<p>11 张图，从建桶到上线花了半天。按步骤拆开写。</p>
+<hr>
+<h2 id="一、创建-OSS-桶"><a href="#一、创建-OSS-桶" class="headerlink" title="一、创建 OSS 桶"></a>一、创建 OSS 桶</h2><p>OSS 控制台新建 Bucket：</p>
 <div class="md-table-scroll"><table>
 <thead>
 <tr>
-<th>改动类型</th>
-<th>热重载</th>
-<th>怎么办</th>
+<th>配置项</th>
+<th>值</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>source/_posts/*.md</code>、<code>source/_data/*.yml</code></td>
-<td>是</td>
-<td>保存刷新即见</td>
+<td>Bucket 名称</td>
+<td><code>pic-nightfall</code></td>
+<td>和博客名对应，一眼认出</td>
 </tr>
 <tr>
-<td><code>_config.yml</code> / <code>_config.stellar.yml</code></td>
-<td>否</td>
-<td>重启</td>
+<td>地域</td>
+<td>华东2（上海）</td>
+<td>读者主要在国内，离用户近</td>
 </tr>
 <tr>
-<td><code>node_modules/hexo-theme-stellar/**</code></td>
-<td>否</td>
-<td>重启</td>
+<td>存储类型</td>
+<td>标准存储（同城冗余）</td>
+<td>图片读多写少，标准存储最合适</td>
 </tr>
 <tr>
-<td>新增笔记、改笔记本配置、改 site_tree</td>
-<td>否</td>
-<td>重启</td>
+<td>读写权限</td>
+<td>公共读</td>
+<td>CDN 回源要能直接读到文件，私有权限每次访问都要签名，没必要</td>
 </tr>
 </tbody></table></div>
-<p>笔记本那行值得单独说：标签树是在 generateBefore 事件里构建的，server 的热重载不会重新触发这个事件，所以改笔记本相关配置必须重启。</p>
-<p>本地预览 <code>npm run server</code>，监听 4000；停掉用 <code>lsof -ti:4000 | xargs -r kill -9</code>。验证就三招：curl 看首页返回 200，浏览器 Console 看有没有报错，截图对比视觉效果。</p>
-<h2 id="menubar-五项与配色"><a href="#menubar-五项与配色" class="headerlink" title="menubar 五项与配色"></a>menubar 五项与配色</h2><p>导航五项一次定稿：博客、生活、技术、读书、关于。图标统一用 solar 图标集的 bold-duotone 风格，每项一个颜色：</p>
+<p>建好后进「权限控制」标签页确认 ACL 是「公共读」。这一步我一开始没注意，后面 CDN 回源报 403，排查了半天才发现是权限问题。</p>
+<hr>
+<h2 id="二、添加-CDN-加速域名"><a href="#二、添加-CDN-加速域名" class="headerlink" title="二、添加 CDN 加速域名"></a>二、添加 CDN 加速域名</h2><h3 id="2-1-CDN-控制台添加域名"><a href="#2-1-CDN-控制台添加域名" class="headerlink" title="2.1 CDN 控制台添加域名"></a>2.1 CDN 控制台添加域名</h3><p>进 <a target="_blank" rel="noopener" href="https://cdn.console.aliyun.com/">CDN 控制台</a> → 域名管理 → 添加域名：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>加速域名</td>
+<td><code>img.nightfall7.top</code></td>
+</tr>
+<tr>
+<td>加速区域</td>
+<td>仅中国内地（个人博客不需要全球加速）</td>
+</tr>
+<tr>
+<td>业务类型</td>
+<td>图片小文件</td>
+</tr>
+<tr>
+<td>源站类型</td>
+<td><strong>OSS 域名</strong>（不要选 IP）</td>
+</tr>
+<tr>
+<td>源站地址</td>
+<td><code>pic-nightfall.oss-cn-shanghai.aliyuncs.com</code></td>
+</tr>
+<tr>
+<td>回源端口</td>
+<td>443</td>
+</tr>
+</tbody></table></div>
+<p>源站类型选 OSS 域名而不是 IP，CDN 走内网回源 OSS，内网流量免费且延迟更低。选 IP 类型走公网回源，多花钱还慢。</p>
+<h3 id="2-2-域名归属验证"><a href="#2-2-域名归属验证" class="headerlink" title="2.2 域名归属验证"></a>2.2 域名归属验证</h3><p>首次添加域名，阿里云要求验证域名归属权。选 DNS 验证，它会给一个 TXT 记录：</p>
 <ul>
-<li>博客 <code>#E91E63</code>（Material pink 500）</li>
-<li>生活 <code>#FFC107</code>（amber 500）</li>
-<li>技术 <code>#6366F1</code>（蓝紫）</li>
-<li>读书 <code>#1BCDFC</code>（青）</li>
-<li>关于 <code>#6D28D9</code>（violet 600）</li>
+<li>主机记录：<code>verification</code></li>
+<li>记录值：<code>verify_xxx</code>（一串哈希值）</li>
 </ul>
-<p>五个颜色分布在色环不同位置，保证扫一眼能分开。后来「读书」换成「说说」，图标从聊天气泡换成气球，配色没动。</p>
-<p>menubar 的 id 要和页面 front-matter 里的 <code>menu_id</code> 对应，点击后导航项才会高亮。对不上就是点了不亮，配置本身不报错。</p>
-<h2 id="图标字典：初始化最大的坑"><a href="#图标字典：初始化最大的坑" class="headerlink" title="图标字典：初始化最大的坑"></a>图标字典：初始化最大的坑</h2><p>配菜单图标时发现一个反直觉的行为：<code>icon:</code> 字段写了一个图标名，页面上原样显示这串文字，不报错。</p>
-<p>原因：Stellar 只渲染它 <code>_data/icons.yml</code> 字典里列好的 SVG，字典外的名字直接当文字输出。这里面有两层坑：</p>
+<p>去 DNS 控制台（<code>nightfall7.top</code>）加这条 TXT 记录，等一两分钟生效后回 CDN 点「点击验证」。</p>
+<h3 id="2-3-缓存配置"><a href="#2-3-缓存配置" class="headerlink" title="2.3 缓存配置"></a>2.3 缓存配置</h3><p>缓存过期时间根目录 <code>/</code> 设 1 个月。个人博客图片几乎不变，长缓存命中率高。</p>
+<p>忽略参数那一项，模式选「保留指定参数」（留空列表），<strong>保留回源参数选否</strong>。博客 URL 里经常带 <code>?v=20260917</code> 这种版本号做缓存刷新，忽略参数后不同版本的 URL 命中同一条缓存，回源时也不该把 <code>?v=</code> 带到 OSS，白跑一趟。</p>
+<h3 id="2-4-关掉费用封顶"><a href="#2-4-关掉费用封顶" class="headerlink" title="2.4 关掉费用封顶"></a>2.4 关掉费用封顶</h3><p>这一步容易踩坑。CDN 默认开了三项封顶：流量封顶（50GB/小时）、带宽封顶（10Gbps）、HTTPS 请求数封顶（100 万次/小时）。前两项对个人博客毫无意义。</p>
+<p>关键是 HTTPS 请求数封顶。100 万次/小时看起来不小，但博客一个页面加载带十几张图片请求，如果被爬虫扫或者某篇文章被转发，轻松触发。触发后域名直接下线 1 个月。</p>
+<p>三项都删掉。个人博客按量计费每月就几块钱，真出问题了云监控会告警，手动处理就行。</p>
+<h3 id="2-5-DNS-加-CNAME"><a href="#2-5-DNS-加-CNAME" class="headerlink" title="2.5 DNS 加 CNAME"></a>2.5 DNS 加 CNAME</h3><p>CDN 添加成功后会给一个 CNAME 值（类似 <code>img.nightfall7.top.w.kunlunaq.com</code>）。去 DNS 控制台给 <code>img.nightfall7.top</code> 加 CNAME：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>记录类型</td>
+<td><code>CNAME</code></td>
+</tr>
+<tr>
+<td>主机记录</td>
+<td><code>img</code></td>
+</tr>
+<tr>
+<td>记录值</td>
+<td>CDN 给的 CNAME 地址</td>
+</tr>
+</tbody></table></div>
+<p>用 <code>nslookup img.nightfall7.top</code> 验证解析是否生效。</p>
+<hr>
+<h2 id="三、配-HTTPS-证书"><a href="#三、配-HTTPS-证书" class="headerlink" title="三、配 HTTPS 证书"></a>三、配 HTTPS 证书</h2><p>主站 <code>nightfall7.top</code> 已经是 HTTPS，图片走 HTTP 加载的话浏览器会报 mixed content 警告，甚至直接阻断。HTTPS 必开。</p>
+<h3 id="3-1-申请免费证书"><a href="#3-1-申请免费证书" class="headerlink" title="3.1 申请免费证书"></a>3.1 申请免费证书</h3><p>进 <a target="_blank" rel="noopener" href="https://yundunnext.console.aliyun.com/?p=cas">SSL 证书控制台</a> → 个人测试证书 → 去购买 → 选「个人测试证书（免费）」+「基础版」。0 元，下单后填写申请：</p>
+<ul>
+<li>绑定域名：<code>img.nightfall7.top</code></li>
+<li>验证方式：DNS 自动验证（阿里云 DNS 会自动加 <code>_dnsauth</code> 的 TXT 记录，秒过）</li>
+</ul>
+<p>免费 DV 证书有效期 90 天，不支持自动续期，到期前手动重新申请一张。</p>
+<h3 id="3-2-CDN-开启-HTTPS"><a href="#3-2-CDN-开启-HTTPS" class="headerlink" title="3.2 CDN 开启 HTTPS"></a>3.2 CDN 开启 HTTPS</h3><p>回 CDN 控制台 → <code>img.nightfall7.top</code> → HTTPS 配置：</p>
 <ol>
-<li><strong>图标名本身不存在。</strong> Solar 集有 3000 多个图标，名字全靠猜不行。用 <code>curl https://api.iconify.design/solar/&lt;name&gt;.svg</code> 探测，404 就是不存在，200 才有。</li>
-<li><strong>图标在 Iconify 存在，但主题字典没有。</strong> 我试的第二个图标 curl 返回 200，页面上还是显示文字。主题字典是静态的，只预置了 10 个 solar bold-duotone 图标。</li>
+<li>开启 HTTPS 安全加速</li>
+<li>证书选「云盾（SSL 证书服务）」，下拉框选刚签发的证书</li>
+<li>开启 HTTP → HTTPS 强制跳转</li>
 </ol>
-<p>解法是新建 <code>source/_data/icons.yml</code>，把 SVG 内容直接塞进去。主题用对象合并的方式处理字典，用户字典覆盖默认字典。</p>
-<p>两个细节：Iconify 下载的 SVG 默认 <code>width="1em" height="1em"</code>，建议改成 <code>width="32" height="32"</code>，和主题字典里其他图标的固有尺寸一致；图标集合名有对照关系，<code>fab:git-alt</code> 对应 API 路径 <code>fa-brands/git-alt</code>。</p>
-<p>之后加新图标就是固定流程：curl 验证存在 → 复制 SVG → 改 32x32 → 追加进 icons.yml → 重启。</p>
-<h2 id="页脚和头像"><a href="#页脚和头像" class="headerlink" title="页脚和头像"></a>页脚和头像</h2><p>两个小坑，都是 404：</p>
-<ul>
-<li>footer social 的 icon 字段必须填完整 HTML（<code>&lt;img src="..." alt="GitHub"/&gt;</code>），只填图标名不渲染；url 留了个空的 <code>https://</code>，四个链接全 404，逐个填实。</li>
-<li>头像用模板变量渲染出 <code>src="undefined"</code>，改成 GitHub 头像直链 <code>https://github.com/&lt;用户名&gt;.png</code> 解决。</li>
-</ul>
-<p>页脚内容区有个实用机制：<code>{author.name}</code>、<code>{theme.name}</code>、<code>{theme.version}</code> 这类花括号占位符是主题渲染时替换的，不要写死值，主题升级后版本号会跟着变。写法从主题默认 footer 里抄。</p>
-<p>sitemap 分组前先 curl 实测路由：<code>/categories/</code> 返回 404，<code>/tags/</code> 和 <code>/archives/</code> 返回 200，所以页脚没放分类链接。404 链接挂在页脚上伤 SEO。</p>
-<p>另一个省事的习惯：Stellar 默认配置（主题目录下的 <code>_config.yml</code>）已经开好了多数功能，复制代码、图片懒加载都是默认开的。配之前先查默认值，<code>_config.stellar.yml</code> 里只覆盖想改的项。</p>
-<h2 id="widgets-与-site-tree"><a href="#widgets-与-site-tree" class="headerlink" title="widgets 与 site_tree"></a>widgets 与 site_tree</h2><p>1.26.0 起，侧边栏组件改成按页面类型挂载：每种页面类型（home、post、page、notebooks 等）可以独立指定 leftbar 和 rightbar，组件名按逗号分隔的顺序挂载。</p>
-<p>我配了三个组件：</p>
-<ul>
-<li><strong>welcome</strong>：markdown 组件，写在 <code>source/_data/widgets.yml</code>，挂到所有页面类型的 leftbar 首位。注意覆盖语义：用户配置里写了同名组件就是整体覆盖，不是字段合并；想禁用内置组件，同名置空即可。</li>
-<li><strong>timeline</strong>：近期动态，数据源是 GitHub 仓库的 issues API，挂在首页右栏。</li>
-<li><strong>related</strong>：同栏文章列表。这个组件容易误解：它不按 tags 匹配，而是按文章 front-matter 的 <code>topic</code> 字段（专栏）归组。文章指定了专栏、专栏在 <code>_data/topic/</code> 里有定义，组件才渲染。</li>
-</ul>
-<h2 id="笔记本系统"><a href="#笔记本系统" class="headerlink" title="笔记本系统"></a>笔记本系统</h2><p>技术笔记用的是 1.29.0 引入的 notebooks 系统：一个笔记本一个 yml（<code>source/_data/notebooks/&lt;id&gt;.yml</code>），笔记 md 用 front-matter <code>notebook: &lt;id&gt;</code> 归属。</p>
-<p>一个设计上的巧合：menubar「技术」指向 <code>/tech/</code>，笔记本的 base_dir 也是 tech，于是一套 URL 两种用途——点导航直接进笔记本列表页。前提是 <code>source/tech/</code> 下不放 index.md 占用路由。</p>
-<p>标签图标配错位置卡了半天：标签图标要配在 <code>_config.stellar.yml</code> 的 <code>notebook.tagcons</code> 段，key 区分大小写；配在笔记本自己的 yml 里无效，因为渲染标签树的模板只读主题配置里那一段。图标本身还是得在 icons.yml 字典里有定义，否则又是原样输出文字。</p>
-<h2 id="banner-与标签插件"><a href="#banner-与标签插件" class="headerlink" title="banner 与标签插件"></a>banner 与标签插件</h2><p>独立页面的顶部横幅用 <code>{% banner %}</code> 标签，三种用法：页面顶部横幅带导航、个人资料页、文章摘要卡片。三个坑：</p>
-<ol>
-<li>标题参数不能含空格，主题按空格分词，需要空格的地方用 <code>&amp;nbsp;</code> 代替。</li>
-<li>背景图渲染成 <code>&lt;img class="lazy bg"&gt;</code> 子元素，不是 CSS background，调试时别找错地方。</li>
-<li>页面用了手写 banner，主题还会自动生成一个顶部横幅，两个打架。用 <code>:has()</code> 父选择器把自动横幅隐藏掉。</li>
-</ol>
-<p>列表卡片要显示封面图，front-matter 加 <code>cover</code> 和 <code>poster</code> 两个字段。<code>excerpt</code> 必须手填，不然自动摘要会把 banner 文字吃进去。</p>
-<h2 id="两个会反复遇到的点"><a href="#两个会反复遇到的点" class="headerlink" title="两个会反复遇到的点"></a>两个会反复遇到的点</h2><p><strong>文内链接别硬编码。</strong> Hexo 默认 permalink 是 <code>:year/:month/:day/:title/</code>，markdown 里写死 <code>/posts/slug/</code> 必 404。正确写法是主题的 `{% post_link slug %}` 标签，按 permalink 规则自动生成路径。</p>
-<p><strong>搜索用 local_search。</strong> 不依赖后端，配 <code>service: local_search</code>，依赖 hexo-generator-searchdb，索引文件在 <code>/search.xml</code>。500 篇以内的个人博客够用。</p>
-<h2 id="收尾"><a href="#收尾" class="headerlink" title="收尾"></a>收尾</h2><p>初始化阶段留下了三处 node_modules 补丁：专栏卡链接指向修正、笔记卡片支持封面图、卡片加 photo 类。这些补丁每次 npm update 都会丢，需要重打，清单记在配置参考里。这是 npm 安装主题的代价，也是后来坚持「定制走 inject、不碰主题源码」的原因之一。</p>
-<p>配置键在 1.44.0 升级时有一批删改，迁移过程另有一篇：<a href="/2026/09/04/stellar-144-upgrade/" title="博客搭建记录（七）：Stellar 主题 1.44.0 升级">博客搭建记录（七）：Stellar 主题 1.44.0 升级</a>。</p>
+<p>配好后访问 <code>http://img.nightfall7.top/xxx</code> 会返回 301 跳到 <code>https://...</code>。</p>
+<hr>
+<h2 id="四、上传图片到-OSS"><a href="#四、上传图片到-OSS" class="headerlink" title="四、上传图片到 OSS"></a>四、上传图片到 OSS</h2><p>桶里建目录 <code>pic/blog_material/</code>，把图片传进去。ossutil 命令行批量上传或者控制台手动拖拽都行。</p>
+<p>OSS 的路径就是 URL 的路径。<code>pic/blog_material/bg-mountains.jpg</code> 对应访问地址 <code>https://img.nightfall7.top/pic/blog_material/bg-mountains.jpg</code>。</p>
+<p>传完后用 curl 验证一下：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sI https://img.nightfall7.top/pic/blog_material/bg-mountains.jpg</span><br><span class="line"><span class="comment"># 应返回 200 OK + Content-Type: image/jpeg</span></span><br></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h2 id="五、替换博客里的图片引用"><a href="#五、替换博客里的图片引用" class="headerlink" title="五、替换博客里的图片引用"></a>五、替换博客里的图片引用</h2><p>先 grep 找出所有 <code>/img/</code> 路径的图片引用。Markdown 文件里有 cover 字段、banner 的 <code>bg:</code> 参数、文章内 <code>![](/img/...)</code> 引用，CSS 文件里有 <code>url(/img/...)</code> 背景图引用。</p>
+<p>把 <code>/img/xxx.jpg</code> 改成 <code>https://img.nightfall7.top/pic/blog_material/xxx.jpg</code>，涉及的文件：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>引用位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>_posts/nightfall-blog-build.md</code></td>
+<td>cover + banner 背景图</td>
+</tr>
+<tr>
+<td><code>_posts/diagram-three-ways-compare.md</code></td>
+<td>4 张流程图对比图</td>
+</tr>
+<tr>
+<td><code>about/index.md</code></td>
+<td>banner 背景图</td>
+</tr>
+<tr>
+<td><code>friends/index.md</code></td>
+<td>banner 背景图</td>
+</tr>
+<tr>
+<td><code>life/index.md</code></td>
+<td>banner + swiper 相册</td>
+</tr>
+<tr>
+<td><code>shuoshuo/index.md</code></td>
+<td>banner 背景图</td>
+</tr>
+<tr>
+<td><code>css/code-enhance.css</code></td>
+<td>全站背景图（light/dark 3 处）</td>
+</tr>
+</tbody></table></div>
+<p>替换完跑 <code>hexo clean &amp;&amp; hexo g</code>，检查生成的 HTML 里都是 CDN 地址。</p>
+<p>图片已经迁到 OSS，GitHub Pages 那边的原文件没必要留着了。从 <code>source/img/</code> 移走，<code>hexo g</code> 后就不会出现在 public 目录里。本地留一份备份放博客根目录的 <code>backup_img_cdn_migration/</code>，然后 <code>hexo d</code> 部署，GitHub Pages 仓库里这些图片就删掉了。</p>
+<hr>
+<h2 id="六、配-Referer-防盗链"><a href="#六、配-Referer-防盗链" class="headerlink" title="六、配 Referer 防盗链"></a>六、配 Referer 防盗链</h2><p>Bucket 名和 OSS 域名是公开信息，知道的人可以写脚本刷流量消耗你的钱。CDN 层面配防盗链能拦截非博客页面的请求。</p>
+<p>CDN 控制台 → <code>img.nightfall7.top</code> → 访问控制 → 防盗链 → 修改配置：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>防盗链类型</td>
+<td>Referer 白名单</td>
+</tr>
+<tr>
+<td>规则（回车分隔）</td>
+<td><code>*.nightfall7.top</code> + <code>nightfall7.top</code></td>
+</tr>
+<tr>
+<td>允许通过浏览器地址栏直接访问资源 URL</td>
+<td><strong>不勾选</strong></td>
+</tr>
+<tr>
+<td>忽略 scheme</td>
+<td><strong>勾选</strong>（HTTP/HTTPS 都匹配）</td>
+</tr>
+<tr>
+<td>重定向 URL</td>
+<td>留空（拦截返回 403）</td>
+</tr>
+</tbody></table></div>
+<p>配完后：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 博客页面正常加载（带 Referer）→ 200</span></span><br><span class="line">curl -sI -H <span class="string">"Referer: https://nightfall7.top/"</span> https://img.nightfall7.top/pic/blog_material/bg-mountains.jpg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 外部盗链 → 403</span></span><br><span class="line">curl -sI -H <span class="string">"Referer: https://other-site.com/"</span> https://img.nightfall7.top/pic/blog_material/bg-mountains.jpg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 空 Referer（直接访问）→ 403</span></span><br><span class="line">curl -sI https://img.nightfall7.top/pic/blog_material/bg-mountains.jpg</span><br></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h2 id="费用"><a href="#费用" class="headerlink" title="费用"></a>费用</h2><p>上线后的开销：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>费用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OSS 存储（约 15MB）</td>
+<td>几乎为 0</td>
+</tr>
+<tr>
+<td>OSS 外网流出（CDN 回源流量）</td>
+<td>CDN 缓存命中后不回源，极少</td>
+</tr>
+<tr>
+<td>CDN 流量</td>
+<td>按量计费，每月几块钱</td>
+</tr>
+<tr>
+<td>CDN HTTPS 请求数</td>
+<td>比 HTTP 多约 0.05 元/万次</td>
+</tr>
+<tr>
+<td>SSL 证书</td>
+<td>0 元（免费 DV 证书，90 天有效期）</td>
+</tr>
+</tbody></table></div>
+<p>总费用每月大概 5-10 块，换来的是国内加载速度明显提升。</p>
+<h2 id="后续要做的"><a href="#后续要做的" class="headerlink" title="后续要做的"></a>后续要做的</h2><p>免费证书 90 天到期，到期前手动重新申请一张，CDN 控制台替换就行。防盗链已经配好，外部刷流量和盗链都被拦截了。</p>
+<p><code>hexo_wsj/source/img/</code> 里现在只留了 favicon、备案图标等 8 个小文件，都是 footer 里还在用的。大尺寸背景图和流程图全部走 CDN。</p>
 </article>
 
-<div class="article-tags slide-up"><a class="tag" href="/tags/hexo/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>hexo</a><a class="tag" href="/tags/stellar/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>stellar</a><a class="tag" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>博客搭建</a></div>
+<div class="article-tags slide-up"><a class="tag" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>阿里云</a><a class="tag" href="/tags/OSS/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>OSS</a><a class="tag" href="/tags/CDN/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>CDN</a><a class="tag" href="/tags/%E5%8D%9A%E5%AE%A2%E4%BC%98%E5%8C%96/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>博客优化</a><a class="tag" href="/tags/%E5%9B%BE%E7%89%87%E6%89%98%E7%AE%A1/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>图片托管</a></div>
 
 <div class="article-footer slide-up">
     <section id="license">
@@ -687,7 +840,7 @@
 
 </div>
 
-<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/09/04/ech0-artalk-deploy/">博客搭建记录（三）：说说与评论系统部署</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/09/01/diagram-three-ways-compare/">AI流程图制作</a></div></section></div>
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/09/04/stellar-144-upgrade/">博客搭建记录（七）：Stellar 主题 1.44.0 升级</a></div></section></div>
 
 
 
@@ -753,7 +906,7 @@
       <a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a>
     </div>
   
-  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%83%AD%E9%87%8D%E8%BD%BD%E8%A7%84%E5%88%99"><span class="toc-text">先说热重载规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#menubar-%E4%BA%94%E9%A1%B9%E4%B8%8E%E9%85%8D%E8%89%B2"><span class="toc-text">menubar 五项与配色</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E6%A0%87%E5%AD%97%E5%85%B8%EF%BC%9A%E5%88%9D%E5%A7%8B%E5%8C%96%E6%9C%80%E5%A4%A7%E7%9A%84%E5%9D%91"><span class="toc-text">图标字典：初始化最大的坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E8%84%9A%E5%92%8C%E5%A4%B4%E5%83%8F"><span class="toc-text">页脚和头像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#widgets-%E4%B8%8E-site-tree"><span class="toc-text">widgets 与 site_tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%94%E8%AE%B0%E6%9C%AC%E7%B3%BB%E7%BB%9F"><span class="toc-text">笔记本系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#banner-%E4%B8%8E%E6%A0%87%E7%AD%BE%E6%8F%92%E4%BB%B6"><span class="toc-text">banner 与标签插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E4%BC%9A%E5%8F%8D%E5%A4%8D%E9%81%87%E5%88%B0%E7%9A%84%E7%82%B9"><span class="toc-text">两个会反复遇到的点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%B6%E5%B0%BE"><span class="toc-text">收尾</span></a></li></ol></div>
+  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%90%AC"><span class="toc-text">为什么要搬</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%88%9B%E5%BB%BA-OSS-%E6%A1%B6"><span class="toc-text">一、创建 OSS 桶</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%B7%BB%E5%8A%A0-CDN-%E5%8A%A0%E9%80%9F%E5%9F%9F%E5%90%8D"><span class="toc-text">二、添加 CDN 加速域名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-CDN-%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%B7%BB%E5%8A%A0%E5%9F%9F%E5%90%8D"><span class="toc-text">2.1 CDN 控制台添加域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%9F%9F%E5%90%8D%E5%BD%92%E5%B1%9E%E9%AA%8C%E8%AF%81"><span class="toc-text">2.2 域名归属验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%BC%93%E5%AD%98%E9%85%8D%E7%BD%AE"><span class="toc-text">2.3 缓存配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%85%B3%E6%8E%89%E8%B4%B9%E7%94%A8%E5%B0%81%E9%A1%B6"><span class="toc-text">2.4 关掉费用封顶</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-DNS-%E5%8A%A0-CNAME"><span class="toc-text">2.5 DNS 加 CNAME</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%85%8D-HTTPS-%E8%AF%81%E4%B9%A6"><span class="toc-text">三、配 HTTPS 证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%94%B3%E8%AF%B7%E5%85%8D%E8%B4%B9%E8%AF%81%E4%B9%A6"><span class="toc-text">3.1 申请免费证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-CDN-%E5%BC%80%E5%90%AF-HTTPS"><span class="toc-text">3.2 CDN 开启 HTTPS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%88%B0-OSS"><span class="toc-text">四、上传图片到 OSS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%9B%BF%E6%8D%A2%E5%8D%9A%E5%AE%A2%E9%87%8C%E7%9A%84%E5%9B%BE%E7%89%87%E5%BC%95%E7%94%A8"><span class="toc-text">五、替换博客里的图片引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E9%85%8D-Referer-%E9%98%B2%E7%9B%97%E9%93%BE"><span class="toc-text">六、配 Referer 防盗链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%B9%E7%94%A8"><span class="toc-text">费用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E8%A6%81%E5%81%9A%E7%9A%84"><span class="toc-text">后续要做的</span></a></li></ol></div>
   <div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M11.9426 1.25H12.0574C14.3658 1.24999 16.1748 1.24998 17.5863 1.43975C19.031 1.63399 20.1711 2.03933 21.0659 2.93414C21.9607 3.82895 22.366 4.96897 22.5603 6.41371C22.75 7.82519 22.75 9.63423 22.75 11.9426V12.0574C22.75 14.3658 22.75 16.1748 22.5603 17.5863C22.366 19.031 21.9607 20.1711 21.0659 21.0659C20.1711 21.9607 19.031 22.366 17.5863 22.5603C16.1748 22.75 14.3658 22.75 12.0574 22.75H11.9426C9.63423 22.75 7.82519 22.75 6.41371 22.5603C4.96897 22.366 3.82895 21.9607 2.93414 21.0659C2.03933 20.1711 1.63399 19.031 1.43975 17.5863C1.24998 16.1748 1.24999 14.3658 1.25 12.0574V11.9426C1.24999 9.63423 1.24998 7.82519 1.43975 6.41371C1.63399 4.96897 2.03933 3.82895 2.93414 2.93414C3.82895 2.03933 4.96897 1.63399 6.41371 1.43975C7.82519 1.24998 9.63423 1.24999 11.9426 1.25ZM6.61358 2.92637C5.33517 3.09825 4.56445 3.42514 3.9948 3.9948C3.42514 4.56445 3.09825 5.33517 2.92637 6.61358C2.75159 7.91356 2.75 9.62177 2.75 12C2.75 14.3782 2.75159 16.0864 2.92637 17.3864C3.09825 18.6648 3.42514 19.4355 3.9948 20.0052C4.56445 20.5749 5.33517 20.9018 6.61358 21.0736C7.91356 21.2484 9.62177 21.25 12 21.25C14.3782 21.25 16.0864 21.2484 17.3864 21.0736C18.6648 20.9018 19.4355 20.5749 20.0052 20.0052C20.5749 19.4355 20.9018 18.6648 21.0736 17.3864C21.2484 16.0864 21.25 14.3782 21.25 12C21.25 9.62177 21.2484 7.91356 21.0736 6.61358C20.9018 5.33517 20.5749 4.56445 20.0052 3.9948C19.4355 3.42514 18.6648 3.09825 17.3864 2.92637C16.0864 2.75159 14.3782 2.75 12 2.75C9.62177 2.75 7.91356 2.75159 6.61358 2.92637ZM12 9.56066L9.53033 12.0303C9.23744 12.3232 8.76256 12.3232 8.46967 12.0303C8.17678 11.7374 8.17678 11.2626 8.46967 10.9697L11.4697 7.96967C11.7626 7.67678 12.2374 7.67678 12.5303 7.96967L15.5303 10.9697C15.8232 11.2626 15.8232 11.7374 15.5303 12.0303C15.2374 12.3232 14.7626 12.3232 14.4697 12.0303L12 9.56066ZM12 13.5607L9.53033 16.0303C9.23744 16.3232 8.76256 16.3232 8.46967 16.0303C8.17678 15.7374 8.17678 15.2626 8.46967 14.9697L11.4697 11.9697C11.7626 11.6768 12.2374 11.6768 12.5303 11.9697L15.5303 14.9697C15.8232 15.2626 15.8232 15.7374 15.5303 16.0303C15.2374 16.3232 14.7626 16.3232 14.4697 16.0303L12 13.5607Z" clip-rule="evenodd"/></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M10.4606 1.25H13.5394C15.1427 1.24999 16.3997 1.24999 17.4039 1.34547C18.4274 1.44279 19.2655 1.64457 20.0044 2.09732C20.7781 2.57144 21.4286 3.22194 21.9027 3.99563C22.3554 4.73445 22.5572 5.57256 22.6545 6.59611C22.75 7.60029 22.75 8.85725 22.75 10.4606V11.5278C22.75 12.6691 22.75 13.564 22.7007 14.2868C22.6505 15.0223 22.5468 15.6344 22.3123 16.2004C21.7287 17.6093 20.6093 18.7287 19.2004 19.3123C18.3955 19.6457 17.4786 19.7197 16.2233 19.7413C15.7842 19.7489 15.5061 19.7545 15.2941 19.7779C15.096 19.7999 15.0192 19.832 14.9742 19.8582C14.9268 19.8857 14.8622 19.936 14.7501 20.0898C14.6287 20.2564 14.4916 20.4865 14.2742 20.8539L13.7321 21.7697C12.9585 23.0767 11.0415 23.0767 10.2679 21.7697L9.72579 20.8539C9.50835 20.4865 9.37122 20.2564 9.24985 20.0898C9.13772 19.936 9.07313 19.8857 9.02572 19.8582C8.98078 19.832 8.90399 19.7999 8.70588 19.7779C8.49387 19.7545 8.21575 19.7489 7.77666 19.7413C6.52138 19.7197 5.60454 19.6457 4.79957 19.3123C3.39066 18.7287 2.27128 17.6093 1.68769 16.2004C1.45323 15.6344 1.3495 15.0223 1.29932 14.2868C1.24999 13.564 1.25 12.6691 1.25 11.5278L1.25 10.4606C1.24999 8.85726 1.24999 7.60029 1.34547 6.59611C1.44279 5.57256 1.64457 4.73445 2.09732 3.99563C2.57144 3.22194 3.22194 2.57144 3.99563 2.09732C4.73445 1.64457 5.57256 1.44279 6.59611 1.34547C7.60029 1.24999 8.85726 1.24999 10.4606 1.25ZM6.73809 2.83873C5.82434 2.92561 5.24291 3.09223 4.77938 3.37628C4.20752 3.72672 3.72672 4.20752 3.37628 4.77938C3.09223 5.24291 2.92561 5.82434 2.83873 6.73809C2.75079 7.663 2.75 8.84876 2.75 10.5V11.5C2.75 12.6751 2.75041 13.5189 2.79584 14.1847C2.84081 14.8438 2.92737 15.2736 3.07351 15.6264C3.50486 16.6678 4.33223 17.4951 5.3736 17.9265C5.88923 18.1401 6.54706 18.2199 7.8025 18.2416L7.83432 18.2421C8.23232 18.249 8.58109 18.2549 8.87097 18.287C9.18246 18.3215 9.4871 18.3912 9.77986 18.5615C10.0702 18.7304 10.2795 18.9559 10.4621 19.2063C10.6307 19.4378 10.804 19.7306 11.0004 20.0623L11.5587 21.0057C11.7515 21.3313 12.2485 21.3313 12.4412 21.0057L12.9996 20.0623C13.1959 19.7306 13.3692 19.4378 13.5379 19.2063C13.7204 18.9559 13.9298 18.7304 14.2201 18.5615C14.5129 18.3912 14.8175 18.3215 15.129 18.287C15.4189 18.2549 15.7676 18.249 16.1656 18.2421L16.1975 18.2416C17.4529 18.2199 18.1108 18.1401 18.6264 17.9265C19.6678 17.4951 20.4951 16.6678 20.9265 15.6264C21.0726 15.2736 21.1592 14.8438 21.2042 14.1847C21.2496 13.5189 21.25 12.6751 21.25 11.5V10.5C21.25 8.84876 21.2492 7.663 21.1613 6.73809C21.0744 5.82434 20.9078 5.24291 20.6237 4.77938C20.2733 4.20752 19.7925 3.72672 19.2206 3.37628C18.7571 3.09223 18.1757 2.92561 17.2619 2.83873C16.337 2.75079 15.1512 2.75 13.5 2.75H10.5C8.84876 2.75 7.663 2.75079 6.73809 2.83873ZM7.25 9C7.25 8.58579 7.58579 8.25 8 8.25H16C16.4142 8.25 16.75 8.58579 16.75 9C16.75 9.41421 16.4142 9.75 16 9.75H8C7.58579 9.75 7.25 9.41421 7.25 9ZM7.25 12.5C7.25 12.0858 7.58579 11.75 8 11.75H13.5C13.9142 11.75 14.25 12.0858 14.25 12.5C14.25 12.9142 13.9142 13.25 13.5 13.25H8C7.58579 13.25 7.25 12.9142 7.25 12.5Z" clip-rule="evenodd"/></svg><span>参与讨论</span></a></div>
 </widget>
 
@@ -771,7 +924,7 @@
 
 <script type="text/javascript">
   window.canonical = {"originalHost":"nightfall7.top","officialHosts":["localhost"],"encoded":"bmlnaHRmYWxsNy50b3A="};
-  window.canonical["param"] = {"permalink":"https://nightfall7.top/2026/09/04/hexo-stellar-init-config/","checklink":"/js/plugins/video.js"};
+  window.canonical["param"] = {"permalink":"https://nightfall7.top/2026/09/17/oss-cdn-image-migration/","checklink":"/js/plugins/video.js"};
   // Fix: Ensure page is at the correct top position on data load
   if (history.scrollRestoration) {
     history.scrollRestoration = 'auto';
@@ -1146,7 +1299,7 @@
           const artalk = Artalk.init({
             el: '#artalk_container',
             pageKey: path,
-            pageTitle: '博客搭建记录（二）：Hexo + Stellar 初始化配置',
+            pageTitle: '博客图片迁移到 OSS + CDN',
             server: 'https://api.nightfall7.top/artalk',
             site: 'NightFall',
             darkMode: 'auto',
